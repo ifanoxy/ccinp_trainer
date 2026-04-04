@@ -20,7 +20,7 @@
 **Le contexte :** La banque d'exercices officielle des oraux CCINP est distribuée sous la forme d'un document LaTeX/PDF massif de plusieurs centaines de pages. 
 **Le problème :** Il est très difficile pour un étudiant de suivre sa progression, de filtrer les exercices déjà maîtrisés de ceux qui posent problème, et de simuler les conditions réelles (chronomètre, tirage au sort).
 
-**La solution CCINP Trainer Pro se divise en deux parties :**
+**La solution CCINP Trainer se divise en deux parties :**
 1. **Un script de traitement (`split_latex.js`)** : Il lit le code source officiel, isole chaque exercice, et génère un PDF unique et parfaitement mis en page pour chacun d'eux.
 2. **Une application de bureau (`ccinp-app`)** : Une interface moderne (développée avec React et Electron) qui sert de tableau de bord d'entraînement. Elle pioche dans les PDF générés pour créer des sessions de révision intelligentes.
 

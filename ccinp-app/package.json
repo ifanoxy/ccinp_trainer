@@ -1,7 +1,7 @@
 {
   "name": "ccinp-app",
   "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "description": "Apprendre les exercices de la banque CCINP",
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
@@ -22,9 +22,29 @@
   },
   "build": {
     "appId": "com.ccinp.trainer",
-    "productName": "CCINP Trainer Pro",
+    "productName": "CCINP Trainer",
+    "files": [
+      "**/*"
+    ],
+    "asar": true,
     "directories": {
       "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+        "oneClick": false,
+        "perMachine": false,
+        "allowToChangeInstallationDirectory": true
     },
     "mac": {
       "icon": "resources/icon.icns",
