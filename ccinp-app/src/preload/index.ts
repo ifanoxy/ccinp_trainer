@@ -18,7 +18,8 @@ const api = {
   saveNote: (profileId, note) => ipcRenderer.invoke('save-note', profileId, note),
   checkExercises: () => ipcRenderer.invoke('check-exercises'),
   importExercises: () => ipcRenderer.invoke('import-exercises'),
-  getBasePath: () => ipcRenderer.invoke('get-base-path')
+  getBasePath: () => ipcRenderer.invoke('get-base-path'),
+  updateDiscord: (data) => ipcRenderer.send('update-discord', data)
 }
 
 if (process.contextIsolated) {

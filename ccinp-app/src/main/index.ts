@@ -1,5 +1,4 @@
-// Path: src/main/index.ts
-
+import DiscordRPC from 'discord-rpc';
 import { app, shell, BrowserWindow, ipcMain, protocol, net, dialog, nativeImage } from 'electron'
 import { join } from 'path'
 import { electronApp, is } from '@electron-toolkit/utils'
@@ -15,6 +14,33 @@ const getNotesPath = (profileId: string) => join(userDataPath, `ccinp_notes_${pr
 protocol.registerSchemesAsPrivileged([
   { scheme: 'local', privileges: { secure: true, standard: true, supportFetchAPI: true, bypassCSP: true } }
 ])
+
+const clientId = '1489988862045327472';
+DiscordRPC.register(clientId);
+const rpc = new DiscordRPC.Client({ transport: 'ipc' });
+
+ipcMain.on('update-discord', (_event, data) => {
+  if (!rpc || !rpc.user) return;
+
+  const presence: any = {
+    details: data.details,
+    state: data.state,
+    largeImageKey: 'icon_app',
+    largeImageText: 'CCINP Trainer Pro',
+    buttons: [
+      { label: '⭐ Voir sur GitHub', url: 'https://github.com/ifanoxy/ccinp_trainer' }
+    ]
+  };
+
+  if (data.startTimestamp) presence.startTimestamp = data.startTimestamp;
+  if (data.endTimestamp) presence.endTimestamp = data.endTimestamp;
+
+  rpc.setActivity(presence).catch(console.error);
+});
+
+rpc.login({ clientId }).catch(() => {
+  console.log("ℹ️ Discord n'est pas détecté en arrière-plan. Le Rich Presence est désactivé pour cette session.");
+});
 
 function createWindow(): void {
   const iconPath = is.dev

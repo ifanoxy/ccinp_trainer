@@ -17,5 +17,6 @@ export interface CustomAPI {
     saveNote: (profileId: string, note: UserNote) => Promise<Record<number, UserNote>>;
     checkExercises: () => Promise<boolean>;
     importExercises: () => Promise<{success: boolean, error?: string}>;
+    updateDiscord?: (data: { details: string; state: string; startTimestamp?: number; endTimestamp?: number }) => void;
 }
 declare global { interface Window { api: CustomAPI; } }

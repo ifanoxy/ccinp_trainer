@@ -21,9 +21,35 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
     const [noteText, setNoteText] = useState('');
     const [isFinished, setIsFinished] = useState(false);
     const [isSavingNote, setIsSavingNote] = useState(false);
+    const [sessionStartTs] = useState(Date.now());
+    const [oralBlancEndTs] = useState(Date.now() + 25 * 60 * 1000);
 
     const currentEx = queue[currentIndex];
     const pdfUrl = currentEx ? `local://${currentEx.type}/exercice_${currentEx.id}.pdf#toolbar=0&navpanes=0&scrollbar=1&view=FitH` : '';
+
+    useEffect(() => {
+        if (!currentEx || !window.api || !window.api.updateDiscord) return;
+
+        const modeNames = {
+            'smart': 'Tirage Intelligent 🧠',
+            'random': 'Aléatoire Total 🔀',
+            'weakness': 'Mode Survie 🎯',
+            'simulation': 'Oral Blanc 🎓'
+        };
+
+        const payload: any = {
+            details: `${modeNames[sessionMode]}`,
+            state: `Exo ${currentIndex + 1}/${queue.length} : #${currentEx.id} (${currentEx.type})`
+        };
+
+        if (sessionMode === 'simulation') {
+            payload.endTimestamp = oralBlancEndTs;
+        } else {
+            payload.startTimestamp = sessionStartTs;
+        }
+
+        window.api.updateDiscord(payload);
+    }, [currentEx, currentIndex, sessionMode]);
 
     useEffect(() => {
         if (!currentEx) return;

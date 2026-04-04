@@ -9,6 +9,8 @@ import {ProfileSelect} from "./components/ProfileSelect";
 import {Setup} from "./components/Setup";
 import {Home} from "./components/Home";
 
+const APP_START_TIME = Date.now();
+
 export default function App() {
     const [view, setView] = useState<'profiles' | 'setup' | 'home' | 'session' | 'dashboard'>('profiles');
     const [profiles, setProfiles] = useState<UserProfile[]>([]);
@@ -35,6 +37,16 @@ export default function App() {
         };
         initApp();
     }, []);
+
+    useEffect(() => {
+        if (!window.api || !window.api.updateDiscord) return;
+
+        if (view === 'profiles' || view === 'setup' || view === 'home') {
+            window.api.updateDiscord({ details: "Dans les menus", state: "Se prépare à réviser...", startTimestamp: APP_START_TIME });
+        } else if (view === 'dashboard') {
+            window.api.updateDiscord({ details: "Analyse ses statistiques 📊", state: "Tableau de Bord", startTimestamp: APP_START_TIME });
+        }
+    }, [view, activeProfile]);
 
     const handleSelectProfile = async (profile: UserProfile) => {
         setActiveProfile(profile);
