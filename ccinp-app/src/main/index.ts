@@ -1,4 +1,4 @@
-import DiscordRPC from 'discord-rpc';
+import DiscordRPC from 'discord-rpc-revamp';
 import { app, shell, BrowserWindow, ipcMain, protocol, net, dialog, nativeImage } from 'electron'
 import { join } from 'path'
 import { electronApp, is } from '@electron-toolkit/utils'
@@ -17,7 +17,7 @@ protocol.registerSchemesAsPrivileged([
 
 const clientId = '1489988862045327472';
 DiscordRPC.register(clientId);
-const rpc = new DiscordRPC.Client({ transport: 'ipc' });
+const rpc = new DiscordRPC.Client();
 
 ipcMain.on('update-discord', (_event, data) => {
   if (!rpc || !rpc.user) return;
@@ -38,7 +38,7 @@ ipcMain.on('update-discord', (_event, data) => {
   rpc.setActivity(presence).catch(console.error);
 });
 
-rpc.login({ clientId }).catch(() => {
+rpc.connect({ clientId }).catch(() => {
   console.log("ℹ️ Discord n'est pas détecté en arrière-plan. Le Rich Presence est désactivé pour cette session.");
 });
 
