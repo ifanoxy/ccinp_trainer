@@ -38,8 +38,14 @@ export default function App() {
         initApp();
     }, []);
 
+
     useEffect(() => {
         if (!window.api || !window.api.updateDiscord) return;
+
+        if (localStorage.getItem('ccinp_discord_rpc') === 'false') {
+            window.api.updateDiscord({ clear: true });
+            return;
+        }
 
         if (view === 'profiles' || view === 'setup' || view === 'home') {
             window.api.updateDiscord({ details: "Dans les menus", state: "Se prépare à réviser...", startTimestamp: APP_START_TIME });

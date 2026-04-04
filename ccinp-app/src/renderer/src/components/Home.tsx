@@ -8,7 +8,7 @@ import {
     Play,
     Settings,
     Shuffle,
-    Target, Trash2, Users, CalendarDays, Flag
+    Target, Trash2, Users, CalendarDays, Flag, Gamepad2
 } from "lucide-react";
 import {ProgressRecord, SessionMode, UserProfile} from "../types";
 import {EXERCISES} from "../data";
@@ -28,15 +28,29 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
     const [isImporting, setIsImporting] = useState(false);
 
     const [deadline, setDeadline] = useState<string>('');
+    const [discordEnabled, setDiscordEnabled] = useState<boolean>(true);
 
     useEffect(() => {
         setDeadline(localStorage.getItem(`ccinp_deadline_${activeProfile.id}`) || '');
+        setDiscordEnabled(localStorage.getItem('ccinp_discord_rpc') !== 'false');
     }, [activeProfile.id]);
 
     useEffect(() => {
         if (deadline) localStorage.setItem(`ccinp_deadline_${activeProfile.id}`, deadline);
         else localStorage.removeItem(`ccinp_deadline_${activeProfile.id}`);
     }, [deadline, activeProfile.id]);
+
+    const toggleDiscord = () => {
+        const newValue = !discordEnabled;
+        setDiscordEnabled(newValue);
+        localStorage.setItem('ccinp_discord_rpc', newValue.toString());
+
+        if (!newValue && window.api && window.api.updateDiscord) {
+            window.api.updateDiscord({ clear: true } as any);
+        } else if (newValue && window.api && window.api.updateDiscord) {
+            window.api.updateDiscord({ details: "Dans les paramètres", state: "Configuration de l'app" });
+        }
+    };
 
     const uniqueSeenIds = new Set(progressData.map(p => p.id)).size;
     const progressPercent = Math.round((uniqueSeenIds / EXERCISES.length) * 100);
@@ -226,20 +240,41 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
 
             <Modal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} title="Paramètres">
                 <div className="space-y-4">
-                    <button onClick={onChangeProfile} className="w-full flex items-center gap-4 p-4 text-left bg-slate-50 hover:bg-slate-100 rounded-2xl transition-colors font-bold text-slate-700 border border-slate-200">
+                    <button onClick={onChangeProfile}
+                            className="w-full flex items-center gap-4 p-4 text-left bg-slate-50 hover:bg-slate-100 rounded-2xl transition-colors font-bold text-slate-700 border border-slate-200">
                         <Users size={20} className="text-indigo-500"/> Changer de profil
                     </button>
-                    <button onClick={handleUpdateBank} disabled={isImporting} className="w-full flex items-center gap-4 p-4 text-left bg-blue-50 hover:bg-blue-100 rounded-2xl transition-colors font-bold text-blue-700 border border-blue-200">
-                        {isImporting ? <Loader2 size={20} className="animate-spin"/> : <FolderDown size={20} />}
+                    <button onClick={handleUpdateBank} disabled={isImporting}
+                            className="w-full flex items-center gap-4 p-4 text-left bg-blue-50 hover:bg-blue-100 rounded-2xl transition-colors font-bold text-blue-700 border border-blue-200">
+                        {isImporting ? <Loader2 size={20} className="animate-spin"/> : <FolderDown size={20}/>}
                         Importer / Mettre à jour la banque PDF
                     </button>
 
                     <div className="h-px bg-slate-200 my-4"></div>
 
+                    <div
+                        className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                        <div className="flex items-center gap-3">
+                            <Gamepad2 size={20} className="text-indigo-500"/>
+                            <div className="text-left">
+                                <p className="text-sm font-bold text-slate-800">Discord Rich Presence</p>
+                                <p className="text-[10px] text-slate-500 font-medium leading-tight">Afficher votre
+                                    statut sur Discord</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={toggleDiscord}
+                            className={`w-12 h-6 rounded-full transition-colors relative ${discordEnabled ? 'bg-indigo-500' : 'bg-slate-300'}`}
+                        >
+                            <div
+                                className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-all shadow-sm ${discordEnabled ? 'left-7' : 'left-1'}`}/>
+                        </button>
+                    </div>
+
                     {!activeProfile.isIncognito && (
                         <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                             <label className="flex items-center gap-3 text-sm font-bold text-slate-800 mb-3">
-                                <CalendarDays size={20} className="text-indigo-500" /> Objectif : Date de l'oral
+                                <CalendarDays size={20} className="text-indigo-500"/> Objectif : Date de l'oral
                             </label>
                             <input
                                 type="date"
@@ -248,14 +283,23 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                                 onChange={(e) => setDeadline(e.target.value)}
                                 className="w-full p-3 rounded-xl border border-slate-300 font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer"
                             />
-                            <p className="text-[10px] text-slate-500 mt-3 leading-tight font-medium">Définit un objectif d'exercices à maîtriser (note de 6 ou 7) par jour pour être prêt le jour J.</p>
+                            <p className="text-[10px] text-slate-500 mt-3 leading-tight font-medium">Définit un objectif
+                                d'exercices à maîtriser (note de 6 ou 7) par jour pour être prêt le jour J.</p>
                         </div>
                     )}
 
                     <div className="h-px bg-slate-200 my-4"></div>
 
-                    <button onClick={() => { if(window.confirm("Tout effacer ?")) { onDeleteData(); setIsSettingsOpen(false); } }} className="w-full flex items-center gap-4 p-4 text-left bg-red-50 hover:bg-red-100 rounded-2xl transition-colors font-bold text-red-600 border border-red-200">
-                        <Trash2 size={20} /> Réinitialiser mes statistiques
+                    <button onClick={() =>
+                    {
+                        if (window.confirm("Tout effacer ?"))
+                        {
+                            onDeleteData();
+                            setIsSettingsOpen(false);
+                        }
+                    }}
+                            className="w-full flex items-center gap-4 p-4 text-left bg-red-50 hover:bg-red-100 rounded-2xl transition-colors font-bold text-red-600 border border-red-200">
+                        <Trash2 size={20}/> Réinitialiser mes statistiques
                     </button>
                 </div>
             </Modal>

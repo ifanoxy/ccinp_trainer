@@ -22,6 +22,11 @@ const rpc = new DiscordRPC.Client();
 ipcMain.on('update-discord', (_event, data) => {
   if (!rpc || !rpc.user) return;
 
+  if (data.clear) {
+    rpc.clearActivity().catch(console.error);
+    return;
+  }
+
   const presence: any = {
     details: data.details,
     state: data.state,
