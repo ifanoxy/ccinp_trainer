@@ -2,7 +2,7 @@
 
 ![presentation](img/presentation.png)
 
-> Une solution complète (Script d'extraction LaTeX + Application de bureau) conçue pour révolutionner la préparation aux oraux de mathématiques des concours CCINP (Filières MP / MPI).
+> Une solution complète (Script d'extraction LaTeX + Application de bureau) conçue pour améliorer la préparation aux oraux de mathématiques des concours CCINP (Filières MP / MPI).
 
 ---
 
