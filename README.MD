@@ -48,7 +48,7 @@ Pour faire fonctionner cette partie, vous avez besoin de deux outils gratuits :
    - **Sur macOS :** Installez [MacTeX](https://tug.org/mactex/) (via le site ou via Homebrew : `brew install --cask mactex`).
 
 ### Instructions
-1. Placez le fichier source officiel `banque_orale.tex` à la racine de ce dossier (au même niveau que `split_latex.js`).
+1. Placez le fichier [source officiel](https://www.concours-commun-inp.fr/fr/epreuves/les-epreuves-orales.html) `banque_orale.tex` à la racine de ce dossier (au même niveau que `split_latex.js`).
 2. Ouvrez un terminal dans ce dossier.
 3. Lancez la commande suivante :
    ```bash
