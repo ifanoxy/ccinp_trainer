@@ -1,0 +1,2575 @@
+\documentclass[10pt,oneside]{article}
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{calc,multido,ifthen,color,bm}
+\usepackage{theorem,graphicx}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{stmaryrd}
+\usepackage{setspace}
+\usepackage{dsfont}
+\usepackage{hyperref}
+\pagestyle{fancy}
+
+%% DATE DE MISE A JOUR A MODIFIER ICI UNIQUEMENT : 
+\def\datedemiseajour{01/10/2025}
+
+
+\fancyhead[L]{Banque \'epreuve orale de math\'ematiques session 2026,  CCINP, filière MP et MPI}
+\fancyhead[C]{}
+\fancyhead[R]{Mise à jour : \datedemiseajour}
+\fancyfoot[L]{}
+\fancyfoot[C]{ \href{http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr}{CC BY-NC-SA 3.0 FR}}
+\fancyfoot[R]{Page \thepage}
+
+ \author{
+} 
+\date{2014,  \href{http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr}{CC BY-NC-SA 3.0 FR}}
+%Le titre général de l'article centré verticalement
+\title{\vspace{\fill}\textbf{ CONCOURS COMMUN INP \\ FILIÈRE  MP - FILIÈRE MPI \\\vspace{3cm}
+\Huge{\textbf{BANQUE\\ \'EPREUVE ORALE\\DE MATH\'EMATIQUES\\SESSION 2026\\\vspace{3cm} sans corrigés }}}  \vspace{\fill}}
+
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+\begin{flushright}
+\textbf{Dernière mise à jour : le \datedemiseajour }
+\end{flushright}
+
+
+
+
+\pagebreak
+\begin{flushleft}
+
+
+%\vspace*{\stretch{1}}
+\section*{Introduction}
+L’épreuve orale de mathématiques du concours commun INP,  filière MP et filière MPI, se déroule de
+la manière suivante :
+\begin{itemize}
+\item
+25mn de préparation sur table.
+\item 
+25mn de passage à l’oral.
+\end{itemize}
+\bigskip
+
+Chaque sujet proposé  est  constitué de deux exercices :
+\begin{itemize}
+\item
+un exercice sur 8 points issu de la banque publique accessible sur le
+site \url{https://www.concours-commun-inp.fr/fr/index.html}\\
+\item
+un exercice sur 12 points.
+\end{itemize}
+
+\medskip
+Les deux exercices proposés portent sur des domaines différents.\\
+\bigskip
+
+Ce document contient les \textbf{112 exercices de la banque pour la
+  session 2024}:
+\begin{itemize}
+\item
+58 exercices d'analyse ( exercice 1 à exercice 58).\\
+\item
+36 exercices d'algèbre (exercice 59 à exercice 94). \\
+\item
+18 exercices de probabilités (exercice 95 à exercice 112).
+\end{itemize}
+
+\bigskip
+Dans l'optique d'aider les futurs candidats à se préparer au mieux aux oraux du CCINP, chaque exercice de la banque  est proposé,  avec un corrigé, dans la version de la banque avec corrigés sur le site du CCINP.\\
+\bigskip
+Il se peut que des mises à jour aient lieu en cours d'année scolaire.\\
+Cela dit, il ne s'agira, si tel est le cas, que de mises à jour mineures: reformulation de certaines questions pour plus de clarté, relevé d'éventuelles erreurs, suppression éventuelle de questions ou d'exercices.\\
+Nous vous conseillons donc de vérifier, en cours d'année, en vous
+connectant sur le site : 
+\centerline{\url{https://www.concours-commun-inp.fr/fr/index.html}}
+ Si une nouvelle version a été mise en ligne, la date de la dernière
+ mise à jour figurant en haut  de chaque page.\\
+Si tel est le cas, les exercices concernés et les modifications, seront signalés dans la version de la banque avec corrigés, sur le site du CCINP.
+
+\bigskip
+Remerciements à David DELAUNAY pour l'autorisation de libre utilisation du
+fichier source de ses corrigés des exercices de l'ancienne banque, 
+diffusés sur son site \url{http://mp.cpgedupuydelome.fr}
+
+\vspace{1cm}
+NB : la pr\'esente banque intègre des éléments issus des publications
+suivantes :
+\medskip
+\begin{itemize}
+\item[$\bullet$]
+A. Antibi, L. d'Estampes et interrogateurs, Banque d'exercices de
+mathématiques pour le programme 2003-2014 des oraux CCP-MP, {\it
+  Éd. Ress. Pédag. Ouv. INPT}, {\bf 0701} (2013) 120 exercices.
+
+\centerline{\url{http://pedagotech.inp-toulouse.fr/130701}}
+
+
+\item[$\bullet$]
+D. Delaunay, Prépas Dupuy de Lôme, cours et exercices corrigés MPSI -
+MP, 2014.
+\centerline{\url{http://mp.cpgedupuydelome.fr}}
+
+
+
+\end{itemize}
+
+
+
+\vspace{2cm}
+\begin{flushright}
+L'équipe des examinateurs de l'oral de mathématiques du CCINP, filière MP et filière MPI.
+\end{flushright}
+
+%\vspace*{\stretch{1}}
+\vspace{.4cm}
+
+\hfill
+\begin{minipage}{0.45\textwidth}
+\textbf{Contact}: {Valérie BELLECAVE, coordonnatrice des oraux
+  de mathématiques du CCINP, filière MP et filière MPI.}
+\\
+\null\hfill \href{mailto:vbellecave@gmail.com}{vbellecave@gmail.com}
+\end{minipage}
+
+
+\end{flushleft}
+\pagebreak
+\begin{flushleft}
+
+\part*{BANQUE ANALYSE}
+
+\section*{EXERCICE 1\:analyse  }
+
+On note $E$ l'espace vectoriel des applications continues sur $\left[ 0,1\right]$ à valeurs dans $\mathbb{R}$.\\
+On pose : $\forall f\in E$,  $||f||_{\infty}=\underset{t\in \left[ 0,1\right] }{\sup}|f(t)|$ et $||f||_{1}=\displaystyle\int_{0}^{1}|f(t)|dt$.
+\begin{enumerate}
+\item
+Les normes $||\:||_{\infty}$ et $||\:||_{1}$ sont-elles équivalentes? Justifier.
+\item
+Dans cette question, on munit $E$ de la norme $||\:||_{\infty}$.
+\begin{enumerate}
+\item
+Soit $u:\left\lbrace \begin{array}{lll}
+E&\longrightarrow& \mathbb{R}\\
+f&\longmapsto& f(0)
+\end{array}
+\right. $\\
+Prouver que $u$ est une application continue sur $E$.\:\:\:\:
+\item
+On pose $F=\left\lbrace  f\in E\:/\: f(0)=0\right\rbrace$.\\
+Prouver que $F$ est une partie fermée de $E$  pour la norme $||\:||_{\infty}$.
+
+\end{enumerate}
+\item
+Dans cette question, on munit $E$ de la norme $||\:||_{1}$.
+
+
+Soit $c:\left\lbrace \begin{array}{lll}
+\left[0,1 \right] &\longrightarrow& \mathbb{R}\\
+x&\longmapsto& 1
+\end{array}
+\right. $\\
+\medskip
+On pose : $\forall n\in \mathbb{N}^{*}$, $f_n(x)=\left\lbrace \begin{array}{lll}
+nx& \text{si}& 0\leqslant x\leqslant \dfrac{1}{n}\\
+1&\text{si}& \dfrac{1}{n}< x\leqslant 1
+\end{array}\right. $
+\begin{enumerate}
+\item
+Soit $n\in \mathbb{N}^{*}$. Calculer $||f_n-c||_{1}$.
+\item
+On pose $F=\left\lbrace  f\in E\:/\: f(0)=0\right\rbrace$.\\
+On note $\bar{F}$ l'adhérence de $F$.\\
+Prouver que $c\in \bar{F}$\\
+$F$ est-elle une partie fermée de $E$ pour la norme $||\:||_{1}$? 
+\end{enumerate}
+\end{enumerate}
+
+
+\section*{EXERCICE 2 \:analyse }
+
+On pose $f(x)=\dfrac{3x+7}{(x+1)^{2}}$~.
+\begin{enumerate}
+\item Décomposer $f(x)$ en éléments simples.
+
+\item En déduire que $f$ est développable en série entière sur un intervalle du type $\left]-r,r \right[$ (où $r>0$).\\
+Préciser ce développement en série entière et déterminer, en le justifiant, le domaine de validité $D$ de ce développement en série entière.\:\:\:\:\\
+
+\item 
+\begin{enumerate}
+\item
+Soit $\sum a_nx^n$ une série entière de rayon $R>0$.\\
+On pose, pour tout $x\in \left]-R,R \right[ $, $g(x)=\displaystyle\sum_{n=0}^{+\infty}a_nx^n$.\\
+Exprimer, pour tout entier $p$,  en le prouvant,  $a_p$ en fonction de $g^{(p)}(0)$.\\
+\item
+En déduire le développement limité de $f$ à l'ordre 3 au voisinage de 0.
+\end{enumerate}
+
+\end{enumerate}
+
+
+\section*{EXERCICE 3\:analyse  }
+
+\begin{enumerate}
+\item
+On pose $g(x)=\mathrm{e}^{2x}$ et $h(x)=\dfrac{1}{1+x}$.\\
+Calculer, pour tout entier naturel $k$, la dérivée d'ordre $k$ des fonctions $g$ et $h$ sur leurs ensembles de définitions respectifs.
+\item 
+On pose $f(x)=\dfrac{\mathrm{e}^{2x}}{1+x}$.\\
+En utilisant la formule de Leibniz concernant la dérivée $n^{\text{ième}}$ d'un produit de fonctions, déterminer, pour tout entier naturel $n$ et pour tout $x\in\mathbb{R}\backslash\left\lbrace -1\right\rbrace $, la valeur de $f^{(n)}(x)$.
+\item 
+Démontrer, dans le cas général, la formule de Leibniz, utilisée dans la question précédente.
+\end{enumerate}
+
+\section*{EXERCICE 4 \:analyse  }
+
+\begin{enumerate}
+\item \'Enoncer le théorème des accroissements finis.
+\item Soit $f:\left[ a,b\right]\longrightarrow \mathbb{R} $ et 
+soit $x_0\in \left]a,b \right[ $.\\
+On suppose que $f$ est continue sur $[a,b]$ et  que $f$ est dérivable sur $]a,x_0[$ et sur $]x_0,b[$.\\
+Démontrer que,  si $f'$ admet une limite finie en $x_0$,  alors 
+ $f$ est dérivable en $x_0$ et $f'(x_0)=\lim\limits_{x\rightarrow x_0}f'(x)$.
+\item Prouver que l'implication :\: ( $f$ est dérivable en $x_0$) $\Longrightarrow$ ($f'$ admet une limite finie en $x_0$) est fausse.
+
+\textbf{Indication}: on pourra considérer la fonction $g$ définie par: $g(x)=x^2\sin\dfrac{1}{x}$ si $x\not=0$ et $g(0)=0$.
+\end{enumerate}
+
+
+\section*{EXERCICE 5 \:analyse }
+
+\begin{enumerate}
+
+\item
+On considère la s\'{e}rie de terme g\'{e}n\'{e}ral $u_{n}=\dfrac{1}{n\left( \ln n\right) ^{\alpha }}$ o\`{u} $n\geqslant 2$ et $\alpha \in \mathbb{R}$.\medskip
+
+
+\begin{enumerate}
+\item \textbf{Cas $\bm{\alpha \leqslant 0}$}\medskip
+
+En utilisant une minoration tr\`{e}s simple de $u_{n}$, démontrer que la série diverge.
+
+\item \textbf{Cas $\bm{\alpha >0}$}\medskip 
+
+\'Etudier la nature de la série.\\ 
+\textbf{Indication}: on pourra utiliser la fonction $f$ d\'{e}finie par $f(x) =\dfrac{1}{x(\ln x) ^{\alpha }}$.
+\end{enumerate}
+\item
+Déterminer la nature de la série $\displaystyle\sum\limits_{n\geqslant 2}^{}\dfrac{\left( \mathrm{e}-\left( 1+\dfrac{1}{n}\right)^n \right)\mathrm{e}^{\frac{1}{n}}}{\left( \ln(n^2+n)\right) ^2}$.
+\end{enumerate}
+
+\section*{EXERCICE 6 \:analyse }
+
+Soit $\left( u_{n}\right) _{n\in \mathbb{N}}$ une suite de r\'{e}els strictement positifs et $l$ un r\'{e}el positif strictement inf\'{e}rieur \`{a} 1.
+
+\begin{enumerate}
+\item Démontrer que si $\underset{n\rightarrow +\infty }{\lim }\dfrac{u_{n+1}}{u_{n}}=l$, alors la s\'{e}rie $\displaystyle\sum u_{n}$ converge.
+ 
+\textbf{Indication}: écrire, judicieusement, la définition de $\underset{n\rightarrow +\infty }{\lim }\dfrac{u_{n+1}}{u_{n}}=l$,  puis majorer, pour $n$ assez grand, $u_{n}$ par le terme g\'{e}n\'{e}ral d'une suite g\'{e}om\'{e}trique.
+\item Quelle est la nature de la série $\displaystyle\sum_{n\geqslant1}{} \dfrac{n!}{n^{n}}$?
+\end{enumerate}
+
+
+\section*{EXERCICE 7 \:analyse }
+
+\begin{enumerate}
+\item
+Soit  $\left( u_{n}\right)_{n\in \mathbb{N}}$ et $\left( v_{n}\right) _{n\in \mathbb{N}}$  deux suites réelles telles que $(v_n)_{n\in \mathbb{N}}$ est non nulle à partir d'un certain rang .
+
+\begin{enumerate}
+\item
+
+Prouver que si  $u_{n}\underset{+\infty}\thicksim v_{n}$ alors $u_{n}$ et $v_{n}$ sont de m\^{e}me signe \`{a} partir d'un certain rang
+\item
+Dans cette question, on suppose que $(v_n)$ est positive.\\
+
+Prouver que :
+$u_{n}\underset{+\infty}{\thicksim} v_{n} \  \Longrightarrow  \ \displaystyle\sum u_{n}\ \text{et }\displaystyle\sum v_{n}\ \text{sont de m\^{e}me nature}.$
+
+\end{enumerate}
+\item 
+Étudier la convergence de la s\'{e}rie
+ $\displaystyle\sum\limits_{n\geqslant 2}^{} \dfrac{\left((-1)^n+\mathrm{i}\right) \sin \left( \dfrac{1}{n}\right) \ln n }{\left(\sqrt{n+3}-1\right)}$.
+
+
+\textbf{Remarque 1} : $\mathrm{i}$ désigne le nombre complexe de carr\'{e} \'{e}gal \`{a} $-1$.\\
+
+\end{enumerate}
+
+
+\section*{EXERCICE 8 \:analyse }
+
+
+\begin{enumerate}
+\item 
+Soit $\left( u_{n}\right) _{n\in \mathbb{N}}\ $une suite d\'{e}croissante positive de limite nulle.
+\begin{enumerate}
+\item Démontrer que la s\'{e}rie $\displaystyle\sum \left( -1\right) ^{k}u_{k}$ est convergente.
+
+\textbf{Indication}: on pourra consid\'{e}rer $\left( S_{2n}\right) _{n\in \mathbb{N}}$ et $\left( S_{2n+1}\right) _{n\in \mathbb{N}}$ avec $S_{n}=\displaystyle\sum_{k=0}^{n}\left( -1\right) ^{k}u_{k}$.
+\item Donner une majoration de la valeur absolue du reste de la série $\displaystyle\sum \left( -1\right) ^{k}u_{k}$.
+\end{enumerate}
+\item 
+On pose : $\forall \:n\in\mathbb{N}^*$, $\forall\:x\in\mathbb{R}$, $f_n(x)=\dfrac{\left(-1\right)^{n}e^{-nx}}{n}$.
+\begin{enumerate}
+
+\item \'Etudier la convergence simple sur $\mathbb{R}$  de la série de fonctions $\displaystyle\sum_{n\geqslant1}^{}f_n$.
+\item
+\'Etudier la convergence uniforme sur $\left[ 0,+\infty\right[ $  de la série de fonctions $\displaystyle\sum_{n\geqslant1}^{}f_n$. 
+\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 9 \:analyse }
+
+\begin{enumerate}
+\item 
+ Soit $X$ un ensemble, $\left( g_{n}\right) $ une suite de fonctions de $X$ dans $\mathbb{C}$ et $g$ une fonction de $X$ dans $\mathbb{C}$.\\
+Donner la définition de la convergence uniforme sur $X$ de la suite de fonctions $\left(g_n\right)$ vers la fonction $g$.\\
+
+  \item   
+On pose $f_{n}(x) =\dfrac{n+2}{n+1}\mathrm{e}^{-n x^{2}}\cos \left( \sqrt{n}x\right) $.
+\begin{enumerate}
+\item \'Etudier la convergence simple de la suite de fonctions $\left(f_{n}\right) $.
+\item     La suite de fonctions  $\left(f_{n}\right)$ converge-t-elle uniformément sur $\left[ 0,+\infty\right[$ ?
+
+\item Soit $a>0$. La suite de fonctions $\left(f_{n}\right) $ converge-t-elle uniform\'{e}ment sur  $[a,+\infty[$ ?	
+
+\item La suite de fonctions  $\left(f_{n}\right)$ converge-t-elle uniform\'{e}ment sur $]0,+\infty[$? 
+\end{enumerate}
+\end{enumerate}
+\section*{EXERCICE 10 \:analyse }
+
+On pose $f_{n}\left( x\right) =\left( x^{2}+1\right) \dfrac{ne^{x}+xe^{-x}}{n+x}$.
+
+\begin{enumerate}
+\item Démontrer que la suite de fonctions $\left( f_{n}\right) $ converge uniform\'{e}ment sur $[0,1]$.
+\item Calculer $\underset{n\rightarrow +\infty }{\lim }\displaystyle\int\limits_{0}^{1}\left( x^{2}+1\right) \dfrac{ne^{x}+xe^{-x}}{n+x}\text{d}x$.
+\end{enumerate}
+
+
+
+\section*{EXERCICE 11 \:analyse }
+
+\begin{enumerate}
+\item Soit $X$ une partie de $\mathbb{R}$, $\left( f_{n}\right) $ une suite de fonctions de $X$ dans $\mathbb{R}$ convergeant simplement vers une fonction $f$. \\
+On suppose qu'il existe une suite $\left( x_{n}\right)_{n\in \mathbb{N}}$ d'\'{e}l\'{e}ments de $X$ telle que la suite $\left( f_{n}(x_{n})-f\left( x_{n}\right) \right) _{n\in \mathbb{N}}$ ne tende pas vers $0$. \bigskip
+
+D\'{e}montrer que la suite de fonctions $\left( f_{n}\right) $ ne converge pas uniform\'{e}ment vers $f$ sur $X$.
+
+\item Pour tout $x\in\mathbb{R}$, on pose $f_{n}(x) =\dfrac{\sin \left( nx\right) }{1+n^{2}x^{2}}$. 
+	\begin{enumerate}
+	\item \'Etudier la convergence simple de la suite $\left( f_{n}\right)$.
+	\item \'Etudier la convergence uniforme de la suite $\left( f_{n}\right)$ sur $[a,+\infty[$ (avec $a>0$),  puis sur $]0,+\infty[$.
+	\end{enumerate}
+\end{enumerate}
+
+
+
+
+\section*{EXERCICE 12\:analyse }
+
+\begin{enumerate}
+\item Soit $(f_n)$ une suite de fonctions de $[a,b]$ dans $\mathbb{R}$.
+
+On suppose que la suite de fonctions $(f_n)$ converge uniformément sur $[a,b]$ vers une fonction $f$, et que, pour tout $n\in\mathbb{N}$, $f_n$ est continue en $x_0$, avec $x_0\in[a,b]$.
+
+Démontrer que $f$ est continue en $x_0$.
+\item On pose : $\forall\:n\in\mathbb{N}^*$, $\forall\:x\in[0;1]$, $g_n(x)=x^n$.\\
+ La suite de fonctions $(g_n)_{n\in\mathbb{N}^*}$ converge-t-elle uniformément sur $[0;1]$?
+\end{enumerate}
+
+
+\section*{EXERCICE 13\:analyse  }
+
+
+ \begin{enumerate}
+  \item
+  Rappeler, oralement, la définition, par les suites de vecteurs, d'une partie compacte d'un espace vectoriel normé.
+  \item
+  Démontrer qu'une partie compacte d'un espace vectoriel normé est une partie fermée de cet espace.
+  \item
+  Démontrer qu'une partie compacte d'un espace vectoriel normé est une partie bornée de cet espace.\\
+ \textbf{ Indication }: On pourra raisonner par l'absurde.
+  \item
+  On se place sur $E=\mathbb{R}[X]$ muni de la norme $||\:||_{1}$ définie pour tout polynôme $P=a_0+a_1X+....+a_nX^n$ de $E$  par :
+  $||P||_{1}=\displaystyle\sum_{i=0}^{n}|a_{i}|$.
+  \begin{enumerate}
+  
+\item
+  Justifier que $S(0,1)=\left\lbrace  P\in\mathbb{R}[X]\:/\: ||P||_{1}=1\right\rbrace $ est une partie fermée et bornée de $E$.
+  \item
+  Calculer $||X^n-X^m||_{1}$ pour $m$ et $n$ entiers naturels distincts.\\
+  $S(0,1)$ est-elle une partie compacte de $E$? Justifier.
+    \end{enumerate}
+  \end{enumerate}
+
+\section*{EXERCICE 14 \:analyse }
+
+\begin{enumerate}
+\item
+Soit $a$ et $b$ deux réels donnés avec $a<b$.\\
+  Soit $\left( f_{n}\right) $\ une suite de fonctions continues sur $[a,b],$ \`{a} valeurs r\'{e}elles. \\
+Démontrer que si la suite $\left( f_{n}\right)$ converge uniform\'{e}ment sur $\left[ a,b\right] $ vers $f$, alors la suite $\left( \displaystyle\int_{a}^{b}f_{n}\left( x\right)\text{d}x\right)_{n\in \mathbb{N}}$ converge vers $\displaystyle\int_{a}^{b}f\left(x\right) \text{d}x$.
+
+\item 
+Soit $(f_n)$ une suite de fonctions continues sur $\left[ a,b\right] $.\\
+On suppose que que la série $\displaystyle\sum f_n$ converge uniformément sur $\left[ a,b\right] $.\\
+Prouver , \textbf{en utilisant 1.,} que $\displaystyle\int_{a}^{b}\left( \sum_{n=0}^{+\infty}f_n(x)\right) dx=\displaystyle\sum _{n=0}^{+\infty} \int_{a}^{b}f_n(x)dx$
+\item
+D\'{e}montrer que
+$\displaystyle\int_{0}^{\frac{1}{2}}\left( \displaystyle\sum_{n=0}^{+\infty}x^{n}\right) \text{d}x=\displaystyle\sum\limits_{n=1}^{+\infty }\dfrac{1}{n2^{n}}~.$
+
+\end{enumerate}
+
+\section*{EXERCICE 15\:analyse }
+
+Soit $X$ une partie de $\mathbb{R} $ ou $\mathbb{C} $ .
+\begin{enumerate}
+\item
+Soit $\displaystyle\sum f_n$ une série de fonctions définies sur $X$ à valeurs dans $\mathbb{R}$ ou $\mathbb{C}$.\\
+Rappeler la définition de la convergence normale de $\displaystyle\sum f_n$ sur $X$, puis celle  de la convergence uniforme de $\displaystyle\sum f_n$ sur $X$.
+
+\item Démontrer que toute s\'{e}rie de fonctions, à valeurs dans $\mathbb{R} $ ou $\mathbb{C} $, normalement convergente sur $X$ est uniform\'{e}ment convergente sur $X$.
+
+\item La s\'{e}rie de fonctions $\displaystyle\sum \dfrac{n^{2}}{n!}z^{n}$ est-elle uniform\'{e}ment convergente sur le disque ferm\'{e} de centre $0$ et de rayon $R\in \mathbb{R}_{+}^{\ast}$?
+\end{enumerate}
+
+
+\section*{EXERCICE 16 \:analyse }
+
+  On consid\`{e}re la s\'{e}rie de fonctions de terme g\'{e}n\'{e}ral $u_{n}$ d\'{e}finie par: 
+\begin{equation*}
+\forall n\in \mathbb{N}^{*},\ \forall x\in \lbrack 0,1], \ \ u_{n}\left(x\right) =\ln \left( 1+\dfrac{x}{n}\right) -\dfrac{x}{n}~.
+\end{equation*}
+
+On pose, lorsque la s\'{e}rie converge, $S(x)=\displaystyle\sum\limits_{n=1}^{+\infty }\left[ \ \ln \left( 1+\dfrac{x}{n}\right) -\dfrac{x}{n}\right]$.
+
+\begin{enumerate}
+  \item D\'{e}montrer que $S$ est définie sur $[0,1]$. 
+
+\item On définit une suite $(u_n)_{n\geq 1}$ par $u_n=\ln(n+1)-\displaystyle\sum_{k=1}^n\dfrac{1}{k}$.\\
+  % \begin{enumerate}\item
+  En utilisant $S(1)$ démontrer que la suite $(u_n)_{n\geq 1}$ est convergente.\\%  \:\:\:\:\bareme{1 point}
+  % \item
+  En déduire un équivalent simple de $\displaystyle\sum_{k=1}^n\dfrac{1}{k}$ lorsque $n\to+\infty$.
+
+  % \end{enumerate}
+
+\item D\'{e}montrer que $S$ est de classe $\mathcal{C}^1$ sur $[0,1]$ et calculer $S'(1)$. 
+
+\end{enumerate}
+
+\section*{EXERCICE 17 \:analyse }
+
+Soit $A\subset \mathbb{C}$ et $\left( f_{n}\right)$ une suite de fonctions de $A$ dans $\mathbb{C}$.
+
+\begin{enumerate}
+\item D\'{e}montrer l'implication:
+	\begin{eqnarray*}
+	& \left( \text{la s\'{e}rie de fonctions }\displaystyle\sum f_{n}\ \text{converge uniform\'{e}ment sur $A$}\right)& \\
+	&\Downarrow &\\
+	&\left( \text{la suite de fonctions\ }\left( f_{n}\right)\ \text{converge uniform\'{e}ment vers 0 sur $A$}\right)&
+	\end{eqnarray*}
+\item
+On pose: $\forall\:n\in\mathbb{N}$, $\forall\:x\in\left[ 0;+\infty\right[ $, $f_n(x)=nx^2\mathrm{e}^{-x\sqrt{n}}$.\\
+Prouver que $\displaystyle\sum f_n$ converge simplement sur $\left[ 0;+\infty\right[$.\\
+$\displaystyle\sum f_n$ converge-t-elle uniformément sur $\left[ 0;+\infty\right[$? Justifier.
+\end{enumerate}
+
+\section*{EXERCICE 18 \:analyse }
+
+On pose: $\forall\:n\in\mathbb{N}^*$, $\forall\:x\in\mathbb{R}$, $u_n (x) =\dfrac{ ( - 1)^n x^n } { n}$.\\ 
+On considère la série de fonctions $\displaystyle\sum\limits_{n\geqslant1}^{}u_n$.
+\begin{enumerate}
+\item \'Etudier la convergence simple de cette série.
+
+
+On note $D$ l'ensemble des $x$ où cette série converge et $S(x)$ la somme de cette série pour $x\in D$. 
+
+\item \begin{enumerate}
+	\item La fonction $S$ est-elle continue sur $D$? 
+
+	\item \'Etudier la convergence normale, puis la convergence uniforme de cette série sur $D$. \\
+
+\item
+ \'Etudier la convergence uniforme de cette série sur $\left[ 0,1\right] $.
+	\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 19 \:analyse }
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item
+Justifier, oralement,  à l'aide du théorème de dérivation d'une série de fonctions, que la somme d'une série entière de la variable réelle est dérivable sur son intervalle ouvert de convergence.\\
+\textbf{Remarque} : On pourra utiliser, sans le démontrer,   que  la série $\displaystyle\sum a_nx^n$ et la série $\displaystyle\sum na_nx^n$ ont même rayon de convergence.
+
+\item
+En déduire le développement en série entière à l'origine,  de la fonction de la variable réelle : $x\longmapsto \dfrac{1}{(1-x)^2}$.  
+\end{enumerate}
+\item
+\begin{enumerate}
+\item
+Donner  le développement en série entière à l'origine de la fonction de la variable complexe : $z\longmapsto \dfrac{1}{1-z}$. \:
+\item
+Rappeler les résultats sur le produit de Cauchy de deux séries entières. \:\:\:\:
+\item
+En déduire le développement en série entière à l'origine, de la fonction de la variable complexe: $z\longmapsto \dfrac{1}{(1-z)^2}$.
+
+
+\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 20 \:analyse }
+
+\begin{enumerate}
+\item Donner la définition du rayon de convergence d'une série entière de la variable complexe.
+
+
+\item Déterminer le rayon de convergence de chacune des s\'{e}ries enti\`{e}res suivantes:
+
+\begin{enumerate}
+\item $\displaystyle\sum \dfrac{\left(n!\right)^{2}}{\left(2n\right)!}z^{2n+1}$. 
+
+
+\item  $\displaystyle\sum n^{\left( -1\right)^{n}} z^{n}$.
+
+\item
+$\displaystyle\sum \cos nz^{n}$.
+\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 21 \:analyse  }
+
+\begin{enumerate}
+
+
+\item  Donner la définition du rayon de convergence d'une série entière de la variable complexe.
+\item
+Soit $\left( a_{n}\right) _{n\in \mathbb{N}}$ une suite born\'{e}e telle que la s\'{e}rie $\displaystyle\sum a_{n}$ diverge.\\ Quel est le rayon de convergence de la s\'{e}rie enti\`{e}re $\displaystyle\sum a_{n}z^{n}$? Justifier.
+\item Quel est le rayon de convergence de la s\'{e}rie enti\`{e}re $\displaystyle\sum \limits_{n\geqslant 1}^{}\left( \sqrt{n}\right)^{(-1)^n} \ln \left(1+\dfrac{1}{\sqrt{n}} \right)  z^{n}$? 
+\end{enumerate}
+
+
+\section*{EXERCICE 22 \:analyse }
+
+
+\begin{enumerate}
+\item Que peut-on dire du rayon de convergence de la somme de deux s\'eries enti\`{e}res? Le d\'emontrer.\\
+
+
+\item D\'{e}velopper en s\'{e}rie enti\`{e}re au voisinage de $0$, en pr\'ecisant le rayon de convergence, la fonction $f\ :\ x\longmapsto \ln \left( 1+x\right)+\ln \left( 1-2x\right)$~.
+\bigskip
+
+La s\'{e}rie obtenue converge-t-elle pour $x=\dfrac{1}{4}$? $x=\dfrac{1}{2}$? $x=-\dfrac{1}{2}$?
+
+ En cas de convergence, la somme de cette série est-elle continue en ces points ?
+\\
+
+\end{enumerate}
+
+
+\section*{EXERCICE 23 \:analyse }
+
+Soit $\left( a_{n}\right) _{n\in \mathbb{N}}$ une suite complexe telle que la suite $\left( \dfrac{\left\vert a_{n+1}\right\vert }{\left\vert a_{n}\right\vert }\right) _{n\in \mathbb{N}}$ admet une limite.
+
+\begin{enumerate}
+\item Démontrer que les s\'{e}ries enti\`{e}res $\displaystyle\sum a_{n}x^{n}$ et $\displaystyle\sum (n+1)a_{n+1}x^{n}$ ont le m\^{e}me rayon de convergence.
+
+On le note $R$.
+
+\item Démontrer que la fonction $x\longmapsto \displaystyle\sum\limits_{n=0}^{+\infty }a_{n}x^{n}$ est de classe $\mathcal{C}^1$  sur l'intervalle $]-R,R[$.
+\end{enumerate}
+
+\section*{EXERCICE 24 \:analyse }
+
+\begin{enumerate}
+\item Déterminer le rayon de convergence de la série entière $\displaystyle\sum\dfrac{x^n}{(2n)!}$~.\bigskip
+
+On pose $S(x)=\displaystyle\sum_{n=0}^{+\infty}\dfrac{x^n}{(2n)!}$~.
+\item Rappeler, sans démonstration,  le développement en série entière en 0 de la fonction $x\mapsto \text{ch}(x)$  et préciser le rayon de convergence.
+\item \begin{enumerate}
+	\item Déterminer $S(x)$.
+	\item On considère la fonction $f$ définie sur $\mathbb{R}$ par:
+	\begin{equation*}
+	f(0)=1,\ \ f(x)=\text{ch}\sqrt x\text{ si $x>0$},\ \ f(x)=\cos\sqrt{-x}\text{ si $x<0$}\ .
+	\end{equation*}
+	Démontrer que $f$ est de classe $C^{\infty}$ sur $\mathbb{R}$.
+	\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 25 \:analyse }
+
+\begin{enumerate}
+\item Démontrer que, pour tout entier naturel $n$, la fonction $t\longmapsto \dfrac{1}{1+t^{2}+t^{n}e^{-t}}$ est int\'{e}grable sur $[0,+\infty[$.
+\item Pour tout $n\in\mathbb{N}$, on pose $u_{n}=\displaystyle\int_{0}^{+\infty }\dfrac{\text{d}t}{1+t^{2}+t^{n}e^{-t}}$. Calculer $\underset{n\rightarrow +\infty }{\lim }u_{n}$.
+\end{enumerate}
+
+		
+
+\section*{EXERCICE 26 \:analyse }
+
+Pour tout entier $n\geqslant 1$, on pose $I_{n}=\displaystyle\int_{0}^{+\infty } \dfrac{1}{\left( 1+t^{2}\right) ^n} \text{d}t$.
+
+\begin{enumerate}
+\item Justifier que $I_{n}$ est bien d\'{e}finie.
+\item 
+\begin{enumerate}
+\item
+\'Etudier la monotonie de la suite $\left( I_{n}\right) _{n\in\mathbb{N}^*}$.
+\item
+ D\'{e}terminer la limite de la suite $\left( I_{n}\right) _{n\in\mathbb{N}^*}$.
+\end{enumerate}
+\item La s\'{e}rie $\displaystyle\sum\limits_{n\geqslant 1}^{}(-1)^n I_{n}$ est-elle convergente ?
+
+\end{enumerate}
+
+
+\section*{EXERCICE 27 \:analyse }
+
+Pour tout $n\in \mathbb{N}^*$, on pose\ $f_{n}\left( x\right) =\dfrac{e^{-x}}{%
+1+n^{2}x^{2}}\ \ $et $u_{n}=\displaystyle\int_{0}^{1}f_{n}\left( x\right) \mathrm{d}x$.
+
+\begin{enumerate}
+\item \'Etudier la convergence simple de la suite de fonctions $\left( f_{n}\right) $  sur $[0,1]$.
+\item
+Soit $a\in\left] 0,1 \right[$.  La suite de  fonctions $\left( f_{n}\right) $ converge-t-elle uniformément sur $\left[a,1 \right]$? 
+\item
+ La suite de  fonctions $\left( f_{n}\right) $ converge-t-elle uniformément   sur $[0,1]$?
+\item Trouver la limite de la suite $\left( u_{n}\right) _{n\in \mathbb{N}^*}.$
+\end{enumerate}
+
+
+\section*{EXERCICE 28 \:analyse }
+
+\emph{N.B. : les deux questions sont ind\'{e}pendantes.}
+
+\begin{enumerate}
+\item La fonction $x\longmapsto \dfrac{e^{-x}}{\sqrt{x^{2}-4}}$ est-elle int\'{e}grable sur $]2,+\infty[$?
+\item Soit $a$ un réel strictement positif.\\ La fonction $x\longmapsto \dfrac{\ln x}{\sqrt{1+x^{2a}}}$ est-elle int\'{e}grable sur $]0,+\infty[$?
+
+\end{enumerate}
+
+\section*{EXERCICE 29\:analyse }
+
+On pose :  $\forall\:x\in ]0,+\infty[$,  $\forall\:t\in \left] 0,+\infty\right[ $, 
+$f(x,t)=\text{e}^{-t}t^{x-1}$ .
+
+\begin{enumerate}
+\item Démontrer que : $\forall \:x\in \left]0,+\infty \right[$,  la fonction $t\mapsto f(x,t)$ est intégrable sur $\left] 0,+\infty\right[ $. \bigskip
+
+On pose alors: $\forall \:x\in]0,+\infty[$, $\Gamma(x)=\displaystyle\int_0^{+\infty}\text{e}^{-t}t^{x-1}\text{d}t$.
+\item Pour tout $x\in]0,+\infty[$, exprimer $\Gamma(x+1)$ en fonction de $\Gamma(x)$.
+\item Démontrer que $\Gamma$ est de classe $C^1$ sur $]0;+\infty[$  et exprimer $\Gamma~\!'(x)$ sous forme d'intégrale.
+\end{enumerate}
+
+
+\section*{EXERCICE 30 \:analyse }
+
+\begin{enumerate}
+\item \'Enoncer le th\'{e}or\`{e}me de d\'{e}rivation sous le signe int\'{e}grale.
+\item D\'{e}montrer que la fonction $f:x\longmapsto \displaystyle\int_{0}^{+\infty }e^{-t^{2}}\cos \left( xt\right) \text{d}t$ est de classe $C^{1}$ sur $\mathbb{R}$.
+\item 
+\begin{enumerate}
+\item Trouver une \'{e}quation diff\'{e}rentielle lin\'{e}aire $\left(E\right)$ d'ordre $1$ dont $f$ est solution.
+\item
+ Résoudre $\left(E\right)$ .
+ \end{enumerate}
+\end{enumerate}
+
+
+
+\section*{EXERCICE 31 \:analyse }
+
+\begin{enumerate}
+
+\item
+Déterminer une primitive de $x\longmapsto \cos^4x$.
+\item
+R\'{e}soudre sur $\mathbb{R}$ l'\'{e}quation diff\'{e}rentielle: $y''+y=\cos^3 x$ en utilisant la m\'{e}thode de variation des constantes.
+\end{enumerate}
+\medskip
+
+
+\section*{EXERCICE 32 \:analyse }
+
+
+Soit l'équation différentielle: $x(x-1)y''+3xy'+y=0$.
+\begin{enumerate}
+\item Trouver les solutions de cette équation différentielle développables en série entière sur un intervalle $\left]-r,r \right[$ de $\mathbb{R}$, avec $r>0$.\\ Déterminer la somme des séries entières obtenues.
+
+\item 
+Est-ce que toutes les solutions de $x(x-1)y''+3xy'+y=0$ sur $\left]0;1 \right[$ sont les restrictions d'une fonction développable en série entière sur $\left]-1,1 \right[$?\\
+\end{enumerate}
+
+
+\section*{EXERCICE 33 \:analyse }
+On pose : $\forall\:(x,y)\in\mathbb{R}^2\backslash \left\lbrace (0,0)\right\rbrace$,   $f\left( x,y\right) =\dfrac{xy}{\sqrt{x^{2}+y^{2}}}$ et $f\left( 0,0\right) =0$.
+
+\begin{enumerate}
+\item Démontrer que $f$ est continue sur $\mathbb{R}^{2}$.
+
+\item Démontrer que $f$ admet des d\'{e}riv\'{e}es partielles en tout point de $\mathbb{R}^{2}$.
+\item $f$ est-elle de classe $C^{1}$ sur $\mathbb{R}^{2}$? Justifier.
+
+\end{enumerate}
+
+\section*{EXERCICE 34 \:analyse }
+  Soit $A$ une partie non vide d'un $\mathbb{R}$-espace vectoriel normé $E$.
+\begin{enumerate}
+\item
+Rappeler la définition d'un point adhérent à $A$, en termes de voisinages ou de boules.
+\item 
+Démontrer que: $x\in\bar{A}\Longleftrightarrow\exists(x_n)_{n\in\mathbb N}$ telle que, $\forall n\in\mathbb{N}, x_n\in A$ et $\displaystyle\lim_{n\to+\infty}x_n=x$.
+
+
+\item Démontrer que, si $A$ est un sous-espace vectoriel de $E$, alors $\bar{A}$ est un sous-espace vectoriel de $E$.
+
+\item
+Soient $B$ une autre partie non vide de $E$.
+Montrer que $\overline{A\times B} = \bar{A}\times\bar{B}$.
+
+\end{enumerate}
+
+
+\section*{EXERCICE 35 \:analyse }
+
+
+
+$E$ et $F$ désignent deux espaces vectoriels normés.\\
+On note $||\:||_{E}$ ( respectivement $||\:||_{F}$) la norme sur $E$ (respectivement sur $F$).
+
+\begin{enumerate}
+\item Soient $f$ une application de $E$ dans $F$ et $a$ un point de $E$.
+
+On considère les propositions suivantes:
+
+\begin{description}
+\item[P1.] $f$ est continue en $a$.
+\item[P2.] Pour toute suite $(x_n)_{n\in\mathbb{N}}$ d'éléments de $E$ telle que $\displaystyle\lim_{n\to+\infty}x_n=a$, alors $\displaystyle\lim_{n\to+\infty}f(x_n)=f(a)$. 
+\end{description}
+Prouver que les propositions P1 et P2 sont équivalentes.
+
+\item 
+Soit $A$ une partie dense dans $E$, et soient $f$ et $g$ deux applications continues de $E$ dans $F$.
+
+Démontrer que si, pour tout $x\in A$, $f(x)=g(x)$, alors $f=g$.
+\end{enumerate}
+
+
+\section*{EXERCICE 36 \:analyse }
+
+
+
+Soient $E$ et $F$ deux espaces vectoriels normés sur le corps $\mathbb R$.\\
+On note $||\:||_{E}$ ( respectivement $||\:||_{F}$) la norme sur $E$ (respectivement sur $F$).
+
+\begin{enumerate}
+\item Démontrer que si $f$ est une application linéaire de $E$ dans $F$, alors les propriétés suivantes sont deux à deux équivalentes:
+
+	\begin{description}
+	\item[P1.] $f$ est continue sur $E$.
+	\item[P2.] $f$ est continue en $0_E$.
+	\item[P3.] $\exists k>0$ tel que : $\forall x\in E, \left\Vert f(x)\right\Vert_{F} \leqslant k\left\Vert x\right\Vert_E$.
+	\end{description}
+
+\item Soit $E$ l'espace vectoriel des applications  continues de $[0;1]$ dans $\mathbb{R}$ muni de la norme définie par: $\Vert f\Vert_{\infty}=\sup\limits_{x\in[0;1]}|f(x)|$~.
+On considère l'application $\varphi$ de $E$ dans $\mathbb{R}$ définie par: $\varphi(f)=\displaystyle\int_0^1 f(t)\text{d}t$.\bigskip
+
+Démontrer que $\varphi$ est linéaire et continue.
+%\item Pour toute fonction $f$ linéaire et continue de $E$ dans $F$, on pose $|||f|||=\displaystyle\sup_{\left\Vert x\right\Vert \leqslant1}\dfrac{\left\Vert f(x)\right\Vert}{\left\Vert x\right\Vert }\cdot$
+
+%Démontrer que $f\longmapsto|||f|||$ est une norme dans l'espace vectoriel ${\cal L}(E,F)$ des applications linéaires et continues de $E$ dans $F$. 
+\end{enumerate}
+
+
+
+\section*{EXERCICE 37 \:analyse }
+
+On note $E$ l'espace vectoriel des applications continues de $[0;1]$ dans $\mathbb{R}$.\\
+ On pose: $\forall \:f\in E$,
+$N_{\infty}(f)=\sup\limits_{x\in[0;1]} |f(x)|$ et $N_1(f)=\displaystyle\int_0^1|f(t)| \text{d}t$.
+
+
+\begin{enumerate}
+\item \begin{enumerate}
+\item Démontrer que $N_{\infty}$ et $N_1$ sont deux normes sur $E$.
+\item Démontrer qu'il existe $k>0$ tel que, pour tout $f$ de $E$, $N_1(f)\leq k N_{\infty}(f)$.
+\item Démontrer que tout ouvert pour la norme $N_1$ est un ouvert pour la norme $N_{\infty}$.
+\end{enumerate}
+\item Démontrer que les normes $N_1$ et $N_{\infty}$ ne sont pas équivalentes.
+\end{enumerate}
+
+\section*{EXERCICE 38 \:analyse }
+
+
+\begin{enumerate}
+\item
+
+On se place sur  $E=\mathcal{C} \left( [0,1],\mathbb{R}\right) $, muni de la norme $||\:||_1$ définie par  : $\forall\:f\in E$, $||f||_1=\displaystyle\int_{0}^{1}|f(t)|dt$.\\
+Soit $u:\begin{array}{lll}
+E &\longrightarrow &E\\
+f&\longmapsto & u(f)=g
+\end{array}$
+ avec $\forall\: x\:\in [0,1]$, $g(x)=\displaystyle\int_{0}^{x}f(t)dt$.\\
+ \medskip
+
+On admet que $u$ est un endomorphisme de $E$.\\
+
+Prouver que $u$ est continue et calculer $|||u|||$.\\
+\textbf{Indication} : considérer, pour tout entier $n$ non nul, la fonction $f_n$ définie par  $f_n(t)=n\mathrm{e}^{-nt}$.
+
+\item
+Soit $n\in\mathbb{N}^*$. Soit $(a_1,a_2,...,a_n)\in\mathbb{R}^n$ un $n$-uplet\textbf{ non nul}, \textbf{fixé}.\\
+\medskip
+  Soit $u:\begin{array}{ccc}
+ \mathbb{R}^n&\longrightarrow & \mathbb{R}\\
+ (x_1,x_2,...,x_n)&\longmapsto&  \displaystyle\sum_{i=1}^{n}a_ix_i
+ \end{array}$.\\
+
+ \begin{enumerate}
+\item 
+Justifier que $u$ est continue quel que soit le choix de la norme sur $\mathbb{R}^n$.
+
+   \item
+On munit  $\mathbb{R}^n$ de $||\:||_{2}$ où $\forall x=(x_1,x_2,...,x_n)\in \mathbb{R}^n$, $||x||_2=\sqrt{\displaystyle\sum_{k=1}^{n}x_k^2}$.\\
+ Calculer $|||u|||$.\\
+
+
+ 
+ \end{enumerate}
+ \item
+Déterminer un espace vectoriel $E$, une norme sur $E$  et un endomorphisme de $E$ non continu pour la norme choisie. Justifier.
+
+
+\end{enumerate}
+\textbf{Remarque} : Les questions 1., 2. et 3. sont indépendantes.
+
+
+\section*{EXERCICE 39 \:analyse }
+
+ On note $l^2$ l'ensemble des suites $x=(x_n)_{n\in\mathbb{N}}$ de nombres réels telles que la série $\displaystyle\sum x_n^2$ converge.
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item 
+ Démontrer que, pour $x=(x_n)_{n\in\mathbb{N}} \in l^2$ et $y=(y_n) _{n\in\mathbb{N}}\in l^2$, la série $\displaystyle\sum x_ny_n$ converge.\\
+	
+On pose alors  $(x|y)=\displaystyle\sum_{n=0}^{+\infty} x_ny_n$.\\
+
+\item 
+
+  Démontrer que $l^2$ est un sous-espace vectoriel de l'espace vectoriel des suites de nombres réels.\\ 
+
+	\end{enumerate}
+	\medskip
+
+Dans la suite de l'exercice, on admet que $(\:|\:)$ est un produit scalaire dans $l^2$.\\
+ On suppose que $l^2$ est muni de ce produit scalaire et de la norme euclidienne associée,  notée $||\:||$.\\
+\item
+
+
+
+Soit  $p\in\mathbb{N}$. Pour tout $x=(x_n)\in l^2$, on pose $\varphi(x)=x_p$.\\
+ Démontrer que $\varphi$ est une application linéaire et continue de $l^2$ dans $\mathbb{R}$.
+ \item
+
+ On considère l'ensemble $F$ des suites réelles presque nulles c'est-à-dire l'ensemble des suites réelles dont tous les termes sont nuls sauf peut-être un nombre fini de termes.\\
+ Déterminer $F^{\perp}$ (au sens de $(\:|\:)$).\\
+ Comparer $F$ et $\left( F^{\perp}\right) ^{\perp}$.
+\end{enumerate}
+
+
+\section*{EXERCICE 40 \:analyse }
+
+
+
+Soit $A$ une algèbre de dimension finie admettant $e$ pour élément unité et munie d'une norme notée ||\:||.\\
+On suppose que : $\forall (u,v)\in A^2$, $||u.v||\leqslant||u||.||v||$.\\
+
+\begin{enumerate}
+\item Soit $u$ un élément de $A$ tel que $\Vert u\Vert<1$.
+	\begin{enumerate}
+	\item Démontrer que la série $\displaystyle\sum u^n$ est convergente.
+	\item Démontrer que $(e-u)$ est inversible et que $(e-u)^{-1}=\displaystyle\sum_{n=0}^{+\infty}u^n$.
+	\end{enumerate}
+\item Démontrer que, pour tout $u\in A$, la série $\displaystyle\sum\dfrac{u^n}{n!}$ converge.
+
+
+\end{enumerate}
+
+
+
+
+
+\section*{EXERCICE 41 \:analyse }
+
+Soit $f$ l'application de $\mathbb{R}^2$ dans $\mathbb{R}$ d\'efinie par $f:(x,y)\mapsto 4x^2+12xy-y^2$. \\
+\medskip
+Soit $C=\{(x,y)\in\mathbb{R}^2,\ x^2+y^2=13\}$.
+
+\medskip
+
+\begin{enumerate}
+\item
+Justifier que $f$ atteint un maximum et un minimum sur $C$.
+\item
+Soit $(u,v)\in C$ un point o\`u $f$ atteint un de ses extremums.
+\begin{enumerate}
+\item
+Justifier avec un th\'eor\`eme du programme qu'il existe un r\'eel $\lambda$ tel que le syst\`eme $(S)$ suivant soit v\'erifi\'e:\\
+$(S)\ :\ \left\{\begin{array}{lll}4u&+6v&=\lambda u\\6u&-v&=\lambda v\end{array}\right.$
+\item
+Montrer que $(\lambda-4)(\lambda+1)-36=0$.\\
+ En d\'eduire les valeurs possibles de $\lambda$.
+\end{enumerate}
+\item
+D\'eterminer les valeurs possibles de $(u,v)$, puis donner le maximum et le minimum de $f$ sur $C$.
+\end{enumerate}
+
+
+
+
+\section*{EXERCICE 42 \:analyse }
+
+
+\addcontentsline{toc}{subsection}{Exercice 2}
+On considère les deux équations différentielles suivantes:\\
+$   2xy'-3y=0 $\:\:\:\:\:\:  $(H)$\\
+$   2xy'-3y=\sqrt{x} $\:\:\:  $(E)$\\
+
+\begin{enumerate}
+\item Résoudre l'équation $(H)$ sur l'intervalle $\left]  0,+\infty\right[ $.
+\item Résoudre l'équation $(E)$ sur l'intervalle $\left]  0,+\infty\right[   $.
+
+\item L'équation $(E)$ admet-elle des solutions sur l'intervalle $\left[ 0,+\infty\right[ $?
+\end{enumerate}
+
+
+\section*{EXERCICE 43 \:analyse }
+
+ 
+
+Soit $x_0 \in \mathbb{R}$.\\
+On définit la suite $(u_n)$ par $u_0=x_0$ et, $\forall n\in\mathbb{N}\:,\: u_{n+1}=\mathrm{Arctan}(u_n)$.
+\begin{enumerate}
+\item 
+\begin{enumerate}
+
+\item
+ Démontrer que la suite $(u_n)$ est monotone et déterminer, en fonction de la valeur de $x_0$, le sens de variation de $(u_n)$.
+\item Montrer que $(u_n)$ converge et déterminer sa limite.
+\end{enumerate}
+\item Déterminer l'ensemble des fonctions $h$, continues sur $\mathbb{R}$, telles que : $\forall x \in \mathbb{R}$, $h(x)=h(\mathrm{Arctan}\: x)$.
+\end{enumerate}
+
+\medskip
+
+\section*{EXERCICE 44 \:analyse }
+ 
+
+Soit $E$ un espace vectoriel normé. Soient $A$ et $B$ deux parties non vides de $E$. 
+\begin{enumerate}
+\item 
+\begin{enumerate} 
+\item Rappeler la caractérisation de l'adhérence d'un ensemble à l'aide des suites. 
+\item Montrer que : $A \subset B \Longrightarrow \overline{A} \subset \overline{B}$.
+\end{enumerate}
+\item Montrer que : $\overline{A \cup B}=\overline{A} \cup \overline{B}$ \\
+\textbf{ Remarque}: une réponse sans utiliser les suites est aussi acceptée.
+\item \begin{enumerate}
+\item Montrer que : $\overline{A \cap B} \subset \overline{A} \cap \overline{B}$.
+\item Montrer, à l'aide d'un exemple, que l'autre inclusion n'est pas forcément vérifiée (on pourra prendre $E=\mathbb{R}$).
+\end{enumerate}
+\end{enumerate}
+
+
+\section*{EXERCICE 45 \:analyse }
+
+
+\textbf{ Les questions 1. et 2. sont indépendantes}.\\
+Soit $E$ un $\mathbb{R}$-espace vectoriel normé.  On note $||\:||$ la norme sur $E$.\\
+
+Soit $A$ une partie non vide de $E$.\\
+ On note $\overline{A}$  l'adhérence de $A$.
+\begin{enumerate}
+
+\item 
+
+\begin{enumerate}
+\item
+ Donner la caractérisation séquentielle de $\overline{A}$. 
+
+\item Prouver que, si $A$ est convexe, alors $\overline{A}$ est convexe.
+\end{enumerate}
+\item 
+On pose : $\forall x \in E,\:{d_A}(x) = \mathop {\inf }\limits_{a \in A} \left\| {x - a} \right\|$.
+\begin{enumerate}
+
+\item Soit $x \in{E}$. Prouver que $d_{A}(x) = 0 \Longrightarrow x \in \overline A $.
+\item On suppose que $A$ est fermée et que :  $\forall (x,y) \in{E^2}$, $\forall t\in{[0,1]}$, $d_A(tx+(1-t)y)\leqslant td_A(x)+(1-t)d_A(y)$.\\
+Prouver que $A$ est convexe.
+
+\end{enumerate}
+\end{enumerate}
+
+
+\section*{EXERCICE 46 \:analyse }
+
+
+
+On considère la série:$\displaystyle\sum\limits_{n\geqslant1}{}\cos \left( \pi \sqrt{n^2+n+1}\right) $. 
+\begin{enumerate}
+\item
+Prouver que, au voisinage de $+\infty$, $\pi\sqrt{n^2+n+1}=n\pi+\dfrac{\pi}{2}+\alpha\dfrac{\pi}{n}+O\left(\dfrac{1}{n^2} \right)$ où $\alpha$ est un réel que l'on déterminera.
+\item
+En déduire que $\displaystyle\sum\limits_{n\geqslant 1}{}\cos \left( \pi \sqrt{n^2+n+1}\right) $ converge.
+\item
+ $\displaystyle\sum\limits_{n\geqslant 1}{}\cos \left( \pi \sqrt{n^2+n+1}\right) $ converge-t-elle absolument?
+
+\end{enumerate}
+
+
+
+\section*{EXERCICE 47 \:analyse }
+
+Pour chacune des séries entières de la variable réelle suivantes, déterminer le rayon de convergence et calculer la somme de la série entière sur l'intervalle ouvert de convergence:\\
+\begin{enumerate}
+\item
+$\displaystyle\sum_{n\geqslant 1}^{} \dfrac{3^nx^{2n}}{n}$.\:\:\:\:
+\item
+$\displaystyle\sum a_nx^n$ avec $\left\lbrace \begin{array}{l}
+a_{2n}=4^n\\
+a_{2n+1}=5^{n+1}
+\end{array}\right. $\:\:\:\:
+
+\end{enumerate}
+\section*{EXERCICE 48 \:analyse }
+
+
+$C^{0}\left( \left[ 0,1\right] ,\mathbb{R}\right) $ désigne l'espace vectoriel des fonctions continues sur  $
+\left[ 0,1\right] $ à valeurs dans $\mathbb{R}$.\\
+
+Soit $f\in C^{0}\left( \left[ 0,1\right] ,\mathbb{R}\right) $ telle que :  
+$ \forall n\in \mathbb{N},\:
+\displaystyle\int_{0}^{1}t^{n}f\left( t\right) \mathrm{d}t=0$.
+
+
+\begin{enumerate}
+\item \'Enoncer le th\'{e}or\`{e}me de Weierstrass d'approximation par des
+fonctions polynomiales.
+\item
+
+Soit $\left( P_{n}\right) $ une suite de fonctions polynomiales
+convergeant uniform\'{e}ment sur le segment $\left[ 0,1\right]$ vers $f$.
+\begin{enumerate}
+\item
+ Montrer que la suite de fonctions $\left( P_{n}f\right) $
+converge uniform\'{e}ment sur le segment $\left[ 0,1\right] $ vers $f^2$.
+
+\item D\'{e}montrer que $\displaystyle\int_{0}^{1} f^2(t)
+ \ \mathrm{d}t=\underset{n\rightarrow +\infty }{\lim }
+\displaystyle\int_{0}^{1}P_{n}(t)f(t)\mathrm{d}t $.
+
+\item  Calculer $\displaystyle\int
+_{0}^{1}P_{n}\left( t\right) f\left( t\right) \mathrm{d}t$.
+\end{enumerate}
+\item  
+En d\'{e}duire que $f$ est la fonction nulle sur le segment $\left[ 0,1
+\right] .$
+
+\end{enumerate}
+
+\section*{EXERCICE 49 \:analyse }
+
+Soit $\displaystyle\sum a_{n}$ une s\'{e}rie absolument convergente \`{a} termes
+complexes. On pose $M=$ $\displaystyle\sum\limits_{n=0}^{+\infty }\left\vert
+a_{n}\right\vert .$\\
+ On pose : $ \forall n\in \mathbb{N},\: \forall t\in \left[
+0,+\infty \right[,\: f_{n}\left( t\right) =\dfrac{a_{n}t^{n}}{n!}
+\mathrm{e}^{-t}.$\\
+\begin{enumerate}
+
+\item  
+\begin{enumerate}
+\item
+Justifier que la suite $(a_n)$ est bornée.
+\item
+Justifier que la série de fonctions   $\sum\limits_{}^{ }f_{n}$ converge simplement sur $\left[ 0,+\infty \right[$.\\
+\medskip
+On admettra, pour la suite de l'exercice, que  $f$: $t\mapsto \displaystyle\sum\limits_{n=0}^{+\infty }f_{n}(t)$ est continue sur $\left[ 0,+\infty \right[ .$
+\end{enumerate}
+\item
+\begin{enumerate}
+\item
+Justifier que, pour tout $n\in{\mathbb{N}}$, la fonction $g_n:t\mapsto t^n\text{e}^{-t}$ est intégrable sur $\left[ 0,+\infty \right[$ et calculer $\displaystyle\int_{0}^{+\infty }g_n(t)  \mathrm{d}t$.\\
+En déduire la convergence et la valeur de $\displaystyle\int_{0}^{+\infty }\left\vert
+f_{n}\left( t\right) \right\vert \, \mathrm{d}t$.
+
+\item Prouver que $\displaystyle\int_{0}^{+\infty }\left(
+\displaystyle\sum\limits_{n=0}^{+\infty }\dfrac{a_{n}\,t^{n}}{n!}\,\mathrm{e}^{-t}\right) \mathrm{d}t=$ $
+\displaystyle\sum\limits_{n=0}^{+\infty }a_{n}.$ 
+\end{enumerate}
+\end{enumerate}
+
+
+\section*{EXERCICE 50 \:analyse }
+
+
+
+On considère la fonction   $\;F : x \mapsto  \displaystyle\int_{0}^{+\infty} \dfrac{\text{e}^{-2\,t}}{x+t} \mathrm{d}t$.
+\begin{enumerate}
+\item
+Prouver que  $F$ est définie et continue sur $\left]  0;+\infty\right[ $.
+ \item 
+Prouver que $x\longmapsto xF(x)$ admet une limite en $+\infty$ et déterminer la valeur de cette limite.
+
+ \item
+Déterminer un équivalent, au voisinage de $+\infty$,  de $F(x)$.
+
+\end{enumerate}
+ 
+
+\section*{EXERCICE 51 \:analyse }
+
+
+
+\begin{enumerate}
+\item Montrer que la série $\sum\dfrac{(2n)!}{(n!)^{2}2^{4n}(2n+1)}$ converge.
+
+\medskip
+
+On se propose de calculer la somme de cette série.
+
+\medskip
+
+\item Donner le développement en série entière en 0 de $t\longmapsto\dfrac{1}{\sqrt{1-t}}$ en précisant le rayon de convergence.\\
+\textbf{Remarque}: dans l'expression du développement, on utilisera la notation factorielle.
+
+\item En déduire le développement en série entière en 0 de $x\longmapsto\mathrm{Arcsin}\,x$ ainsi que son rayon de convergence.
+
+\item En déduire la valeur de  $\displaystyle\sum\limits_{n=0}^{+\infty}\dfrac{(2n)!}{(n!)^{2}2^{4n}(2n+1)}$\,.
+
+\end{enumerate}
+
+
+\section*{EXERCICE 52 \:analyse }
+
+Soit $\alpha\in\mathbb R$.\\ 
+ On considère l'application définie sur $\mathbb{R}^2$ par  $f(x,y)=\begin{cases}
+\dfrac{y^{4}}{x^{2}+y^{2}-xy} & \mathrm{si}\  (x,y)\not=(0,0)\\ 
+\hfil\alpha & \mathrm{si}\  (x,y)=(0,0).
+\end{cases} $
+\begin{enumerate}
+\item Prouver que : $\forall(x,y)\in\mathbb R^{2},\:x^{2}+y^{2}-xy\geqslant\dfrac{1}{2}(x^{2}+y^{2})$.
+
+\item 
+
+\begin{enumerate}
+\item 
+Justifier que le domaine de définition de $f$ est bien $\mathbb{R}^2$.
+
+\item Déterminer $\alpha$ pour que $f$ soit continue sur $\mathbb R^{2}$.
+\end{enumerate}
+\item
+Dans cette question, on suppose que $\alpha=0$.
+\begin{enumerate}
+\item
+ Justifier l'existence de $\dfrac{\partial f}{\partial x}$ et $\dfrac{\partial f}{\partial y}$ sur $\mathbb R^{2}\setminus\big\{(0,0)\big\}$ et les calculer.
+
+\item Justifier l'existence de $\dfrac{\partial f}{\partial x}(0,0)$ et $\dfrac{\partial f}{\partial y}(0,0)$ et  donner leur valeur.
+\item $f$ est-elle de classe ${\cal C}^{1}$ sur $\mathbb R^{2}$? 
+
+\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 53 \:analyse }
+
+On considère, pour tout entier naturel $n$ non nul, la fonction $f_n$ définie sur $\mathbb{R}$ par $f_n(x)=\dfrac{x}{1+n^4x^4}$.
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item
+Prouver que $\displaystyle\sum\limits_{n\geqslant 1}^{}f_n$  converge simplement sur $\mathbb{R}$.\\
+On pose alors : $\forall x\in\mathbb{R}$, $f(x)=\displaystyle\sum\limits_{n=1}^{+\infty}f_n(x)$.
+\item
+Soit $(a,b)\in\mathbb{R}^2$ avec $0<a<b$.\\
+$\displaystyle\sum\limits_{n\geqslant 1}^{}f_n$ converge-t-elle normalement sur $\left[a,b \right]$? sur $\left[ a,+\infty\right[$?  
+\item
+$\displaystyle\sum\limits_{n\geqslant 1}^{}f_n$ converge-t-elle normalement sur $\left[ 0,+\infty\right[ $?
+\end{enumerate}
+\item
+Prouver que $f$ est continue sur $\mathbb{R}^*$.
+\item
+Déterminer $\lim\limits_{x\to+\infty}^{}f(x)$.
+\end{enumerate}
+\medskip
+
+\section*{EXERCICE 54 \:analyse }
+
+
+Soit $E$ l'ensemble des suites à valeurs réelles qui convergent vers $0$.\\
+
+\begin{enumerate}
+\item
+Prouver que $E$ est un sous-espace vectoriel de l'espace vectoriel des suites à valeurs réelles.
+\item
+On pose : $\forall\: u=(u_n)_{n\in\mathbb{N}}\in E$, $||u||=\sup\limits_{n\in\mathbb{N}}|u_n|$.
+\begin{enumerate}
+\item
+Prouver que $||\:.\:||$ est une norme sur $E$.
+
+
+\item
+Prouver que :  $\forall\: u=(u_n)_{n\in\mathbb{N}}\in E$, $\displaystyle\sum\limits_{}^{}\dfrac{u_n}{2^{n+1}}$ converge.\\
+
+\item
+On pose : $\forall\: u=(u_n)_{n\in\mathbb{N}}\in E$, $f(u)=\displaystyle\sum\limits_{n=0}^{+\infty}\dfrac{u_n}{2^{n+1}}$.\\
+Prouver que $f$ est continue sur $E$.
+
+\end{enumerate}
+\end{enumerate} 
+
+
+\section*{EXERCICE 55 \:analyse }
+
+
+Soit $a$ un nombre complexe.\\
+On note $E$ l'ensemble des suites à valeurs complexes telles que :\\ $\forall\:n\in\mathbb{N}$, $u_{n+2}=2au_{n+1}+4(\mathrm{i}a-1)u_n$ avec $(u_0,u_1)\in  \mathbb{C} ^2$.
+\begin{enumerate}
+\item
+\begin{enumerate}
+
+\item 
+Prouver que $E$ est un sous-espace vectoriel de l'ensemble des suites à valeurs complexes.
+\item
+
+Déterminer, en le justifiant, la dimension de $E$. 
+\end{enumerate}
+\item
+Dans cette question, on considère la suite de $E$ définie par:
+$u_0=1$ et $u_1=1$. \\
+ Exprimer, pour tout entier naturel $n$, le nombre complexe  $u_n$ en fonction de $n$.\\
+\medskip
+\textbf{ Indication}: discuter suivant les valeurs de $a$. 
+\end{enumerate}
+
+\section*{EXERCICE 56 \:analyse }
+
+
+  Soit $f$ la fonction définie sur $\mathbb{R}^2$ par : $\forall(x,y)\in\mathbb{R}^2$, $f(x,y)=2x^3+6xy-3y^2+2$.
+  \begin{enumerate}
+  \item
+  $f$ admet-elle des extrema locaux sur $\mathbb{R}^2$?
+  Si oui, les déterminer.
+  \item
+  $f$ admet-elle des extrema globaux sur $\mathbb{R}^2$? Justifier.
+  \item
+  On pose $K=\left[ 0,1\right]\times \left[0,1 \right]$. \\
+  Justifier, oralement,  que $f$ admet un maximum global sur $K$ puis  le déterminer.
+  \end{enumerate}
+ 
+
+
+\section*{EXERCICE 57 \:analyse }
+
+
+\begin{enumerate}
+ \item Soit $f $ une fonction de $\mathbb{R}^{2}$ dans $\mathbb{R}$.
+ \begin{enumerate}
+ \item Donner, en utilisant des quantificateurs, la définition de la continuité de $f$ en $(0,0)$.
+ \item Donner la définition de «$f$ différentiable en  $(0,0)$».
+ \end{enumerate}
+ \item 
+On considère l'application définie sur $\mathbb{R}^2$ par 
+ $f(x,y)=\left\lbrace
+  \begin{array}{ll}
+ xy\dfrac{x^2-y^2}{x^2+y^2}& \text{si}\: (x,y)\neq (0,0)\\
+ 0 &\text{si} \:(x,y)=(0,0)
+ \end{array}
+ \right. $
+
+ \begin{enumerate}
+ \item Montrer que $f$ est continue sur $\mathbb{R}^2$.
+ \item Montrer que $f$ est de classe $\mathcal {C}^1$ sur $\mathbb{R}^2$.
+ \end{enumerate}
+ \end{enumerate}
+   
+
+ 
+\section*{EXERCICE 58 \:analyse }
+
+ \begin{enumerate}
+ \item
+ Soit $E$ et $F$ deux $\mathbb{R}$-espaces vectoriels normés de dimension finie.\\
+  Soit $a\in E$ et soit $f:E \longrightarrow F$ une application.\\
+
+ Donner la définition de «$f$ différentiable en  $a$».
+ \item
+ Soit $n\in\mathbb{N}^*$. Soit $E$ un $\mathbb{R}$-espace vectoriel de dimension finie $n$.\\
+ Soit $e=(e_1,e_2,\dots,e_n)$ une base de $E$.\\
+ On  pose :  $\forall x\in E,\; \|x\|_{\infty}=\underset{1\leqslant i\leqslant n}{\max}|x_i|,\mbox{ o\`u }x=\displaystyle\sum_{i=1}^{n}x_ie_i$.\\
+On pose :  $ \forall (x,y)\in E\times E,\; \|(x,y)\|=\max(\|x\|_\infty,\|y\|_\infty)$.
+
+\medskip
+
+ On admet que $\|.\|_{\infty}$  est une norme sur $E$ et que $\|.\|$ est une norme sur $E\times E$.\\
+ \medskip
+ Soit $B:E\times E\longrightarrow \mathbb{R}$ une forme bilinéaire sur $E$.\\
+ \begin{enumerate}
+ \item
+  Prouver que $\exists\: C\in\mathbb{R}^+/\:\forall\:(x,y)\in E\times E,\:|B(x,y)|\leqslant C\|x\|_{\infty}\|y\|_{\infty}$.
+  \item
+   Montrer que $B$ est différentiable sur $E\times E$ et déterminer sa différentielle en tout $(u_0,v_0)\in E\times E$.
+  
+  \end{enumerate}
+\end{enumerate}
+
+ \pagebreak
+ \part*{BANQUE ALGÈBRE}
+ \section*{EXERCICE 59 \: algèbre }
+Soit $n$ un entier naturel tel que $n\geqslant 2$.\\
+Soit $E$ l'espace vectoriel des polyn\^{o}mes \`{a} coefficients dans $\mathbb{K}$ ($\mathbb{K}=\mathbb{R}$ ou $\mathbb{K}=\mathbb{C}$) de degr\'{e} inf\'{e}rieur ou \'{e}gal \`{a} $n$.\\
+On pose : $\forall\:P\in E$,  $f\left( P\right)=P-P^{\prime }$.
+
+\begin{enumerate}
+\item D\'{e}montrer que $f$ est bijectif de $E$ dans $E$ de deux mani\`{e}res:
+	\begin{enumerate}
+	\item sans utiliser de matrice de $f$, 
+	\item en utilisant une matrice de $f$.  
+	\end{enumerate}
+	
+\item Soit $Q\in E.$ Trouver $P$ tel que $f\left( P\right) =Q$~.
+
+\textbf{Indication }: si $P\in E$, quel est le polyn\^{o}me $P^{\left(n+1\right) }$? 
+\item
+$f$ est-il diagonalisable?
+
+\end{enumerate}
+
+\section*{EXERCICE 60 \: algèbre }
+
+Soit la matrice $A=\left( 
+\begin{array}{cc}
+1 & 2 \\ 
+2 & 4%
+\end{array}%
+\right) \ \ $et $f$ l'endomorphisme de $\mathcal{M}_{2}\left( \mathbb{R}%
+\right) $ d\'{e}fini par :\ \ \ $f\left( M\right) =AM.$
+
+\begin{enumerate}
+
+%\marginpar{3pt}
+\item D\'{e}terminer une base de  $\mathrm{Ker}f$. 
+
+%\marginpar{2pt}
+\item $f$ est-il surjectif ? 
+
+%\marginpar{3pt}
+\item Déterminer une base de $ \text{Im}f.$\smallskip
+\item
+A-t-on $\mathcal{M}_{2}\left( \mathbb{R}%
+\right)=\mathrm{Ker}f\oplus \mathrm{Im}f$?
+\end{enumerate}
+
+\section*{EXERCICE 61 \: algèbre }
+
+On note $\mathcal{M}_{n}\left( \mathbb{C}\right)$ l'espace vectoriel des matrices carr\'{e}es d'ordre $n$ \`{a} coefficients complexes.
+
+Pour $A=\left( a_{i,j}\right) _{\substack{ 1\leqslant i\leqslant n  \\ 1\leqslant j\leqslant n}}\in \mathcal{M}_{n}\left( \mathbb{C}\right)$, on pose : 
+$\left\Vert A\right\Vert =\underset{_{\substack{ 1\leqslant i\leqslant n  \\ 1\leqslant j\leqslant n}}}{\max }\left\vert a_{i,j}\right\vert$.
+
+\begin{enumerate}
+
+
+\item
+Prouver que $||\:||$ est une norme sur $\mathcal{M}_{n}\left( \mathbb{C}\right)$.
+\item Démontrer que: $\forall\:(A,B)\in \left( \mathcal{M}_{n}\left( \mathbb{C}\right)\right) ^2$,  $\left\Vert AB\right\Vert \leqslant n\left\Vert A\right\Vert \left\Vert B\right\Vert $.\\
+Puis, démontrer que,  pour tout entier $p\geqslant 1$, $\left\Vert A^{p}\right\Vert \leqslant n^{p-1}\left\Vert A\right\Vert ^{p}$.
+
+\item Démontrer que, pour toute matrice $A\in \mathcal{M}_{n}\left( \mathbb{C}\right)$, la s\'{e}rie $\displaystyle\displaystyle\sum \dfrac{A^{p}}{p!}$ est absolument convergente.
+
+Est-elle convergente?
+\end{enumerate}
+		
+
+
+\section*{EXERCICE 62 \: algèbre }
+
+Soit $E\ $un espace vectoriel sur $\mathbb{R}$ ou $\mathbb{C}$.\\
+Soit $f\in\mathcal{L}(E)$ tel que $f^2-f-2\mathrm{Id}=0$.\\
+
+\begin{enumerate}
+\item 
+ Prouver que $f$ est bijectif et exprimer $f^{-1}$ en fonction de $f$.\\
+\item
+Prouver que $E=\mathrm{Ker} (f+\mathrm{Id})\oplus\mathrm{Ker}(f-2\mathrm{Id})$:
+\begin{enumerate}
+\item
+en utilisant le lemme des noyaux.
+\item
+sans utiliser le lemme des noyaux.
+\end{enumerate}
+\item
+Dans cette question, on suppose que $E$ est de dimension finie.\\
+Prouver que $\mathrm{Im}(f+\mathrm{Id})=\mathrm{Ker}(f-2\mathrm{Id})$.
+\end{enumerate}
+\section*{EXERCICE 63 \: algèbre }
+
+
+Soit $E$ un espace euclidien muni d'un produit scalaire noté $(\:|\:)$.\\
+On pose $\forall x\in E$, $||x||=\sqrt{(x|x)}$.\\
+Pour tout endomorphisme $u$ de $E$, on note $u^*$ l'adjoint de $u$.
+\begin{enumerate}
+\item
+
+Un endomorphisme $u$ de $E$ vérifiant $\forall x\in E$, $(u(x)|x)=0$ est-il nécessairement l'endomorphisme nul?
+\item
+Soit $u\in \mathcal{L}(E)$.\\
+Prouver que les trois assertions suivantes sont équivalentes:\\
+
+i.\: $u\circ u^*=u^*\circ u$.\\
+ii.\: $\forall (x,y)\in E^2$, $(u(x)|u(y))=(u^*(x)|u^*(y))$.\\
+iii.\: $\forall x\in E$, $||u(x)||=||u^*(x)||$.
+\end{enumerate}
+
+
+
+
+
+
+
+
+\section*{EXERCICE 64 \: algèbre }
+
+
+Soit $f$ un endomorphisme d'un espace vectoriel $E$ de dimension finie $n$.
+\begin{enumerate}
+\item Démontrer que: $E=\text{Im} f \oplus \mathrm{Ker} f \Longrightarrow \text{Im} f = \text{Im} f^2$.\:\:\:\:
+
+\item \begin{enumerate}
+	\item Démontrer que: $\text{Im} f = \text{Im} f^2 \Longleftrightarrow \mathrm{Ker} f = \mathrm{Ker} f^2$.\:\:\:\:
+	\item Démontrer que: $\text{Im} f = \text{Im} f^2 \Longrightarrow E=\text{Im} f \oplus \mathrm{Ker} f$.\:\:\:\:
+	\end{enumerate}
+\end{enumerate}
+\section*{EXERCICE 65 \: algèbre }
+
+Soit $u$ un endomorphisme d'un espace vectoriel $E$ sur le corps $\mathbb{K}$ ($=\mathbb{R}$ ou $\mathbb{C}$). On note $\mathbb{K}[X]$ l'ensemble des polynômes à coefficients dans $\mathbb{K}$.
+\begin{enumerate}
+\item Démontrer que : 
+\begin{equation*}
+\forall (P,Q)\in \mathbb{K}[X]\times \mathbb{K}[X],~ (PQ)(u)=P(u)\circ Q(u)~.
+\end{equation*}
+\item \begin{enumerate}
+	\item Démontrer que : $\forall (P,Q)\in \mathbb{K}[X]\times \mathbb{K}[X],~ P(u)\circ Q(u)=Q(u)\circ P(u)$~.
+	\item Démontrer que, pour tout $(P,Q)\in \mathbb{K}[X]\times \mathbb{K}[X]$:
+	\begin{equation*}
+	\text{($P$ polynôme annulateur de $u$)$\Longrightarrow$ ($PQ$ polynôme annulateur de $u$)}
+	\end{equation*}
+	\end{enumerate}
+\item Soit $A=\begin{pmatrix}
+-1 & -2 \\ 
+1 & 2
+\end{pmatrix} $. Écrire le polynôme caractéristique de $A$, puis en déduire que le polynôme $R=X^4+2X^3+X^2-4X$ est un polynôme annulateur de $A$.
+\end{enumerate}
+
+		
+
+\section*{EXERCICE 66 \: algèbre}
+
+
+\begin{enumerate}
+\item
+Soit $A\in S_n\left( \mathbb{R}\right)$.\\
+Prouver que $A\in S_n^+\left( \mathbb{R}\right)\Longleftrightarrow \mathrm{sp}(A)\subset \left[0,+\infty \right[$. 
+\item
+Prouver que $\forall\:A\in S_n\left( \mathbb{R}\right)$, $A^2\in S_n^+\left( \mathbb{R}\right)$.
+
+
+\item
+Soit $A\in S_n^+\left( \mathbb{R}\right)$.\\
+Prouver qu'il existe $B\in S_n^+\left( \mathbb{R}\right)$ telle que $A=B^2$.
+
+\end{enumerate}
+
+
+
+
+\section*{EXERCICE 67 \: algèbre}
+
+Soit la matrice $M=\begin{pmatrix}
+0 & a & c \\ 
+b & 0 & c \\ 
+b & -a & 0
+\end{pmatrix}$ o\`{u} $a,b,c$ sont des r\'{e}els.
+
+
+ $M$ est-elle diagonalisable dans $\mathcal{M}_{3}\left(\mathbb{R}\right)$?
+ $M$ est-elle diagonalisable dans $\mathcal{M}_{3}\left( \mathbb{C}\right)$?
+
+
+
+\section*{EXERCICE 68 \: algèbre }
+
+Soit la matrice $A=\begin{pmatrix}
+1 & -1 & 1 \\ 
+-1 & 1 & -1 \\ 
+1 & -1 & 1
+\end{pmatrix}$~.
+\begin{enumerate}
+\item Démontrer que $A$ est diagonalisable de trois manières:
+	\begin{enumerate}
+	\item sans calcul, \:\:\:\:
+	\item en calculant directement le déterminant $\text{det}(\lambda \mathrm{I}_3-A)$, où $\mathrm{I}_3$ est la matrice identité d'ordre 3, et en déterminant les sous-espaces propres,\:\:\:\:
+
+	\item en calculant $A^2$.\:\:\:\:
+	\end{enumerate}
+\item
+On note $f$ l'endomorphisme de $\mathbb{R}^3$ dont la matrice dans la base canonique de $\mathbb{R}^3$ est A.\\
+
+ Trouver une base orthonormée dans laquelle la matrice de $f$ est diagonale. 
+
+\end{enumerate}
+
+\section*{EXERCICE 69 \: algèbre }
+
+On considère la matrice $A=\begin{pmatrix}
+0&a&1\\
+a&0&1\\
+a&1&0
+\end{pmatrix}$ où $a$ est un réel.
+\begin{enumerate}
+\item
+Déterminer le rang de $A$.
+\item
+Pour quelles valeurs de $a$, la matrice $A$ est-elle diagonalisable? 
+\end{enumerate}
+
+
+\section*{EXERCICE 70 \: algèbre  }
+
+Soit $A=\begin{pmatrix}
+0 & 0 & 1 \\ 
+1 & 0 & 0 \\ 
+0 & 1 & 0
+\end{pmatrix} \in \mathcal{M}_{3}\left( \mathbb{C}\right)$~.
+
+\begin{enumerate}
+\item D\'{e}terminer les valeurs propres et les vecteurs propres de $A$. $A$ est-elle diagonalisable?
+\item Soit $\left( a,b,c\right) \in \mathbb{C}^{3}$ et $B=a\mathrm{I}_{3}+bA+cA^{2}$, où $\mathrm{I}_3$ désigne la matrice identité d'ordre 3.\\ D\'{e}duire de la question \textbf{1.} les \'{e}l\'{e}ments propres de $B$.
+\end{enumerate}
+
+\section*{EXERCICE 71 \: algèbre}
+Soit  $P$ le plan d'équation $x+y+z=0$ et  $D$ la droite d'équation $x=\dfrac{y}{2}=\dfrac{z}{3}$.
+\begin{enumerate}
+\item
+Vérifier que $\mathbb{R}^3=P\oplus D$.\:\:\:\:
+\item
+Soit $p$ la projection vectorielle de  $\mathbb{R}^3$ sur  $P$  parallèlement à  $D$.\\
+Soit $u=(x,y,z)\in\mathbb{R}^3$.\\
+Déterminer $p(u)$ et donner la matrice de $p$ dans la base canonique de $\mathbb{R}^3$.\:\:\:\:
+\item
+Déterminer une base de $\mathbb{R}^3$ dans laquelle la matrice de $p$ est diagonale.\:\:\:\:
+
+\end{enumerate}
+
+
+\section*{EXERCICE 72\:algèbre }
+Soit $n$ un entier naturel non nul.\\
+Soit $f$ un endomorphisme d'un espace vectoriel $E$ de dimension $n$, et soit $e=\left( e_1,\ldots,e_n\right) $ une base de $E$.
+
+On suppose que  $f(e_1)=f(e_2)=\cdots=f(e_n)=v$, où $v$ est un vecteur donné de $E$.
+\begin{enumerate}
+\item 
+Donner le rang de $f$.
+
+\item 
+$f$ est-il diagonalisable? (discuter en fonction du vecteur $v$)
+\end{enumerate}
+		
+
+
+
+\section*{EXERCICE 73 \: algèbre}
+
+On pose $A=\begin{pmatrix}
+2 & 1 \\ 
+4 & -1
+\end{pmatrix}$.
+
+\begin{enumerate}
+
+\item  Déterminer les valeurs propres et les vecteurs propres de $A$.
+\item Déterminer toutes les matrices qui commutent avec la matrice $\begin{pmatrix}
+3 & 0 \\ 
+0 & -2
+\end{pmatrix}$.\\
+En déduire que l'ensemble des matrices qui commutent avec $A$ est $\mathrm{Vect}\left( \mathrm{I}_2,A\right) $.
+\end{enumerate}
+
+  \section*{EXERCICE 74 \: algèbre }
+
+
+
+\begin{enumerate}
+\item On considère la matrice $A=\begin{pmatrix}
+1 & 0 & 2 \\ 
+0 & 1 & 0\\ 
+2 & 0 & 1
+\end{pmatrix} $.
+	\begin{enumerate}
+	\item Justifier sans calcul que $A$ est diagonalisable.
+	\item Déterminer les valeurs propres de $A$ puis une base de vecteurs propres associés.
+	
+	\end{enumerate}
+\item On considère le système différentiel $\left\{\begin{array}{l}
+ x'=x+2z\\ 
+ y'=y \\ 
+ z'=2x+z  
+\end{array}\right.$ , $x,y,z$ désignant trois fonctions de la variable $t$, dérivables sur $\mathbb{R}$.
+
+En utilisant la question 1. et en le justifiant, résoudre ce système.
+\end{enumerate}
+
+\section*{EXERCICE 75 \: algèbre }
+
+On considère la matrice $A=\begin{pmatrix}
+-1 & -4 \\ 
+1 & 3
+\end{pmatrix}$~.
+
+\begin{enumerate}
+\item Démontrer que $A$ n'est pas diagonalisable.
+
+\item On note $f$ l'endomorphisme de $\mathbb{R}^{2}$ canoniquement associ\'{e} \`{a} $A$. \\Trouver une base $\left( v_{1},v_{2}\right)$ de $\mathbb{R}^{2}$ dans laquelle la matrice de $f$ est de la forme $\begin{pmatrix}
+a & b \\ 
+0 & c
+\end{pmatrix}$.\\
+On donnera explicitement les valeurs de $a$, $b$ et $c$.
+
+\item En déduire la résolution du syst\`{e}me différentiel $\left\{
+\begin{array}{l}
+x^{\prime }=-x-4y \\ 
+y^{\prime }=x+3y
+\end{array}
+\right.$~.
+\end{enumerate}
+		
+	
+
+\section*{EXERCICE 76 \: algèbre  }
+
+Soit $E$ un $\mathbb{R}$-espace vectoriel muni  d'un produit scalaire noté $(\:|\:)$.\\
+On pose $\forall\:x\in E$, $||x||=\sqrt{(x|x)}$.
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item 
+\'Enoncer et d\'{e}montrer l'in\'{e}galit\'{e} de Cauchy-Schwarz.
+
+
+
+\item
+Dans quel cas a-t-on égalité? Le démontrer.
+\end{enumerate}
+\item
+
+Soit $E=\left\lbrace f\in\mathcal{C}\left( \left[ a,b\right] ,\mathbb{R}\right) ,\:\forall\:x\in \left[ a,b\right]\:f(x)>0  \right\rbrace$. \\
+Prouver que l'ensemble   $ \left\lbrace \displaystyle\int_{a}^{b}f(t)\mathrm{d}t\times \displaystyle\int_{a}^{b}\dfrac{1}{f(t)}\mathrm{d}t\:,\:f\in E\right\rbrace $ admet une borne inférieure $m$ et déterminer la valeur de $m$.
+\end{enumerate}
+
+\section*{EXERCICE 77 \: algèbre }
+
+
+Soit $E$ un espace euclidien.
+
+\begin{enumerate}
+
+
+\item 
+ Soit $A$ un sous-espace vectoriel de $E$.\\
+D\'{e}montrer que $\left( A^{\perp }\right) ^{\perp }=A$.
+\item
+Soient  $F$ et $G$ deux sous-espaces vectoriels de $E$.
+\begin{enumerate}
+
+\item
+
+D\'{e}montrer que \ $\left( F+G\right) ^{\perp }=F^{\perp }\cap G^{\perp }$.
+
+\item D\'{e}montrer que\ $\left( F\cap G\right) ^{\perp }=F^{\perp}+G^{\perp }$.
+\end{enumerate}
+\end{enumerate}		
+
+
+
+\section*{EXERCICE 78 \: algèbre  }
+
+Soit $E$ un espace euclidien de dimension $n$ et $u$ un endomorphisme de $E$.\\ On note $\left( x|y\right) $ le produit scalaire de $x$ et de $y$ et $||.||$ la norme euclidienne associée.
+
+\begin{enumerate}
+%\item Démontrer que si :$\left( \forall (x,y)\in E^{2}\right)\ \left( u(x)|u(y)\right) =\left( x|y\right) $ alors $u$ est bijectif.
+\item Soit $u$ un endomorphisme de $E$, tel que: $\forall x \in E, \vert\vert u(x)\vert\vert = \vert\vert x\vert\vert$. 
+	\begin{enumerate}
+	\item Démontrer que: $\forall (x,y)\in E^{2}~(u(x)|u(y)) = (x|y) $.
+	\item Démontrer que $u$ est bijectif.
+	\end{enumerate}
+\item
+On note ${\mathcal{O}}(E)$ l'ensemble des isométries vectorielles de $E$.\\
+C'est -à-dire  ${\mathcal{O}}(E)=\left\lbrace u\in\mathcal{L}\left(E \right)\:/ \: \forall x \in E, \vert\vert u(x)\vert\vert = \vert\vert x\vert\vert \right\rbrace $.\\
+\medskip
+Démontrer que ${\mathcal{O}}(E)$ , muni de la loi $\circ $ , est un groupe.\\
+\item
+Soit $u\in\mathcal{L}(E)$. Soit $e=(e_1,e_2,...,e_n)$ une base orthonormée de $E$.\\
+Prouver que : $u\in {\mathcal{O}}(E)\Longleftrightarrow$$ \left( u(e_1),u(e_2),...,u(e_n)\right) $ est une base orthonormée de $E$.
+\end{enumerate}
+
+
+\section*{EXERCICE 79 \: algèbre}
+
+Soit $a$ et $b$ deux réels tels que $a$<$b$.\\
+\begin{enumerate}
+\item Soit $h$ une fonction continue et positive de $[a,b]$ dans $\mathbb{R}$.\bigskip
+
+Démontrer que  $\displaystyle\int_{a}^{b}h(x)\text{d}x=0\Longrightarrow h=0$~.
+
+\item Soit $E$ le $\mathbb{R}$-espace vectoriel des fonctions continues de $[a,b]$ dans $\mathbb{R}$.\\
+  On pose : $\forall\:(f,g)\in E^2$, $\left( f|g\right) =\displaystyle\displaystyle\int_{a}^{b}f(x)g(x)\text{d}x$.\\
+   Démontrer que l'on d\'{e}finit ainsi un produit scalaire sur $E$.
+
+\item Majorer $\displaystyle\int_{0}^{1}\sqrt{x}e^{-x}\text{d}x$ en utilisant l'in\'{e}galit\'{e} de Cauchy-Schwarz.
+\end{enumerate}
+
+
+\section*{EXERCICE 80 \: algèbre}
+
+Soit $E\ $l'espace vectoriel des applications continues et $2\pi $-p\'{e}riodiques de $\mathbb{R}$ dans $\mathbb{R}$.
+
+\begin{enumerate}
+\item Démontrer que $\left( f\ |\ g\right) =\dfrac{1}{2\pi }\displaystyle\int_{0}^{2\pi }f\left( t\right) g\left( t\right) \text{d}t$ d\'{e}finit un produit scalaire sur $E$.
+
+\item Soit $F$ le sous-espace vectoriel engendr\'{e} par $f:x\mapsto \cos x$ et $g:x\mapsto \cos \left( 2x\right)$.\bigskip
+
+D\'{e}terminer le projet\'{e} orthogonal sur $F$ de la fonction $u:x\mapsto \sin ^{2}x$.
+\end{enumerate}
+
+
+\section*{EXERCICE 81 \: algèbre}
+
+On d\'{e}finit dans $\mathcal{M}_{2}\left( \mathbb{R}\right) \times \mathcal{%
+M}_{2}\left( \mathbb{R}\right) \ $l'application $\varphi$ par : $\varphi \left( A,A'\right)
+=\text{tr}\left( A^TA'\right)$, où $\text{tr}\left( A^TA'\right)$ désigne la trace du produit de la matrice $A^T$ par la matrice $A'$.\\ 
+On admet que $\varphi $ est un produit scalaire sur $\mathcal{M}_{2}\left( 
+\mathbb{R}\right)\ .$\\
+\medskip
+On note $\mathcal{F}=\left\{ \left( 
+\begin{array}{cc}
+a & b \\ 
+-b & a%
+\end{array}%
+\right),\ \left( a,b\right) \in \mathbb{R}^{2}\right\}$.\\
+
+\begin{enumerate}
+\item Démontrer que $\mathcal{F}$ est un sous-espace vectoriel de $\mathcal{M}_{2}\left( \mathbb{R}\right) $.
+
+\item D\'{e}terminer une base de $\mathcal{F}^{\perp }$.
+
+\item D\'{e}terminer le projeté orthogonal de $J=\left( 
+\begin{array}{cc}
+1 & 1 \\ 
+1 & 1%
+\end{array}%
+\right)$ sur $\mathcal{F}^{\perp }$ .
+\item
+Calculer la distance de $J$ à $\mathcal{F}$.
+\end{enumerate}
+
+
+\section*{EXERCICE 82 \: algèbre}
+
+Soit $E$ un espace pr\'{e}hilbertien et $F$ un sous-espace vectoriel de $E$ de dimension finie $n>0$.\smallskip
+
+On admet que, pour tout $x\in E$, il existe un élément unique $y_0$ de $F$ tel que $x-y_0$ soit orthogonal à $F$ et que la distance de $x$ à $F$ soit égale à  $\left\Vert x-y_0\right\Vert$.
+
+Pour $A=\begin{pmatrix}
+a & b \\ 
+c & d%
+\end{pmatrix}$ et $A'=\begin{pmatrix}
+a^{\prime } & b^{\prime } \\ 
+c^{\prime } & d^{\prime }%
+\end{pmatrix}$,  on pose $\left(  A\ |\ A'\right) =aa^{\prime}+bb^{\prime}+cc^{\prime}+dd^{\prime}$.
+
+\begin{enumerate}
+\item Démontrer que  $\left( \,.\,|\,.\,\right) $ est un produit scalaire sur $\mathcal{M}_{2}\left( \mathbb{R}\right)$.
+
+\item Calculer la distance de la matrice $A=\left( 
+\begin{array}{cc}
+1 & 0 \\ 
+-1 & 2%
+\end{array}%
+\right)$ au sous-espace vectoriel $F$ des matrices triangulaires sup\'{e}rieures.
+\end{enumerate}
+
+
+\section*{Exercice 83 \: algèbre}
+
+
+
+\addcontentsline{toc}{subsection}{\'Enoncé exercice 3}
+
+Soit $u$ et $v$ deux endomorphismes d'un $\mathbb{R}$-espace vectoriel $E$.
+
+\begin{enumerate}
+\item Soit $\lambda$ un réel non nul. Prouver que si $\lambda$ est valeur propre de $u\circ v$, alors $\lambda$ est valeur propre de $v\circ u$.\\
+\:\:\:\:
+\item On considère, sur $E=\mathbb{R}\left[ X\right] $ les endomorphismes $u$ et $v$ définis par 
+$u$:\:$P\longmapsto \displaystyle\int_{1}^{X}P $ et $v$:\:$P\longmapsto P'$ .\\
+Déterminer $ \mathrm{Ker} (u\circ v)$ et $\mathrm{Ker} (v\circ u)$.
+Le résultat de la question 1. reste-t-il vrai pour $\lambda=0$?\:\:\:\:
+\item 
+Si $E$ est de dimension finie, démontrer que le résultat de la première question reste vrai pour $\lambda=0$.\\
+\textbf{Indication }: penser à utiliser le déterminant.\:\:\:\:
+
+\end{enumerate}
+\section*{EXERCICE 84 \: algèbre}
+
+
+
+\begin{enumerate}
+\item Donner la définition d'un argument d'un nombre complexe non nul (on ne demande ni l'interprétation géométrique, ni la démonstration de l'existence d'un tel nombre).
+\item Soit $n\in{\mathbb{N}^{*}}$. Donner, en justifiant, les solutions dans  $\mathbb{C} $ de l'équation $z^{n}=1$ et préciser leur nombre.
+\item En déduire, pour $n\in{\mathbb{N}^{*}}$, les solutions dans $\mathbb{C}$ de l'équation $\left( z+\mathrm{i}\right)^{n}=\left(z-\mathrm{i}\right)^{n}$ et démontrer que ce sont des nombres réels.
+\end{enumerate}
+
+\section*{EXERCICE 85\: algèbre}
+
+\begin{enumerate}
+\item Soient $n \in{\mathbb{N}^{*}}$, $P\in{\mathbb{R}_{n}\left[ X\right] }$ et $a \in{\mathbb{R}}$.
+\begin{enumerate}
+\item Donner sans démonstration, en utilisant la formule de Taylor, la décomposition de $P(X)$ dans la base 
+$\left( 1, X-a, \left( X-a\right) ^{2}, \cdots, (X-a)^{n}\right) $.
+\item 
+Soit $r\in{\mathbb{N}^{*}}$. En déduire que :\\$a$ est une racine de $P$ d'ordre de multiplicité $r$  si et seulement si $P^{(r)}(a)\neq 0$
+et $\forall k \in{\llbracket 0,r-1 \rrbracket}$  , $P^{(k)}(a)=0$.
+\end{enumerate}
+\item Déterminer deux réels $a$ et $b$ pour que $1$ soit racine double du polynôme $P=X^{5}+aX^{2}+bX$ et factoriser alors ce polynôme dans $\mathbb{R}\left[ X\right] $.
+\end{enumerate} 
+
+
+\section*{EXERCICE 86 \: algèbre}
+
+
+\begin{enumerate}
+\item
+
+Soit $(a,b,p)\in{\mathbb{Z}^{3}}$.
+Prouver que : si $p \wedge a = 1 $ et $p\wedge b=1$, alors $p\wedge (ab)=1$.
+\item
+Soit $p$ un nombre premier.
+\begin{enumerate}
+
+\item 
+ Prouver que $\forall k \in{\llbracket 1,p-1\rrbracket}$, $p$ divise $\dbinom{p}{k}k!$\:\:  puis en déduire que $p$ divise $\dbinom{p}{k}$.
+
+
+
+\item 
+Prouver que:  $\forall n \in{\mathbb{N}}$,\: $n^{p}\equiv n \:\mod p $.\\
+\textbf{Indication}: procéder par récurrence.
+\item
+En déduire, pour tout entier naturel $n$, que : $  p \:\text{ne divise pas }\: n \Longrightarrow\: n^{p-1}\equiv 1 \mod p$.
+
+\end{enumerate}
+
+\end{enumerate}
+
+
+\section*{EXERCICE 87 \: algèbre }
+
+
+
+
+Soient\ $a_{0},a_{1},\cdots ,a_{n}$ ,\: $n+1$ réels
+deux à deux distincts.
+\medskip
+
+\begin{enumerate}
+\item Montrer que si\ $b_{0},b_{1},\cdots ,b_{n}\;$sont$\;n+1\;$ réels \
+quelconques, alors il existe un unique polyn\^{o}me $P\ $vérifiant
+\begin{equation*}
+\deg P\leqslant n \:\:\text{et}\:\:\forall i\in \llbracket 0,n\rrbracket,\:\:P\left(
+a_{i}\right) =b_{i}.
+\end{equation*}
+
+\item Soit $k\in \llbracket 0,n \rrbracket $. \\
+Expliciter ce polyn\^{o}me $P
+$, que l'on notera $L_{k}$, lorsque :%
+\begin{equation*}
+\forall i\in \llbracket 0 ,n \rrbracket,  \ \ b_{i}=
+\left\{ 
+\begin{array}{lll}
+0&\text{si}&i\neq k \\ 
+1&\text{si}&i=k
+\end{array}
+\right. 
+\end{equation*}
+
+\item
+ Prouver que $\forall p\in \llbracket 0 ,n \rrbracket$ ,\:\bigskip
+ $\displaystyle\sum\limits_{k=0}^{n}a_{k}^{p}L_{k}=X^{p}$.
+
+\end{enumerate}
+
+
+
+\section*{EXERCICE 88 \: algèbre}
+
+\begin{enumerate}
+\item
+Soit $E$ un $\mathbb{K}$-espace vectoriel ($\mathbb{K}=\mathbb{R}$ ou $\mathbb{C}$).\\
+Soit $u\in\mathcal{L}(E)$.
+Soit $P\in\mathbb{K}[X]$.\\
+Prouver que si $P$ annule $u$ alors toute valeur propre de $u$ est racine de $P$.\\
+\item
+Soit $n\in\mathbb{N} $ tel que $n\geqslant 2$. On pose $E=\mathcal{M}_n\left( \mathbb{R}\right) $.\\
+Soit $A=\left( a_{i,j}\right) _{\substack{ 1\leqslant i\leqslant n  \\ 1\leqslant j\leqslant n}}$ la matrice de $E$ définie par $a_{i,j}=\left\lbrace \begin{array}{l}
+0\:\text{si}\:i=j\\
+1\:\text{si}\:i\neq j\\
+\end{array}\right. $ .\\
+
+Soit $u\in\mathcal{L}\left(E\right) $ défini par : $\forall\:M\in E$, $u(M)=M+\mathrm{tr} (M)A$. \\
+\begin{enumerate}
+\item
+Prouver que le polynôme $X^2-2X+1$ est annulateur de $u$.
+\item
+$u$ est-il diagonalisable?\\
+Justifier votre réponse en utilisant deux méthodes (l'une avec, l'autre sans l'aide de la question 1.).
+
+\end{enumerate}
+\end{enumerate}
+ 
+
+ \section*{EXERCICE 89 \: algèbre  }
+ 
+
+
+                       
+ Soit $n \in {\mathbb{N}}$ tel que $n\geqslant 2$. On pose $z = e^{\mathrm{i}\,\frac{2\pi}{n}}$.
+\begin{enumerate}
+ \item On suppose $k\in {\llbracket 1,n-1\rrbracket}$. \\Déterminer le module et un argument du complexe $\:z^k - 1$.
+ \item On pose $\;S = \displaystyle\sum\limits_{k=0}^{n-1} \;\left|z^k - 1\right|$. Montrer que $\:S = \dfrac{2}{\tan\frac{\pi}{2n}}$.
+ 
+ \end{enumerate}\vspace{0.2cm}
+ 
+
+
+
+ \section*{EXERCICE 90 \: algèbre }
+
+
+$\mathbb K$ désigne le corps des réels ou celui des complexes.\\
+Soient $a_{1}, a_{2}, a_{3}$ trois scalaires distincts donnés de $\mathbb K$.
+
+\begin{enumerate}
+\item Montrer que $\Phi:\begin{array}[t]{ccc}
+\mathbb K_{2}[X] & \longrightarrow & \mathbb K^{3} \hfill\\ 
+P & \longmapsto & \big(P(a_{1}),P(a_{2}),P(a_{3})\big) \\
+\end{array}$ est un isomorphisme d'espaces vectoriels.
+
+\item On note $(e_{1}, e_{2}, e_{3})$ la base canonique de $\mathbb K^{3}$ et on pose  $\forall k\in\{1,2,3\}, \:L_{k}=\Phi^{-1}(e_{k})$.
+
+\begin{enumerate}
+\item Justifier que $(L_{1}, L_{2}, L_{3})$ est une base de $\mathbb K_{2}[X]$.
+
+\item Exprimer les polynômes $L_{1}, L_{2}$ et $L_{3}$ en fonction de $a_{1}, a_{2}$ et $a_{3}$.
+\end{enumerate}
+
+\item Soit $P\in\mathbb K_{2}[X]$. Déterminer les coordonnées de $P$ dans la base $(L_{1}, L_{2}, L_{3})$.
+
+\item  \textbf{Application} : on se place dans $\mathbb R^{2}$ muni d'un repère orthonormé et on considère les trois points $A(0,1), B(1,3), C(2,1)$. 
+
+Déterminer une fonction polynomiale de degré 2 dont la courbe passe par les points $A$, $B$ et $C$.
+\end{enumerate}
+
+
+\section*{EXERCICE 91 \: algèbre}
+
+
+
+
+ On considère la matrice $A=\begin{pmatrix}
+0& 2 & -1 \\ 
+-1& 3 &-1 \\ 
+-1& 2 & 0
+\end{pmatrix} \in\mathcal{M}_3(\mathbb{R}).$
+\begin{enumerate}
+\item Montrer  que $A$ n'admet qu'une seule valeur propre que l'on déterminera. 
+\item La matrice $A$ est-elle inversible ? Est-elle diagonalisable ?
+\item Déterminer, en  justifiant, le polynôme minimal de $A$. 
+\item 
+Soit $n\in\mathbb{N}$. Déterminer le reste de la division euclidienne de $X^n$ par $(X-1)^2$ et en déduire la valeur de $A^n$.
+\end{enumerate}
+
+\medskip
+
+\section*{EXERCICE 92\: algèbre }
+
+ 
+Soit $n\in\mathbb{N}^*$. On considère $E=\mathcal{M}_n(\mathbb{R})$ l'espace vectoriel des matrices carrées d'ordre $n$.\\
+\medskip
+On pose : $\forall(A,B)\in E^2$, $\left\langle A\:,B \right\rangle=\mathrm{tr}(A^TB)$ où tr désigne la trace et $A^T$ désigne la transposée de la matrice $A$.
+\begin{enumerate}
+\item
+Prouver que  $\left\langle\:,\right\rangle$ est un produit scalaire sur $E$.
+\item
+On note $S_n(\mathbb{R})$ l'ensemble des matrices symétriques de $E$.\\
+Une matrice $A$ de $E$ est dite antisymétrique lorsque $A^T=-A$.\\
+On note $A_n(\mathbb{R})$ l'ensemble des matrices antisymétriques de $E$.\\
+On admet que $S_n(\mathbb{R})$  et $A_n(\mathbb{R})$ sont des sous-espaces vectoriels de $E$.
+\begin{enumerate}
+\item
+Prouver que $E=S_n(\mathbb{R})\oplus A_n(\mathbb{R})$.
+\item
+Prouver que $A_n(\mathbb{R})^\perp=S_n(\mathbb{R})$.
+\end{enumerate}
+\item
+Soit $F$ l'ensemble des matrices diagonales de $E$.\\
+Déterminer $F^\perp$.
+\end{enumerate}
+
+\medskip
+\
+
+
+
+
+\section*{EXERCICE 93 \: algèbre }
+
+
+
+  Soit $E$ un espace vectoriel réel de dimension finie $n>0$ et $u\in{\mathcal{ L}(E)}$ tel que
+   $u^3+u^2+u=0.$\\
+   On notera $\mathrm{Id}$ l'application identité sur $E$.
+   \begin{enumerate}
+   \item Montrer que $\mathrm{Im }u \oplus \mathrm{Ker} u = E.$
+   \item 
+   \begin{enumerate}
+   \item \'Enoncer le lemme des noyaux pour deux polynômes.
+   \item En déduire que $\mathrm{Im }u =\mathrm{Ker} (u^2+u+\mathrm{Id})$.
+   \end{enumerate}
+  \item
+  On suppose que $u$ est non bijectif.\\
+Déterminer les valeurs propres de $u$. Justifier la réponse.
+   
+   \end{enumerate}
+   \medskip
+  \textbf{ Remarque}: les questions 1. , 2. et 3. peuvent être traitées  indépendamment les unes des autres.
+    
+
+
+\section*{EXERCICE 94 \: algèbre }
+
+
+
+\begin{enumerate}
+\item  En raisonnant par l'absurde, montrer que le système $(S)$: 
+ $\left\{\begin{array}{lccl}
+ x&\equiv&5& [6]\\
+ x&\equiv&4&[8]
+ \end{array}\right.$ n'a pas de solution $x$ appartenant à $\mathbb{Z}$
+\item
+  \begin{enumerate}
+    \item \'Enoncer le théorème de Bézout dans $\mathbb{Z}$.\:\:\:\:
+ \item
+ Soit $a$ et $b$ deux entiers naturels premiers entre eux. \\
+ Soit $c\in \mathbb{Z}$.\\
+ \medskip
+ Prouver que:  $\left( a|c\:\text{et} \:b|c\right)\Longleftrightarrow ab|c$. \:\:\:\
+ \end{enumerate}
+ \item 
+ On considère le système $(S)$: 
+ $\left\{\begin{array}{lccl}
+           x&\equiv&6& [17]\\
+            x&\equiv&5& [16]\\
+ x&\equiv&4&[15]
+ \end{array}\right.$ dans lequel l'inconnue $x$ appartient à $\mathbb{Z}$.\\
+\begin{enumerate}
+\item
+Déterminer une solution particulière $x_0$ de $(S)$ dans $\mathbb{Z}$.
+\item
+\textit{Déduire des questions précédentes} la résolution dans  $\mathbb{Z}$ du système $(S)$.\\
+On exprimera les solutions en fonction de la solution particulière $x_0$.\:\:\:\:
+\end{enumerate}
+\end{enumerate}
+
+\pagebreak
+
+
+\part*{BANQUE PROBABILIT\'ES}
+\section*{EXERCICE 95 \:probabilités}
+
+
+Une urne contient deux boules blanches et huit boules noires.\\
+\begin{enumerate}
+\item
+Un joueur tire successivement, avec remise,  cinq boules dans cette urne.\\
+Pour chaque boule blanche tirée, il gagne 2 points et pour chaque boule noire tirée, il perd 3 points.\\
+On note $X$ la variable aléatoire représentant le nombre de boules blanches tirées.\\
+On note $Y$ le nombre de points obtenus par le joueur sur une partie.
+\begin{enumerate}
+\item
+Déterminer la loi de $X$, son espérance et sa variance.
+\item
+Déterminer la loi de $Y$, son espérance et sa variance.
+\end{enumerate}
+\item
+Dans cette question, on suppose que l'on tire simultanément cinq boules dans l'urne.
+\begin{enumerate}
+\item 
+Déterminer la loi de $X$.
+\item
+Déterminer la loi de $Y$.
+
+\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 96 \:probabilités}
+
+
+
+Soit $X$ une variable aléatoire à valeurs dans $\mathbb{N}$, de loi de probabilité donnée par : $\forall n\in \mathbb{N}$, $P(X=n)=p_n$.\\
+  La fonction génératrice de $X$ est notée $G_X$ et elle est définie par $G_X(t)=E[t^X]=\displaystyle \sum_{n=0}^{+\infty}p_nt^n$.
+  \begin{enumerate}
+  \item
+  Prouver que l'intervalle $\left] -1,1\right[ $ est inclus dans l'ensemble de définition de $G_X$.
+\item
+Soit $X_1$ et $X_2$ deux variables aléatoires indépendantes à valeurs dans $\mathbb{N}$.\\
+On pose $S=X_1+X_2$.\\
+Démontrer  que  $\forall t\in \left]-1,1 \right[ $, $G_S(t)=G_{X_1} (t)G_{X_2}(t)$:\\
+\begin{enumerate}
+\item
+en utilisant le produit de Cauchy de deux séries entières.
+\item
+en utilisant uniquement la définition de la fonction génératrice.
+\end{enumerate}
+
+\textbf{Remarque}: on admettra, pour la question suivante,  que ce résultat est généralisable à $n$ variables aléatoires indépendantes à valeurs dans $\mathbb{N}$.
+\item
+Un sac contient quatre boules : une boule numérotée 0, deux boules numérotées 1 et une boule numérotée 2.\\
+Soit $n\in\mathbb{N}^{*}$.
+On effectue $n$ tirages  successifs, avec remise, d'une boule dans ce sac.\\
+On note $S_n$ la somme des numéros tirés.\\
+Soit $t\in \left]-1,1 \right[ $. \\
+Déterminer $G_{S_n}(t)$ puis  en  déduire la loi de $S_n$.
+  \end{enumerate}
+
+
+\section*{EXERCICE 97 \:probabilités}
+
+
+ Soit $(X,Y)$ un couple de variables aléatoires à valeurs dans $\mathbb{N}^2$ dont la loi est donnée par:\\
+$\forall (j,k)\in {\mathbb{N}^2}$, 
+$P\left( (X,Y)=(j,k)\right)=\dfrac{(j+k)\left( \dfrac{1}{2}\right) ^{j+k}}{\mathrm{e}\:j!\:k!}$.
+\begin{enumerate}
+
+\item
+Déterminer les lois marginales de $X$ et de $Y$.\\
+Les variables $X$ et $Y$ sont-elles indépendantes?
+\item
+Prouver que $E\left[ 2^{X+Y}\right] $ existe et la calculer.
+\end{enumerate}
+
+\section*{EXERCICE 98 \:probabilités}
+Une secrétaire effectue, une première fois, un appel téléphonique vers $n$ correspondants distincts.\\
+On admet que les $n$ appels constituent $n$ expériences indépendantes et que, pour chaque appel, la probabilité d'obtenir le correspondant demandé est $p$ ($p\in{\left]  0,1\right[ }$).\\
+Soit $X$ la variable aléatoire représentant le nombre de correspondants obtenus.
+\begin{enumerate}
+\item Donner la loi de $X$. Justifier.
+\item
+La secrétaire rappelle une seconde fois, dans les mêmes conditions, chacun des $n-X$ correspondants qu'elle n'a pas pu joindre au cours de la première série d'appels.
+On note $Y$ la variable aléatoire représentant le nombre de personnes jointes au cours de la seconde série d'appels.
+\begin{enumerate}
+\item
+Soit $i\in \llbracket 0,n \rrbracket $.
+Déterminer, pour  $k\in \mathbb{N}, $ $P(Y=k|X=i)$.
+\item
+Prouver que $Z=X+Y$ suit une loi binomiale dont on déterminera le paramètre.\\
+\textbf{Indication} : on pourra utiliser, sans la prouver, l'égalité suivante: $\dbinom{n-i}{k-i}\dbinom{n}{i}=\dbinom{k}{i}\dbinom{n}{k}$.\\
+\item
+Déterminer l'espérance et la variance de $Z$.
+\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 99 \:probabilités}
+
+\begin{enumerate}
+\item
+Rappeler l'inégalité de Bienaymé-Tchebychev.
+\item
+ Soit $(Y_n)$ une suite de variables aléatoires  indépendantes, de même loi et et telle que $\forall n\in \mathbb{N}$, $Y_n\in L^2$.\\  On pose $S_n=\displaystyle\sum\limits_{k=1}^{n}Y_k$.\\
+
+Prouver que: $\forall\:a\in \left] 0,+\infty\right[ $, $P\left( \left|\dfrac{S_n}{n}-E(Y_1)\right|\geqslant a\right) \leqslant\dfrac{V(Y_1)}{na^2}$.
+\item \textbf{Application}\\
+On effectue des tirages successifs, avec remise, d'une boule dans une urne contenant 2 boules rouges et 3 boules noires.\\
+\`A partir de quel nombre de tirages peut-on garantir à plus de 95\% que la proportion de boules rouges obtenues restera comprise entre $0,35$ et $0,45$?\\
+\textbf{Indication} : considérer la suite $(Y_i)$ de variables aléatoires de Bernoulli où $Y_i$ mesure l'issue du $i^{\text{ème}}$  tirage.
+
+\end{enumerate}
+ 
+ 
+
+\section*{EXERCICE 100 \:probabilités}
+Soit $\lambda \in{\left] 0,+\infty\right[ }$.\\
+Soit $X$ une variable aléatoire discrète à valeurs dans $\mathbb{N}^\ast$.\\
+On suppose que $\forall n\in\mathbb{N}^\ast$, $P(X=n)=\dfrac{\lambda}{n(n+1)(n+2)} $.
+\begin{enumerate}
+\item Décomposer en éléments simples la fraction rationnelle $R$ définie par $R(x)=\dfrac{1}{x(x+1)(x+2)}$.
+\item
+Calculer $\lambda$.
+\item
+Prouver que $X$ admet une espérance, puis la calculer.
+\item
+$X$ admet-elle une variance? Justifier.
+
+\end{enumerate}
+
+
+\section*{EXERCICE 101 \:probabilités}
+
+
+Dans une zone désertique, un animal  erre entre trois points d'eau $A$, $B$ et $C$.\\
+\`A l'instant $t=0$, il se trouve au point A.\\
+Quand il a épuisé l'eau du point où il se trouve, il part avec équiprobabilité rejoindre l'un des deux autres points d'eau.\\
+ L'eau du point qu'il vient de quitter se régénère alors.\\
+\medskip
+Soit $n\in\mathbb{N}$.\\
+On note $A_n$ l'événement «l'animal est en $A$  après son $n^{\text{ième}}$ trajet».\\
+On note $B_n$ l'événement «l'animal est en $B$  après son $n^{\text{ième}}$ trajet».\\
+On note $C_n$ l'événement «l'animal est en $C$  après son $n^{\text{ième}}$ trajet».\\
+\medskip
+On pose $P(A_n)=a_n$, $P(B_n)=b_n$ et $P(C_n)=c_n$.
+
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item
+Exprimer, en le justifiant, $a_{n+1}$ en fonction de $a_n$, $b_n$ et $c_n$.
+\item Exprimer, de même, $b_{n+1}$ et $c_{n+1}$ en fonction de $a_n$, $b_n$ et $c_n$.
+
+\end{enumerate}
+
+\item
+\begin{spacing}{1,3}
+On considère la  matrice $A=\left( {\begin{array}{ccc}
+  0&\frac{1}{2}&\frac{1}{2} \\ 
+   \frac{1}{2}&0& \frac{1}{2}\\
+  \frac{1}{2}&\frac{1}{2}&0 \\ 
+  
+\end{array}} \right)$.\\
+\end{spacing}
+\begin{enumerate}
+
+
+\item 
+Justifier, sans calcul, que la matrice $A$ est diagonalisable.
+\item
+Prouver que $-\dfrac{1}{2}$ est valeur propre de $A$ et déterminer le sous-espace propre associé.
+\item
+Déterminer une matrice $P$  inversible  et une matrice $D$  diagonale de $\mathcal{M}_3(\mathbb{R})$ telles que $D=P^{-1}AP$.\\
+\textbf{Remarque}: le calcul de $P^{-1}$ n'est pas demandé.
+\end{enumerate}
+\item
+Montrer comment les résultats de la question 2. peuvent être utilisés pour calculer $a_n$, $b_n$ et $c_n$ en fonction de $n$.\\
+\textbf{Remarque}: aucune expression finalisée de $a_n$, $b_n$ et $c_n$ n'est demandée.
+\end{enumerate}
+\bigskip
+
+
+\section*{EXERCICE 102 \:probabilités}
+
+Soit $N\in\mathbb{N}^*$.\\
+Soit $p\in\left] 0,1\right[$. On pose $q=1-p$.\\
+On considère $N$ variables aléatoires $X_1,X_2,\cdots,X_N$  définies sur un même espace probabilisé $\left(\Omega,\mathcal{A},P\right)$,  indépendantes et de même loi géométrique de paramètre $p$.
+\begin{enumerate}
+\item
+Soit $i\in\llbracket1,N\rrbracket$. Soit $n\in{\mathbb{N}^*}$.\\
+Déterminer $P(X_i\leqslant n)$, puis $P(X_i> n)$.
+\item
+On considère la variable aléatoire $Y$ définie par $Y=\underset{1\leqslant i\leqslant N}{\min}(X_i)$\\
+c'est-à-dire $\forall \omega \in\Omega$, $Y(\omega)=\min\left(X_1(\omega),\cdots,X_N(\omega)\right)$, $\min$ désignant « le plus petit élément de ».
+\begin{enumerate}
+\item 
+Soit $n\in{\mathbb{N}^*}$. Calculer $P(Y>n)$.\\ En déduire $P(Y\leqslant n)$, puis $P(Y=n)$.
+\item
+Reconnaître la loi de $Y$. En déduire $E(Y)$.
+\end{enumerate}	
+
+\end{enumerate}
+
+
+\section*{EXERCICE 103 \:probabilités}
+
+
+
+
+\textbf{Remarque}: les questions 1. et 2. sont indépendantes.\\
+\medskip
+Soit $(\Omega,\mathcal{A},P)$ un espace probabilisé.
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item
+ Soit $\left( \lambda_1,\lambda_2 \right) \in \left( \left] 0,+\infty \right[\right) ^2$.\\
+Soit $X_1$ et $X_2$ deux variables aléatoires définies sur $(\Omega,\mathcal{A},P)$.\\
+On suppose que  $X_1$ et $X_2$ sont indépendantes et suivent des lois de Poisson, de paramètres respectifs  $\lambda_1$ et $\lambda_2$.\\
+Déterminer la loi de $X_1+X_2$.\:\:\:\:
+\item
+En déduire l'espérance et la variance de $X_1+X_2$. \:\:\:\:
+\end{enumerate}
+\item 
+Soit $p\in\left]  0,1\right]$. Soit $\lambda \in \left] 0,+\infty \right[$. \\ 
+Soit $X$ et $Y$ deux variables aléatoires définies sur $(\Omega,\mathcal{A},P)$. \\
+On suppose que  $Y$ suit une loi de Poisson de paramètre $\lambda$.\\
+On suppose que $X(\Omega)=\mathbb{N}$ et que, pour tout $m\in\mathbb{N}$, la loi conditionnelle de $X$ sachant $(Y=m)$ est une loi binomiale de paramètre $(m,p)$.\\
+Déterminer la loi de $X$.\:\:\:\:
+\end{enumerate}
+
+
+\section*{EXERCICE 104 \:probabilités}
+Soit $n$ un entier naturel supérieur ou égal à 3.\\
+On dispose de $n$ boules numérotées de $1$ à $n$ et d'une boîte formée de trois compartiments identiques également numérotés de 1 à 3.\\
+On lance simultanément les $n$ boules.\\
+Elles viennent toutes se ranger aléatoirement dans les  3 compartiments.\\
+Chaque compartiment peut éventuellement contenir les $n$ boules.\\
+On note $X$ la variable aléatoire qui à chaque expérience aléatoire fait correspondre le nombre de compartiments restés vides.%pourquoi indexer X par n le nombre de boules?%
+\begin{enumerate}
+\item
+Préciser les valeurs prises par $X$.
+\item
+\begin{enumerate}
+\item
+Déterminer la probabilité $P(X=2)$.
+\item
+Finir de déterminer la loi de probabilité de $X$.
+\end{enumerate}
+\item
+\begin{enumerate}
+\item
+Calculer $E(X)$.
+\item
+Déterminer $\lim\limits_{n\to +\infty}^{}E(X)$. Interpréter ce résultat.
+\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 105 \:probabilités}
+
+\begin{enumerate}
+\item
+\'Enoncer et démontrer la formule de Bayes pour un système complet d'événements.
+\item
+On dispose de 100 dés dont 25 sont pipés (c'est-à-dire truqués).\\
+Pour chaque dé pipé, la probabilité d'obtenir le chiffre 6 lors d'un lancer vaut $\dfrac{1}{2}$.
+\begin{enumerate}
+
+
+\item
+On tire un dé au hasard parmi les 100 dés. On lance ce dé  et on obtient le chiffre 6.\\
+Quelle est la probabilité que ce dé soit pipé?
+\item 
+Soit $n\in\mathbb{N}^*.$ \\
+On tire un dé au hasard parmi les 100 dés. On lance ce dé $n$ fois et on obtient $n$ fois le chiffre $6$.\\
+Quelle est la probabilité $p_n$ que ce dé soit pipé?
+\item
+Déterminer $\lim\limits_{n\to+\infty}^{}p_n$. Interpréter ce résultat.
+\end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 106 \:probabilités}
+
+
+ $X$ et $Y$ sont deux variables aléatoires indépendantes et à valeurs dans $\mathbb{N}$.\\
+Elles suivent la même loi définie par:  
+$\forall\:k\in\mathbb{N}$, $P(X=k)=P(Y=k)=pq^k$ où    $p \in \left] 0,1\right[ $ et $q=1-p$.\\
+On considère alors les variables $U$ et $V$ définies par $U=\sup(X,Y)$ et $V=\inf(X,Y)$.
+\begin{enumerate}
+\item
+Déterminer la loi du couple $(U,V)$.
+\item
+Déterminer la loi marginale de $U$.\\
+On admet que $V(\Omega)=\mathbb{N}$ et que, $\forall\:n\in\mathbb{N}$, $P(V=n)=pq^{2n}(1+q)$.
+\item
+Prouver que $W=V+1$ suit une loi géométrique.\\
+En déduire l'espérance de $V$.
+\item
+$U$ et $V$ sont-elles indépendantes?
+
+\end{enumerate}
+
+\section*{EXERCICE 107 \:probabilités}
+
+On dispose de deux urnes $U_1$ et $U_2$.\\
+L'urne $U_1$ contient deux boules blanches et trois boules noires.\\
+L'urne $U_2$ contient quatre boules blanches et trois boules noires.\\
+On effectue des tirages successifs dans les conditions suivantes:\\
+on choisit une urne au hasard et on tire une boule dans l'urne choisie.\\
+On note sa couleur et on la remet dans l'urne d'où elle provient.\\
+Si la boule tirée était blanche, le tirage suivant se fait dans l'urne $U_1$.\\
+Sinon le tirage suivant se fait dans l'urne $U_2$.\\
+Pour tout  $n\in\mathbb{N}^*$, on note $B_n$ l'événement « la boule tirée au $n^{\text{ième}}$ tirage est blanche »
+et on pose $p_n=P(B_n)$.
+\begin{enumerate}
+\item
+Calculer $p_1$.
+\item
+Prouver que : $\forall\:n\in\mathbb{N}^*$, $p_{n+1}=-\dfrac{6}{35}p_n+\dfrac{4}{7}$.
+\item
+En déduire, pour tout entier naturel $n$ non nul, la valeur de $p_n$.
+\end{enumerate}
+
+\section*{EXERCICE 108 \:probabilités}
+
+
+Soient $X$ et $Y$ deux variables aléatoires définies sur un même espace probabilisé $(\Omega,\mathcal{A},P)$ et à valeurs dans $\mathbb{N}$.\\
+On suppose que la loi du couple $(X,Y)$ est donnée par:\\
+ $\forall\:(i,j)\in\mathbb{N}^2$, $P((X=i)\cap (Y=j))=\dfrac{1}{\mathrm{e}\:2^{i+1}j!}$
+\begin{enumerate}
+
+
+\item
+Déterminer les lois de $X$ et de $Y$.
+\item
+\begin{enumerate}
+\item 
+Prouver que $1+X$ suit une loi géométrique et en déduire l'espérance et la variance de $X$.
+\item
+Déterminer l'espérance et la variance de $Y$.
+\end{enumerate}
+
+\item
+Les variables $X$ et $Y$ sont-elles indépendantes?
+\item
+Calculer $P(X=Y)$.
+\end{enumerate}
+
+\section*{EXERCICE 109 \:probabilités}
+
+Soit $n\in\mathbb{N}^*$.
+Une urne contient $n$ boules blanches numérotées de 1 à $n$ et deux boules noires numérotées 1 et 2.\\
+On effectue le tirage une à une, sans remise, de toutes les boules de l'urne.\\
+On suppose que tous les tirages sont équiprobables.\\
+On note $X$ la variable aléatoire égale au rang d'apparition de la première boule blanche.\\
+On note $Y$ la variable aléatoire égale au rang d'apparition de la première boule numérotée 1.\\
+\begin{enumerate}
+\item 
+Déterminer la loi de $X$.
+\item
+Déterminer la loi de $Y$.
+
+
+
+\end{enumerate}  
+
+\section*{EXERCICE 110 \:probabilités}
+
+Soit $(\Omega,\mathcal{A},P)$ un espace probabilisé.\\
+
+\begin{enumerate}
+\item 
+Soit $X$ une variable aléatoire définie sur  $(\Omega,\mathcal{A},P)$ et à valeurs dans $\mathbb{N}$.\\
+On considère la série entière  $\displaystyle\sum t^nP(X=n)$ de variable réelle $t$.\\
+On note $R_X$ son rayon de convergence.\\
+\begin{enumerate}
+\item 
+Prouver que $R_X\geqslant 1$.\:\:\:\:\\
+On pose  $G_X(t)=\displaystyle\sum\limits_ {n=0}^{+\infty}t^nP(X=n)$ et on  note $D_{G_X}$ l'ensemble de définition de $G_X$.\\
+Justifier que   $\left[-1,1 \right] \subset D_{G_X}$.\:\:\:\:\\
+ 
+Pour tout réel $t$ fixé de $\left[-1,1 \right]$, exprimer $G_X(t)$ sous forme d'une espérance.\:\:\:\:
+\item
+Soit $k\in\mathbb{N}$.
+Exprimer, en justifiant la réponse, $P(X=k)$ en fonction de  $G_X^{(k)}(0)$.\:\:\:\:
+
+\end{enumerate}
+\item 
+\begin{enumerate}
+\item
+ On suppose que $X$ suit une loi de Poisson de paramètre $\lambda$.\\
+ Déterminer $D_{G_X}$ et, pour tout $\:t\in D_{G_X}$, calculer $G_X(t)$.\:\:\:\:
+ 
+
+ \item
+ Soit $X$ et $Y$ deux variables aléatoires définies sur un même espace probabilisé, indépendantes  et suivant des lois de Poisson de paramètres respectifs $\lambda_1$ et $\lambda_2$.\\
+ Déterminer, en utilisant les questions précédentes, la loi de $X+Y$.\:\:\:\:
+ \end{enumerate}
+\end{enumerate}
+
+\section*{EXERCICE 111 \:probabilités}
+
+On admet, dans cet exercice, que:
+ $\forall\:q\in \mathbb{N}$, $\forall \:x\in \left] -1,1\right[$, $\displaystyle\sum\limits_{k\geqslant q}^{}\dbinom {k}{q}x^{k-q}$ converge et  que  $\displaystyle\sum\limits_{k=q}^{+\infty}\dbinom{k}{q}x^{k-q}=\dfrac{1}{(1-x)^{q+1}}.$\\
+ \bigskip
+Soit $p\in \left] 0,1\right[ $.\\
+Soit $(\Omega,\mathcal{A},P)$ un espace probabilisé.\\
+Soit $X$ et $Y$ deux variables aléatoires définies sur  $(\Omega,\mathcal{A},P)$ et à valeurs dans $\mathbb{N}$.\\
+On suppose que la loi de probabilité du  couple $(X,Y)$ est donnée par:\\
+\medskip
+$\forall\:(k,n)\in\mathbb{N}^2$, $P((X=k)\cap (Y=n))=\left\lbrace \begin{array}{l}
+\dbinom{n}{k}\left( \dfrac{1}{2}\right)^np(1-p)^n\:\text{si}\:k\leqslant n\\
+0\:\text{sinon} 
+\end{array}
+\right.$
+\begin{enumerate}
+\item
+Vérifier qu'il s'agit bien d'une loi de probabilité.
+\item
+\begin{enumerate}
+\item
+Déterminer la loi de $Y$.
+\item
+Prouver que $1+Y$ suit une loi géométrique.
+\item
+Déterminer l'espérance de $Y$.
+\end{enumerate}
+\item
+Déterminer la loi de $X$.
+
+
+\end{enumerate}
+
+\section*{EXERCICE 112 \:probabilités}
+
+
+Soit $n\in\mathbb{N}^*$ et $E$ un ensemble possédant $n$ éléments.\\
+On désigne par $\mathcal{P}(E)$ l'ensemble des parties de $E$.
+\medskip
+\begin{enumerate}
+\item
+Déterminer le nombre $a$ de couples $(A,B)\in \left(\mathcal{P}(E) \right)^2$ tels que $A\subset B $.
+\item
+Déterminer le nombre $b$ de couples $(A,B)\in \left(\mathcal{P}(E) \right)^2$ tels que $A\cap B=\emptyset $.
+\item
+Déterminer le nombre $c$ de triplets  $(A,B,C)\in \left(\mathcal{P}(E) \right)^3$ tels que $A$, $B$ et $C$ soient deux à deux disjoints et vérifient $A\cup B\cup C=E$.
+
+ 
+\end{enumerate}
+
+   
+
+ 
+
+
+
+
+
+\end{flushleft}
+\end{document}
