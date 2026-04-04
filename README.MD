@@ -4,6 +4,17 @@
 
 ---
 
+## 📋 Sommaire
+
+1. [💡 Le Problème & La Solution](#-le-problème--la-solution)
+2. [📂 Structure du dépôt](#-structure-du-dépôt)
+3. [🛠️ Étape 1 : Génération de la banque PDF](#-étape-1--génération-de-la-banque-pdf)
+4. [🚀 Étape 2 : L'Application de Bureau](#-étape-2--lapplication-de-bureau)
+5. [📦 Compiler l'application](#-compiler-lapplication-pour-lutiliser-tous-les-jours)
+6. [✨ Fonctionnalités de l'application](#-fonctionnalités-de-lapplication)
+
+---
+
 ## 💡 Le Problème & La Solution
 
 **Le contexte :** La banque d'exercices officielle des oraux CCINP est distribuée sous la forme d'un document LaTeX/PDF massif de plusieurs centaines de pages. 
