@@ -1,4 +1,4 @@
-# CCINP Trainer Pro 🎯
+# CCINP Trainer 🎯
 
 > Une solution complète (Script d'extraction LaTeX + Application de bureau) conçue pour révolutionner la préparation aux oraux de mathématiques des concours CCINP (Filières MP / MPI).
 
