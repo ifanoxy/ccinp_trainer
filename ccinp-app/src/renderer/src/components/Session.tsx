@@ -27,9 +27,10 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
 
     useEffect(() => {
         if (!currentEx) return;
+        if (!isSimulation) setSeconds(0);
         setIsPaused(false);
         setNoteText(notesData[currentEx.id]?.hint || '');
-    }, [currentIndex, currentEx, notesData, isSimulation]);
+    }, [currentIndex, currentEx, isSimulation]);
 
     const handleSaveNote = async () => {
         if (!currentEx) return;
