@@ -1,7 +1,7 @@
 import React, {useMemo, useState, useEffect} from "react";
 import {
     BarChart3, BrainCircuit, ChevronRight, FolderDown, Ghost, GraduationCap, Loader2, Play, Settings,
-    Shuffle, Target, Trash2, Users, CalendarDays, Flag, Gamepad2, Layers, Timer, SlidersHorizontal, Brain, ExternalLink, Info
+    Shuffle, Target, Trash2, Users, CalendarDays, Flag, Gamepad2, Layers, Timer, SlidersHorizontal, Brain, ExternalLink, Info, RefreshCw
 } from "lucide-react";
 import {ProgressRecord, SessionMode, UserProfile} from "../types";
 import {EXERCISES} from "../data";
@@ -21,6 +21,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
     const [isOtherModesOpen, setIsOtherModesOpen] = useState(false);
     const [showBlitzOptions, setShowBlitzOptions] = useState(false);
 
+    // --- ÉTATS DU MODE PERSONNALISÉ ---
     const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
     const [customTypes, setCustomTypes] = useState<string[]>(['Analyse', 'Algebre', 'Probabilites']);
     const [customStatus, setCustomStatus] = useState<'all' | 'seen' | 'unseen'>('all');
@@ -30,9 +31,17 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
     const [deadline, setDeadline] = useState<string>('');
     const [discordEnabled, setDiscordEnabled] = useState<boolean>(true);
 
+    // NOUVEAU : État pour stocker la version de l'application
+    const [appVersion, setAppVersion] = useState<string>('1.0.0');
+
     useEffect(() => {
         setDeadline(localStorage.getItem(`ccinp_deadline_${activeProfile.id}`) || '');
         setDiscordEnabled(localStorage.getItem('ccinp_discord_rpc') !== 'false');
+
+        // NOUVEAU : On récupère la version depuis Electron
+        if (window.api && window.api.getVersion) {
+            window.api.getVersion().then(setAppVersion);
+        }
     }, [activeProfile.id]);
 
     useEffect(() => {
@@ -129,7 +138,16 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
             if (config && config.bankUrl) window.open(config.bankUrl, '_blank');
             else throw new Error("L'URL n'est pas définie dans config.json");
         } catch (error) {
-            window.open('https://github.com/ifanoxy/ccinp_trainer/releases/latest', '_blank');
+            window.open('https://github.com/ton-pseudo/ccinp-trainer-pro/releases', '_blank');
+        }
+        setIsSettingsOpen(false);
+    };
+
+    const handleCheckForUpdates = () => {
+        if (window.api && window.api.updater) {
+            window.api.updater.check();
+        } else {
+            alert("Les mises à jour automatiques ne sont pas disponibles dans cette version.");
         }
         setIsSettingsOpen(false);
     };
@@ -147,6 +165,11 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
     return (
         <div className="relative h-full flex flex-col items-center p-6 text-slate-800 overflow-y-auto">
             <AnimatedBackground />
+
+            {/* NOUVEAU : Affichage de la version en bas à droite */}
+            <div className="absolute bottom-4 right-6 z-20 opacity-40 hover:opacity-100 transition-opacity select-none cursor-default">
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Version {appVersion}</p>
+            </div>
 
             <div className="relative z-30 mt-6 flex flex-col items-center gap-3">
                 <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl shadow-2xl flex items-center justify-center transform -rotate-6">
@@ -299,6 +322,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                         <div>
                             <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3 flex justify-between items-end">
                                 <span>3. Filtrer par notes précédentes</span>
+                                <span className="text-[9px] font-bold text-slate-400 lowercase">Sélection multiple</span>
                             </h3>
                             <div className="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
                                 {[1, 2, 3, 4, 5, 6, 7].map(score => {
@@ -319,7 +343,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                     )}
 
                     <button onClick={handleStartCustomSession} className="w-full py-5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-black text-lg shadow-xl transition-all hover:-translate-y-1 mt-4">
-                        Lancer l'entraînement
+                        Lancer l'entraînement ciblé
                     </button>
                 </div>
             </Modal>
@@ -435,6 +459,11 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                     )}
 
                     <div className="h-px bg-slate-200 my-4"></div>
+
+                    {/* NOUVEAU BOUTON : Vérifier les mises à jour manuellement */}
+                    <button onClick={handleCheckForUpdates} className="w-full flex items-center gap-4 p-4 text-left bg-slate-50 hover:bg-slate-100 rounded-2xl transition-colors font-bold text-slate-700 border border-slate-200">
+                        <RefreshCw size={20} className="text-blue-500"/> Rechercher une mise à jour
+                    </button>
 
                     <button onClick={onChangeProfile} className="w-full flex items-center gap-4 p-4 text-left bg-slate-50 hover:bg-slate-100 rounded-2xl transition-colors font-bold text-slate-700 border border-slate-200">
                         <Users size={20} className="text-indigo-500"/> Changer de profil

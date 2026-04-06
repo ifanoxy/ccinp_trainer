@@ -20,6 +20,7 @@ const api = {
   importExercises: () => ipcRenderer.invoke('import-exercises'),
   getBasePath: () => ipcRenderer.invoke('get-base-path'),
   updateDiscord: (data) => ipcRenderer.send('update-discord', data),
+  getVersion: () => ipcRenderer.invoke('get-version'),
   updater: {
     check: () => ipcRenderer.send('check-for-updates'),
     download: () => ipcRenderer.send('download-update'),

@@ -107,6 +107,8 @@ function createWindow(): void {
     autoUpdater.quitAndInstall(false, true);
   });
 
+  ipcMain.handle('get-version', () => app.getVersion());
+
   autoUpdater.on('update-available', (info) => {
     mainWindow?.webContents.send('update-status', { type: 'available', version: info.version });
   });

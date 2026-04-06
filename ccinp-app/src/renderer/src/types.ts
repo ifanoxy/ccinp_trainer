@@ -18,6 +18,7 @@ export interface CustomAPI {
     checkExercises: () => Promise<boolean>;
     importExercises: () => Promise<{success: boolean, error?: string}>;
     updateDiscord?: (data: { details: string; state: string; startTimestamp?: number; endTimestamp?: number; clear?: false } | { clear: true }) => void;
+    getVersion?: () => Promise<string>;
     updater?: {
         check: () => void;
         download: () => void;
