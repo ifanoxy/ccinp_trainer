@@ -22,6 +22,7 @@ export default function App() {
 
     const [sessionQueue, setSessionQueue] = useState<Exercise[]>([]);
     const [sessionMode, setSessionMode] = useState<SessionMode>('smart');
+    const [sessionDuration, setSessionDuration] = useState<number>(0);
 
     useEffect(() => {
         const initApp = async () => {
@@ -37,7 +38,6 @@ export default function App() {
         };
         initApp();
     }, []);
-
 
     useEffect(() => {
         if (!window.api || !window.api.updateDiscord) return;
@@ -89,7 +89,7 @@ export default function App() {
         setProgressData([]); setNotesData({});
     };
 
-    const handleStartSession = (mode: SessionMode) => {
+    const handleStartSession = (mode: SessionMode, duration: number = 0, filters?: any) => {
         let pool = [...EXERCISES];
         let available: Exercise[] = [];
 
@@ -98,6 +98,7 @@ export default function App() {
             const autrePool = pool.filter(e => e.type !== 'Analyse');
             available.push(analysePool[Math.floor(Math.random() * analysePool.length)]);
             available.push(autrePool[Math.floor(Math.random() * autrePool.length)]);
+            setSessionDuration(25 * 60);
         }
         else if (mode === 'weakness') {
             const map = new Map<number, ProgressRecord>();
@@ -106,15 +107,68 @@ export default function App() {
             available = pool.filter(ex => weakIds.includes(ex.id));
             if (available.length === 0) { alert("Aucune faiblesse détectée !"); return; }
             available = available.sort(() => Math.random() - 0.5);
+            setSessionDuration(0);
         }
         else if (mode === 'smart') {
             const seenIds = progressData.map(d => d.id);
             available = pool.filter(ex => !seenIds.includes(ex.id));
             if (available.length === 0) available = [...pool];
             available = available.sort(() => Math.random() - 0.5);
+            setSessionDuration(0);
+        }
+        else if (mode === 'anki') {
+            const map = new Map<number, ProgressRecord>();
+            progressData.forEach(r => map.set(r.id, r));
+            const seen = Array.from(map.values());
+
+            if (seen.length === 0) { alert("Fais quelques exercices d'abord pour créer un historique !"); return; }
+
+            const now = Date.now();
+            seen.sort((a, b) => {
+                const daysA = Math.max(0.1, (now - new Date(a.date).getTime()) / (1000 * 3600 * 24));
+                const daysB = Math.max(0.1, (now - new Date(b.date).getTime()) / (1000 * 3600 * 24));
+                const urgencyA = (8 - a.score) * daysA;
+                const urgencyB = (8 - b.score) * daysB;
+                return urgencyB - urgencyA;
+            });
+
+            available = seen.map(r => pool.find(e => e.id === r.id)).filter(Boolean) as Exercise[];
+            setSessionDuration(0);
+        }
+        else if (mode === 'blitz') {
+            available = [...pool].sort(() => Math.random() - 0.5);
+            setSessionDuration(duration * 60);
+        }
+        else if (mode === 'custom' && filters) {
+            const map = new Map<number, ProgressRecord>();
+            progressData.forEach(r => map.set(r.id, r));
+
+            available = pool.filter(ex => {
+                if (!filters.types.includes(ex.type)) return false;
+
+                const hasSeen = map.has(ex.id);
+
+                if (filters.status === 'seen' && !hasSeen) return false;
+                if (filters.status === 'unseen' && hasSeen) return false;
+
+                if (hasSeen && filters.status !== 'unseen') {
+                    const score = map.get(ex.id)!.score;
+                    if (!filters.scores.includes(score)) return false;
+                }
+
+                return true;
+            });
+
+            if (available.length === 0) {
+                alert("Aucun exercice ne correspond à ces critères exacts ! Essaie d'élargir tes filtres.");
+                return;
+            }
+            available = available.sort(() => Math.random() - 0.5);
+            setSessionDuration(0);
         }
         else {
             available = [...pool].sort(() => Math.random() - 0.5);
+            setSessionDuration(0);
         }
 
         setSessionMode(mode);
@@ -148,7 +202,7 @@ export default function App() {
                 {view === 'setup' && <Setup onSuccess={() => setView('profiles')} />}
                 {view === 'profiles' && <ProfileSelect profiles={[...profiles, { id: 'incognito', name: 'Mode Invité', isIncognito: true }]} onSelect={handleSelectProfile} onCreate={handleCreateProfile} onDelete={handleDeleteProfile} />}
                 {view === 'home' && activeProfile && <Home activeProfile={activeProfile} progressData={progressData} startSession={handleStartSession} goToDashboard={() => setView('dashboard')} onChangeProfile={() => setView('profiles')} onDeleteData={handleDeleteData} />}
-                {view === 'session' && <Session queue={sessionQueue} notesData={notesData} sessionMode={sessionMode} endSession={() => setView('home')} onSaveNote={onSaveNote} onRate={onRate} />}
+                {view === 'session' && <Session queue={sessionQueue} notesData={notesData} sessionMode={sessionMode} sessionDuration={sessionDuration} endSession={() => setView('home')} onSaveNote={onSaveNote} onRate={onRate} />}
                 {view === 'dashboard' && <Dashboard progressData={progressData} goHome={() => setView('home')} />}
             </div>
         </div>

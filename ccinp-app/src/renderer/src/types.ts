@@ -2,7 +2,7 @@ export interface Exercise { id: number; type: string; }
 export interface ProgressRecord { id: number; type: string; score: number; timeSpent: number; date: string; }
 export interface UserNote { id: number; hint: string; tags: string[]; }
 export interface UserProfile { id: string; name: string; isIncognito: boolean; }
-export type SessionMode = 'smart' | 'random' | 'weakness' | 'simulation';
+export type SessionMode = 'smart' | 'random' | 'weakness' | 'simulation' | 'custom' | 'blitz' | 'anki';
 
 export interface CustomAPI {
     windowMin: () => void;

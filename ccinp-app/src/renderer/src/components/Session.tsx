@@ -7,22 +7,25 @@ interface SessionProps {
     queue: Exercise[];
     notesData: Record<number, UserNote>;
     sessionMode: SessionMode;
+    sessionDuration: number;
     endSession: () => void;
     onRate: (id: number, t: string, s: number, time: number) => Promise<void>;
     onSaveNote: (n: UserNote) => Promise<void>;
 }
 
-export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode, endSession, onRate, onSaveNote }) => {
+export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode, sessionDuration, endSession, onRate, onSaveNote }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const isSimulation = sessionMode === 'simulation';
 
-    const [seconds, setSeconds] = useState(isSimulation ? 1500 : 0);
+    const isCountdown = sessionDuration > 0;
+
+    const [seconds, setSeconds] = useState(isCountdown ? sessionDuration : 0);
     const [isPaused, setIsPaused] = useState(false);
     const [noteText, setNoteText] = useState('');
     const [isFinished, setIsFinished] = useState(false);
     const [isSavingNote, setIsSavingNote] = useState(false);
+
     const [sessionStartTs] = useState(Date.now());
-    const [oralBlancEndTs] = useState(Date.now() + 25 * 60 * 1000);
+    const [countdownEndTs] = useState(isCountdown ? Date.now() + sessionDuration * 1000 : 0);
 
     const currentEx = queue[currentIndex];
     const pdfUrl = currentEx ? `local://${currentEx.type}/exercice_${currentEx.id}.pdf#toolbar=0&navpanes=0&scrollbar=1&view=FitH` : '';
@@ -30,33 +33,36 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
     useEffect(() => {
         if (!currentEx || !window.api || !window.api.updateDiscord) return;
 
-        const modeNames = {
+        const modeNames: Record<string, string> = {
             'smart': 'Tirage Intelligent 🧠',
             'random': 'Aléatoire Total 🔀',
             'weakness': 'Mode Survie 🎯',
-            'simulation': 'Oral Blanc 🎓'
+            'simulation': 'Oral Blanc 🎓',
+            'blitz': 'Mode Blitz ⏱️',
+            'anki': 'Répétition Espacée 🧠',
+            'custom': 'Entraînement Libre ⚙️'
         };
 
         const payload: any = {
-            details: `${modeNames[sessionMode]}`,
+            details: `${modeNames[sessionMode] || 'Entraînement'}`,
             state: `Exo ${currentIndex + 1}/${queue.length} : #${currentEx.id} (${currentEx.type})`
         };
 
-        if (sessionMode === 'simulation') {
-            payload.endTimestamp = oralBlancEndTs;
+        if (isCountdown) {
+            payload.endTimestamp = countdownEndTs;
         } else {
             payload.startTimestamp = sessionStartTs;
         }
 
         window.api.updateDiscord(payload);
-    }, [currentEx, currentIndex, sessionMode]);
+    }, [currentEx, currentIndex, sessionMode, isCountdown, countdownEndTs]);
 
     useEffect(() => {
         if (!currentEx) return;
-        if (!isSimulation) setSeconds(0);
+        if (!isCountdown || sessionMode === 'blitz') setSeconds(isCountdown ? sessionDuration : 0);
         setIsPaused(false);
         setNoteText(notesData[currentEx.id]?.hint || '');
-    }, [currentIndex, currentEx, isSimulation]);
+    }, [currentIndex, currentEx, isCountdown, sessionDuration, sessionMode]);
 
     const handleSaveNote = async () => {
         if (!currentEx) return;
@@ -78,11 +84,11 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
         let interval: NodeJS.Timeout;
         if (!isPaused && !isFinished) {
             interval = setInterval(() => {
-                setSeconds(s => isSimulation ? Math.max(0, s - 1) : s + 1);
+                setSeconds(s => isCountdown ? Math.max(0, s - 1) : s + 1);
             }, 1000);
         }
         return () => clearInterval(interval);
-    }, [isPaused, isFinished, isSimulation]);
+    }, [isPaused, isFinished, isCountdown]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -101,7 +107,7 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
 
     const handleRateClick = async (score: number) => {
         if (!currentEx) return;
-        const timeSpent = isSimulation ? 1500 - seconds : seconds;
+        const timeSpent = isCountdown ? sessionDuration - seconds : seconds;
         await onRate(currentEx.id, currentEx.type, score, timeSpent);
 
         if (currentIndex + 1 < queue.length) {
@@ -127,14 +133,14 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
         );
     }
 
-    const isTimeCritical = isSimulation && seconds < 300 && seconds > 0;
+    const isTimeCritical = isCountdown && seconds < (sessionDuration * 0.2) && seconds > 0;
 
     return (
         <div className="h-full flex flex-col bg-slate-200/50 overflow-hidden font-sans">
             <header className="bg-white/90 backdrop-blur-xl border-b border-slate-200/50 px-8 py-3 flex justify-between items-center shadow-sm z-20">
                 <div className="flex items-center gap-6">
-                    <div className={`text-white px-4 py-1.5 rounded-xl text-[10px] font-black tracking-widest shadow-inner ${isSimulation ? 'bg-blue-600' : 'bg-slate-900'}`}>
-                        {isSimulation ? "ORAL BLANC" : "ENTRAÎNEMENT"} • EXO {currentIndex + 1} / {queue.length}
+                    <div className={`text-white px-4 py-1.5 rounded-xl text-[10px] font-black tracking-widest shadow-inner ${sessionMode === 'simulation' ? 'bg-blue-600' : sessionMode === 'blitz' ? 'bg-orange-600' : 'bg-slate-900'}`}>
+                        {sessionMode === 'simulation' ? "ORAL BLANC" : sessionMode === 'blitz' ? "BLITZ" : sessionMode === 'anki' ? "ANKI" : "ENTRAÎNEMENT"} • EXO {currentIndex + 1} / {queue.length}
                     </div>
                     <div>
                         <h1 className="text-xl font-black text-slate-800 uppercase tracking-tight leading-none italic">Exercice {currentEx.id}</h1>
