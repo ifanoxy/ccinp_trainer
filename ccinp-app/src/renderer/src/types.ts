@@ -18,5 +18,11 @@ export interface CustomAPI {
     checkExercises: () => Promise<boolean>;
     importExercises: () => Promise<{success: boolean, error?: string}>;
     updateDiscord?: (data: { details: string; state: string; startTimestamp?: number; endTimestamp?: number; clear?: false } | { clear: true }) => void;
+    updater?: {
+        check: () => void;
+        download: () => void;
+        install: () => void;
+        onStatus: (callback: (data: any) => void) => void;
+    };
 }
 declare global { interface Window { api: CustomAPI; } }

@@ -19,7 +19,16 @@ const api = {
   checkExercises: () => ipcRenderer.invoke('check-exercises'),
   importExercises: () => ipcRenderer.invoke('import-exercises'),
   getBasePath: () => ipcRenderer.invoke('get-base-path'),
-  updateDiscord: (data) => ipcRenderer.send('update-discord', data)
+  updateDiscord: (data) => ipcRenderer.send('update-discord', data),
+  updater: {
+    check: () => ipcRenderer.send('check-for-updates'),
+    download: () => ipcRenderer.send('download-update'),
+    install: () => ipcRenderer.send('install-update'),
+    onStatus: (callback: (data: any) => void) => {
+      ipcRenderer.removeAllListeners('update-status');
+      ipcRenderer.on('update-status', (_event, data) => callback(data));
+    }
+  }
 }
 
 if (process.contextIsolated) {

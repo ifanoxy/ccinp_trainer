@@ -7,7 +7,8 @@ import {Dashboard} from "./components/Dashboard";
 import {Session} from "./components/Session";
 import {ProfileSelect} from "./components/ProfileSelect";
 import {Setup} from "./components/Setup";
-import {Home} from "./components/Home";
+import {Home} from "./components/Home"
+import { UpdaterAlert } from "./components/UpdaterAlert";
 
 const APP_START_TIME = Date.now();
 
@@ -206,6 +207,7 @@ export default function App() {
     return (
         <div className="h-screen w-screen flex flex-col text-slate-800 antialiased selection:bg-indigo-200 overflow-hidden bg-slate-50">
             <CustomTitleBar />
+            <UpdaterAlert />
             <div className="flex-1 overflow-hidden relative pt-10">
                 {view === 'setup' && <Setup onSuccess={() => setView('profiles')} />}
                 {view === 'profiles' && <ProfileSelect profiles={[...profiles, { id: 'incognito', name: 'Mode Invité', isIncognito: true }]} onSelect={handleSelectProfile} onCreate={handleCreateProfile} onDelete={handleDeleteProfile} />}

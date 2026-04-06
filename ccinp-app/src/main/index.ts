@@ -3,6 +3,7 @@ import { app, shell, BrowserWindow, ipcMain, protocol, net, dialog, nativeImage 
 import { join } from 'path'
 import { electronApp, is } from '@electron-toolkit/utils'
 import fs from 'fs'
+import { autoUpdater } from 'electron-updater';
 
 const userDataPath = app.getPath('userData')
 const exercicesPath = join(userDataPath, 'exercices')
@@ -55,7 +56,7 @@ function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 850,
-    frame: false, // <-- SUPPRIME LES BORDURES WINDOWS
+    frame: false,
     titleBarStyle: 'hidden',
     show: false,
     title: "CCINP Oral Trainer",
@@ -63,7 +64,7 @@ function createWindow(): void {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
-      webSecurity: false // Facilite le chargement local sans bloquer sur le CSP
+      webSecurity: false
     }
   })
 
@@ -73,7 +74,6 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
-  // --- NOUVEAU: IPC POUR LA BARRE DE TITRE ---
   ipcMain.handle('window-min', () => mainWindow.minimize())
   ipcMain.handle('window-max', () => mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize())
   ipcMain.handle('window-close', () => mainWindow.close())
@@ -83,6 +83,45 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  autoUpdater.autoDownload = false;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  ipcMain.on('check-for-updates', () => {
+    if (app.isPackaged) {
+      autoUpdater.checkForUpdates().catch(err => {
+        console.error("Erreur de mise à jour:", err);
+      });
+    } else {
+      console.log("Mode dev : Recherche de mise à jour ignorée.");
+    }
+  });
+
+  ipcMain.on('download-update', () => {
+    autoUpdater.downloadUpdate().catch(err => {
+      mainWindow?.webContents.send('update-status', { type: 'error', message: err.message });
+    });
+  });
+
+  ipcMain.on('install-update', () => {
+    autoUpdater.quitAndInstall(false, true);
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    mainWindow?.webContents.send('update-status', { type: 'available', version: info.version });
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    mainWindow?.webContents.send('update-status', { type: 'progress', percent: progressObj.percent });
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    mainWindow?.webContents.send('update-status', { type: 'ready' });
+  });
+
+  autoUpdater.on('error', (err) => {
+    mainWindow?.webContents.send('update-status', { type: 'error', message: err.message });
+  });
 }
 
 app.whenReady().then(() => {
