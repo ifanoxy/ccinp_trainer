@@ -113,7 +113,10 @@ Le fichier exécutable `.exe` sera créé dans le dossier `ccinp-app/dist/`. Dou
 * **Objectif Jour J :** Renseignez la date de votre oral pour obtenir un objectif quotidien d'exercices à maîtriser (note ≥ 6/7).
 * **Modes d'entraînement tactiques :**
   * *Tirage Intelligent* : Ne propose que des exercices que vous n'avez jamais vus.
+  * *Mode Anki (Répétition espacée)* : Priorise automatiquement les exercices ayant reçu une mauvaise note ou qui n'ont pas été revus depuis longtemps pour optimiser la mémoire à long terme.
+  * *Mode Blitz* : Entraînement contre-la-montre (5, 8 ou 10 minutes par exercice) pour forcer la recherche rapide et l'élaboration de plans d'attaque sous pression.
   * *Mode Survie* : Ne propose que les exercices où votre note précédente était inférieure ou égale à 3.
   * *Oral Blanc* : Tire 1 exercice d'Analyse + 1 exercice d'Algèbre/Proba et lance un compte à rebours critique de 25 minutes.
+  * *Mode Personnalisé* : Créez votre session sur mesure grâce à des filtres ultra-précis (matières ciblées, statut, et sélection libre des notes à retravailler via une palette de couleurs interactive).
 * **Système d'astuces :** Un bloc-notes intégré permet d'écrire et de sauvegarder automatiquement les pièges à éviter pour chaque exercice.
 * **Dashboard Analytique :** Heatmap de régularité, temps d'investissement total et répartition détaillée de l'aisance par exercice.
