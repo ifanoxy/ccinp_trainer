@@ -11,6 +11,14 @@ import {Home} from "./components/Home";
 
 const APP_START_TIME = Date.now();
 
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 export default function App() {
     const [view, setView] = useState<'profiles' | 'setup' | 'home' | 'session' | 'dashboard'>('profiles');
     const [profiles, setProfiles] = useState<UserProfile[]>([]);
@@ -106,14 +114,14 @@ export default function App() {
             const weakIds = Array.from(map.values()).filter(r => r.score <= 3).map(r => r.id);
             available = pool.filter(ex => weakIds.includes(ex.id));
             if (available.length === 0) { alert("Aucune faiblesse détectée !"); return; }
-            available = available.sort(() => Math.random() - 0.5);
+            available = shuffle(available);
             setSessionDuration(0);
         }
         else if (mode === 'smart') {
             const seenIds = progressData.map(d => d.id);
             available = pool.filter(ex => !seenIds.includes(ex.id));
             if (available.length === 0) available = [...pool];
-            available = available.sort(() => Math.random() - 0.5);
+            available = shuffle(available);
             setSessionDuration(0);
         }
         else if (mode === 'anki') {
@@ -136,7 +144,7 @@ export default function App() {
             setSessionDuration(0);
         }
         else if (mode === 'blitz') {
-            available = [...pool].sort(() => Math.random() - 0.5);
+            available = shuffle([...pool]);
             setSessionDuration(duration * 60);
         }
         else if (mode === 'custom' && filters) {
@@ -163,11 +171,11 @@ export default function App() {
                 alert("Aucun exercice ne correspond à ces critères exacts ! Essaie d'élargir tes filtres.");
                 return;
             }
-            available = available.sort(() => Math.random() - 0.5);
+            available = shuffle(available);
             setSessionDuration(0);
         }
         else {
-            available = [...pool].sort(() => Math.random() - 0.5);
+            available = shuffle([...pool]);
             setSessionDuration(0);
         }
 
