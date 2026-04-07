@@ -141,6 +141,18 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
 
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden relative min-h-0 bg-white">
 
+                {isPaused && (
+                    <div className="absolute inset-0 z-[100] bg-slate-900/40 backdrop-blur-xl flex flex-col items-center justify-center text-white animate-in fade-in p-4">
+                        <div className="bg-slate-900 p-8 md:p-16 rounded-3xl md:rounded-[3rem] shadow-2xl flex flex-col items-center border border-slate-700 w-full max-w-md">
+                            <Pause className="w-16 h-16 md:w-20 md:h-20 mb-6 md:mb-8 text-indigo-400" />
+                            <h2 className="text-2xl md:text-4xl font-black mb-4 tracking-tight">Pause</h2>
+                            <button onClick={() => setIsPaused(false)} className="px-6 py-3 md:px-10 md:py-5 mt-4 md:mt-8 bg-white text-slate-900 hover:bg-indigo-50 rounded-xl md:rounded-2xl font-black text-sm md:text-lg flex items-center gap-2 md:gap-4 transition-transform hover:scale-105 shadow-xl">
+                                <PlayIcon className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" /> REPRENDRE <span className="hidden sm:inline text-slate-400 text-xs md:text-sm ml-1 md:ml-2 font-bold">[Espace]</span>
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 <PdfViewer url={pdfUrl} />
 
                 {showMobilePanel && (

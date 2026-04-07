@@ -31,7 +31,8 @@
     ],
     "productName": "CCINP Trainer",
     "files": [
-      "**/*"
+      "**/*",
+      "!node_modules/@napi-rs/**"
     ],
     "asar": true,
     "directories": {
