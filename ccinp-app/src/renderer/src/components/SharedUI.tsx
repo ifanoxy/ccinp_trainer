@@ -44,23 +44,25 @@ export const Modal: React.FC<{ isOpen: boolean, onClose: () => void, title: stri
     if (!isOpen) return null;
     return (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="bg-white/95 backdrop-blur-2xl border border-white rounded-[2rem] w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-                <div className="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                    <h2 className="text-xl font-black text-slate-800 tracking-tight">{title}</h2>
+            {/* Ajout de max-h-[90vh] et flex-col pour que la modale ne dépasse jamais de l'écran */}
+            <div className="bg-white/95 backdrop-blur-2xl border border-white rounded-3xl md:rounded-[2rem] w-full max-w-md max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+                <div className="px-5 py-4 md:px-8 md:py-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
+                    <h2 className="text-lg md:text-xl font-black text-slate-800 tracking-tight">{title}</h2>
                     <button onClick={onClose} className="p-2 hover:bg-slate-200/50 rounded-full text-slate-400 hover:text-slate-600 transition-colors"><XCircle size={24}/></button>
                 </div>
-                <div className="p-8">{children}</div>
+                {/* L'intérieur devient scrollable si le contenu est trop grand pour l'écran */}
+                <div className="p-5 md:p-8 overflow-y-auto">{children}</div>
             </div>
         </div>
     );
 };
 
 export const CustomTitleBar = () => (
-    <div className="h-10 w-full bg-slate-950 flex items-center justify-between px-4 fixed top-0 left-0 right-0 z-[100] text-slate-400 select-none" style={{ WebkitAppRegion: 'drag' } as any}>
-        <div className="ml-16 flex items-center gap-3 text-xs font-bold tracking-widest uppercase">
-            <BrainCircuit size={16} className="text-indigo-500"/> CCINP Trainer
+    <div className="h-10 w-full bg-slate-950 flex items-center justify-between px-2 md:px-4 fixed top-0 left-0 right-0 z-[100] text-slate-400 select-none" style={{ WebkitAppRegion: 'drag' } as any}>
+        <div className="ml-16 flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-bold tracking-widest uppercase">
+            <BrainCircuit size={16} className="text-indigo-500 shrink-0"/> <span className="hidden sm:inline">CCINP Trainer</span>
         </div>
-        <div className="flex items-center gap-1" style={{ WebkitAppRegion: 'no-drag' } as any}>
+        <div className="flex items-center gap-1 shrink-0" style={{ WebkitAppRegion: 'no-drag' } as any}>
             <button onClick={() => window.api?.windowMin?.()} className="p-2 hover:bg-slate-800 hover:text-white rounded transition-colors"><Minus size={14}/></button>
             <button onClick={() => window.api?.windowMax?.()} className="p-2 hover:bg-slate-800 hover:text-white rounded transition-colors"><Maximize size={14}/></button>
             <button onClick={() => window.api?.windowClose?.()} className="p-2 hover:bg-red-500 hover:text-white rounded transition-colors"><X size={14}/></button>

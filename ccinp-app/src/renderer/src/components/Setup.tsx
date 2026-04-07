@@ -22,22 +22,31 @@ export const Setup: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-slate-800 relative overflow-hidden">
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 md:p-6 text-slate-800 relative overflow-hidden">
             <AnimatedBackground />
-            <div className="relative z-10 max-w-md w-full bg-white/80 backdrop-blur-2xl rounded-[3rem] shadow-2xl border border-white p-12 text-center overflow-hidden">
+            <div className="relative z-10 max-w-md w-full bg-white/80 backdrop-blur-2xl rounded-3xl md:rounded-[3rem] shadow-2xl border border-white p-8 md:p-12 text-center overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                <div className="w-28 h-28 bg-indigo-50 text-indigo-600 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-inner"><FolderDown size={56} strokeWidth={1.5} /></div>
-                <h1 className="text-4xl font-black mb-4 tracking-tight">Banque PDF</h1>
-                <p className="text-slate-500 mb-10 leading-relaxed font-medium">
+
+                <div className="w-20 h-20 md:w-28 md:h-28 bg-indigo-50 text-indigo-600 rounded-2xl md:rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 md:mb-10 shadow-inner">
+                    <FolderDown className="w-10 h-10 md:w-14 md:h-14" strokeWidth={1.5} />
+                </div>
+
+                <h1 className="text-3xl md:text-4xl font-black mb-3 md:mb-4 tracking-tight">Banque PDF</h1>
+                <p className="text-sm md:text-base text-slate-500 mb-8 md:mb-10 leading-relaxed font-medium">
                     Pour garantir d'excellentes performances hors-ligne, nous allons importer tes fichiers PDF dans le stockage sécurisé de l'application.
                 </p>
-                {error && <div className="mb-8 p-4 bg-red-50 text-red-700 rounded-2xl text-sm font-bold border border-red-100 flex items-start gap-3 text-left"><AlertTriangle className="shrink-0" size={20}/> {error}</div>}
-                <button onClick={handleImport} disabled={loading} className="w-full flex items-center justify-center gap-3 py-5 px-6 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl disabled:opacity-70 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1">
-                    {loading ? <Loader2 size={24} className="animate-spin" /> : <FolderDown size={24} />}
-                    {loading ? "Copie des fichiers..." : "Sélectionner le dossier source"}
+
+                {error && (
+                    <div className="mb-6 md:mb-8 p-3 md:p-4 bg-red-50 text-red-700 rounded-xl md:rounded-2xl text-xs md:text-sm font-bold border border-red-100 flex items-start gap-3 text-left">
+                        <AlertTriangle className="shrink-0 w-4 h-4 md:w-5 md:h-5"/> {error}
+                    </div>
+                )}
+
+                <button onClick={handleImport} disabled={loading} className="w-full flex items-center justify-center gap-2 md:gap-3 py-4 md:py-5 px-6 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl md:rounded-2xl disabled:opacity-70 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 text-sm md:text-base">
+                    {loading ? <Loader2 className="animate-spin w-5 h-5" /> : <FolderDown className="w-5 h-5" />}
+                    {loading ? "Copie des fichiers..." : "Importer le dossier .zip"}
                 </button>
             </div>
         </div>
     );
 };
-
