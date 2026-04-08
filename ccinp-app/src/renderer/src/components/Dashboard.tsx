@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { ArrowDownAZ, ArrowUpZA, BookOpen, BrainCircuit, Trophy, Clock, Target, X, List } from "lucide-react";
-import { AnimatedBackground } from "./SharedUI";
+import { ArrowDownAZ, ArrowUpZA, BookOpen, BrainCircuit, Trophy, Clock, Target, X, List, Plus, Trash2 } from "lucide-react";
+import { AnimatedBackground, Modal } from "./SharedUI";
 import { ProgressRecord } from "../types";
 
 const ActivityHeatmap: React.FC<{ progressData: ProgressRecord[] }> = ({ progressData }) => {
@@ -72,7 +72,14 @@ const ActivityHeatmap: React.FC<{ progressData: ProgressRecord[] }> = ({ progres
 
 type SortField = 'date' | 'score' | 'id' | 'timeSpent';
 
-export const Dashboard: React.FC<{ progressData: ProgressRecord[], goHome: () => void }> = ({ progressData, goHome }) => {
+interface DashboardProps {
+    progressData: ProgressRecord[];
+    goHome: () => void;
+    onRate?: (id: number, type: string, score: number, timeSpent: number) => Promise<void>;
+    onDeleteRecord?: (record: ProgressRecord) => void;
+}
+
+export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRate, onDeleteRecord }) => {
     const [viewMode, setViewMode] = useState<'latest'|'history'>('latest');
     const [filterType, setFilterType] = useState('Tous');
     const [sortBy, setSortBy] = useState<SortField>('date');
@@ -80,6 +87,11 @@ export const Dashboard: React.FC<{ progressData: ProgressRecord[], goHome: () =>
 
     const [selectedPdf, setSelectedPdf] = useState<{id: number, type: string} | null>(null);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+
+    const [isManualAddOpen, setIsManualAddOpen] = useState(false);
+    const [manualId, setManualId] = useState<number | ''>('');
+    const [manualScore, setManualScore] = useState<number | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const toggleSort = (field: SortField) => {
         if (sortBy === field) setSortDesc(!sortDesc);
@@ -90,6 +102,16 @@ export const Dashboard: React.FC<{ progressData: ProgressRecord[], goHome: () =>
         if (id <= 58) return 'Analyse';
         if (id <= 94) return 'Algebre';
         return 'Probabilites';
+    };
+
+    const handleManualSubmit = async () => {
+        if (!manualId || manualId < 1 || manualId > 112 || !manualScore || !onRate) return;
+        setIsSubmitting(true);
+        await onRate(manualId as number, getExType(manualId as number), manualScore, 0);
+        setIsSubmitting(false);
+        setIsManualAddOpen(false);
+        setManualId('');
+        setManualScore(null);
     };
 
     const { kpis, ratingBreakdown, unseenList, processedTableData } = useMemo(() => {
@@ -242,6 +264,11 @@ export const Dashboard: React.FC<{ progressData: ProgressRecord[], goHome: () =>
                         <button onClick={() => setViewMode('history')} className={`flex-1 sm:flex-none px-4 md:px-6 py-2.5 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-bold transition-all ${viewMode === 'history' ? 'bg-white text-indigo-700 shadow-md border border-slate-200' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}>Historique</button>
                     </div>
                     <div className="flex items-center justify-between sm:justify-end gap-3 md:gap-4 sm:pr-4">
+
+                        <button onClick={() => setIsManualAddOpen(true)} className="flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg md:rounded-xl text-[10px] md:text-xs font-bold transition-all border border-indigo-100 shadow-sm shrink-0">
+                            <Plus size={14} className="md:w-4 md:h-4"/> <span className="hidden sm:inline">Ajout Manuel</span><span className="sm:hidden">Ajouter</span>
+                        </button>
+
                         <span className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest pl-2 sm:pl-0">Matière :</span>
                         <select value={filterType} onChange={e => setFilterType(e.target.value)} className="bg-slate-50 border border-slate-200 rounded-lg md:rounded-xl text-xs md:text-sm py-2 px-3 md:py-3 md:px-5 font-bold text-slate-700 outline-none cursor-pointer hover:bg-slate-100 transition shadow-inner">
                             <option value="Tous">Toutes</option><option value="Analyse">Analyse</option><option value="Algebre">Algèbre</option><option value="Probabilites">Proba</option>
@@ -259,11 +286,12 @@ export const Dashboard: React.FC<{ progressData: ProgressRecord[], goHome: () =>
                                 <th className="px-4 py-4 md:px-8 md:py-6 cursor-pointer group hover:bg-slate-100 transition-colors text-center" onClick={() => toggleSort('score')}><div className="flex items-center justify-center text-[10px] md:text-xs font-black text-slate-500 uppercase tracking-widest">Aisance <SortIcon field="score"/></div></th>
                                 <th className="px-4 py-4 md:px-8 md:py-6 cursor-pointer group hover:bg-slate-100 transition-colors" onClick={() => toggleSort('timeSpent')}><div className="flex items-center text-[10px] md:text-xs font-black text-slate-500 uppercase tracking-widest">Temps <SortIcon field="timeSpent"/></div></th>
                                 <th className="px-4 py-4 md:px-8 md:py-6 cursor-pointer group hover:bg-slate-100 transition-colors text-right" onClick={() => toggleSort('date')}><div className="flex items-center justify-end text-[10px] md:text-xs font-black text-slate-500 uppercase tracking-widest">Date <SortIcon field="date"/></div></th>
+                                <th className="px-2 py-4 md:px-4 md:py-6 w-12"></th>
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                             {processedTableData.map((r, i) => (
-                                <tr key={i} className="hover:bg-indigo-50/50 transition-colors cursor-default">
+                                <tr key={i} className="hover:bg-indigo-50/50 transition-colors cursor-default group/row">
                                     <td className="px-4 py-3 md:px-8 md:py-5">
                                         <button
                                             onClick={() => setSelectedPdf({ id: r.id, type: r.type })}
@@ -278,11 +306,21 @@ export const Dashboard: React.FC<{ progressData: ProgressRecord[], goHome: () =>
                                     <td className="px-4 py-3 md:px-8 md:py-5 text-center"><div className="flex justify-center"><span className={`inline-flex items-center justify-center w-7 h-7 md:w-10 md:h-10 rounded-full font-black text-xs md:text-base shadow-sm border ${r.score >= 6 ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : r.score >= 4 ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-red-100 text-red-700 border-red-200'}`}>{r.score}</span></div></td>
                                     <td className="px-4 py-3 md:px-8 md:py-5 font-mono text-xs md:text-sm font-bold text-slate-500">{formatTime(r.timeSpent)}</td>
                                     <td className="px-4 py-3 md:px-8 md:py-5 text-right text-slate-500 text-[10px] md:text-xs font-bold tracking-wide">{new Date(r.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+
+                                    <td className="px-2 py-3 md:px-4 md:py-5 text-center">
+                                        <button
+                                            onClick={() => { if(window.confirm('Es-tu sûr de vouloir supprimer cet enregistrement ?')) onDeleteRecord?.(r); }}
+                                            className="text-slate-300 hover:text-red-500 transition-all p-1.5 md:p-2 rounded-lg hover:bg-red-50 opacity-0 group-hover/row:opacity-100"
+                                            title="Supprimer cette note"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                             {processedTableData.length === 0 && (
                                 <tr>
-                                    <td colSpan={5} className="py-12 md:py-24 text-center text-slate-400 font-bold text-sm">Aucun exercice trouvé avec ces filtres.</td>
+                                    <td colSpan={6} className="py-12 md:py-24 text-center text-slate-400 font-bold text-sm">Aucun exercice trouvé avec ces filtres.</td>
                                 </tr>
                             )}
                             </tbody>
@@ -290,6 +328,51 @@ export const Dashboard: React.FC<{ progressData: ProgressRecord[], goHome: () =>
                     </div>
                 </div>
             </div>
+
+            <Modal isOpen={isManualAddOpen} onClose={() => setIsManualAddOpen(false)} title="Ajout manuel d'une note">
+                <div className="space-y-6">
+                    <div>
+                        <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Numéro de l'exercice</label>
+                        <input
+                            type="number" min="1" max="112"
+                            value={manualId}
+                            onChange={e => setManualId(e.target.value ? parseInt(e.target.value) : '')}
+                            placeholder="Ex: 67"
+                            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none font-black text-slate-700 text-lg focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                        />
+                        <p className="text-[10px] text-indigo-500 font-bold mt-2 uppercase">
+                            {manualId && typeof manualId === 'number' && manualId >= 1 && manualId <= 112 ? `Matière : ${getExType(manualId)}` : 'Veuillez entrer un numéro entre 1 et 112.'}
+                        </p>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Évaluation (1 à 7)</label>
+                        <div className="flex flex-wrap justify-between gap-2 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            {[1, 2, 3, 4, 5, 6, 7].map(score => {
+                                const isActive = manualScore === score;
+                                const c = SCORE_UI[score];
+                                return (
+                                    <button
+                                        key={score}
+                                        onClick={() => setManualScore(score)}
+                                        className={`w-10 h-10 rounded-full font-black text-sm flex items-center justify-center transition-all border ${isActive ? `${c.color} ${c.text} shadow-md scale-110 border-transparent` : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-100'}`}
+                                    >
+                                        {score}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={handleManualSubmit}
+                        disabled={!manualId || typeof manualId !== 'number' || manualId < 1 || manualId > 112 || !manualScore || isSubmitting}
+                        className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-black transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    >
+                        {isSubmitting ? "Enregistrement..." : "Valider la note"}
+                    </button>
+                </div>
+            </Modal>
 
             {isDetailsModalOpen && (
                 <div className="fixed inset-0 z-[250] bg-slate-900/80 backdrop-blur-xl flex flex-col p-4 sm:p-6 md:p-10 animate-in fade-in duration-200">

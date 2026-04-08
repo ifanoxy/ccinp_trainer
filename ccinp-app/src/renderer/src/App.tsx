@@ -202,6 +202,17 @@ export default function App() {
         }
     };
 
+    const handleDeleteRecord = async (recordToDelete: ProgressRecord) => {
+        const updated = progressData.filter(r => r !== recordToDelete);
+        setProgressData(updated);
+
+        // Note: L'API saveProgress actuelle ne fait "qu'ajouter".
+        // Si tu as/fais une méthode overwriteProgress, décommente ceci :
+        // if (!activeProfile?.isIncognito && window.api && window.api.overwriteProgress) {
+        //     await window.api.overwriteProgress(activeProfile.id, updated);
+        // }
+    };
+
     if (isLoading) return <div className="h-screen bg-slate-900 flex items-center justify-center"><Loader2 className="text-indigo-500 animate-spin" size={64}/></div>;
 
     return (
@@ -213,7 +224,7 @@ export default function App() {
                 {view === 'profiles' && <ProfileSelect profiles={[...profiles, { id: 'incognito', name: 'Mode Invité', isIncognito: true }]} onSelect={handleSelectProfile} onCreate={handleCreateProfile} onDelete={handleDeleteProfile} />}
                 {view === 'home' && activeProfile && <Home activeProfile={activeProfile} progressData={progressData} startSession={handleStartSession} goToDashboard={() => setView('dashboard')} onChangeProfile={() => setView('profiles')} onDeleteData={handleDeleteData} />}
                 {view === 'session' && <Session queue={sessionQueue} notesData={notesData} sessionMode={sessionMode} sessionDuration={sessionDuration} endSession={() => setView('home')} onSaveNote={onSaveNote} onRate={onRate} />}
-                {view === 'dashboard' && <Dashboard progressData={progressData} goHome={() => setView('home')} />}
+                {view === 'dashboard' && <Dashboard progressData={progressData} goHome={() => setView('home')} onRate={onRate} onDeleteRecord={handleDeleteRecord} />}
             </div>
         </div>
     );

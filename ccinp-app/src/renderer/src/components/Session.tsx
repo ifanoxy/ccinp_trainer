@@ -33,9 +33,19 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
 
     useEffect(() => {
         if (!currentEx || !window.api || !window.api.updateDiscord) return;
+        const modeNames: Record<string, string> = {
+            'smart': 'Tirage Intelligent 🧠',
+            'random': 'Aléatoire Total 🔀',
+            'weakness': 'Mode Survie 🎯',
+            'simulation': 'Oral Blanc 🎓',
+            'blitz': 'Mode Blitz ⏱️',
+            'anki': 'Répétition Espacée 🧠',
+            'custom': 'Entraînement Libre ⚙️'
+        };
+
         const payload: any = {
-            details: sessionMode === 'smart' ? 'Tirage Intelligent' : 'Entraînement',
-            state: `Exo ${currentIndex + 1}/${queue.length} : #${currentEx.id}`
+            details: `${modeNames[sessionMode] || 'Entraînement'}`,
+            state: `Exo ${currentIndex + 1}/${queue.length} : #${currentEx.id} (${currentEx.type})`
         };
         if (isCountdown) payload.endTimestamp = countdownEndTs;
         else payload.startTimestamp = sessionStartTs;
@@ -111,6 +121,16 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
 
     const isTimeCritical = isCountdown && seconds < (sessionDuration * 0.2) && seconds > 0;
 
+    const handleSkipExercise = () => {
+        if (!currentEx) return;
+
+        if (currentIndex + 1 < queue.length) {
+            setCurrentIndex(curr => curr + 1);
+        } else {
+            setIsFinished(true);
+        }
+    };
+
     return (
         <div className="h-full flex flex-col bg-slate-50 overflow-hidden font-sans">
             <header className="bg-white/95 backdrop-blur-xl border-b border-slate-200 px-4 md:px-8 py-2 md:py-3 flex justify-between items-center shadow-sm z-20 shrink-0">
@@ -133,6 +153,14 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
                         {isPaused ? <PlayIcon className="w-5 h-5" fill="currentColor" /> : <Pause className="w-5 h-5" fill="currentColor" />}
                     </button>
                     <div className="hidden sm:block h-8 w-px bg-slate-300 mx-1"></div>
+
+                    <button
+                        onClick={handleSkipExercise}
+                        className="px-3 py-2 md:px-5 md:py-3 text-amber-600 hover:text-white hover:bg-amber-500 font-bold text-[10px] md:text-xs uppercase tracking-widest rounded-xl transition-colors bg-white border border-amber-200 mr-2"
+                    >
+                        Passer
+                    </button>
+
                     <button onClick={() => { if(window.confirm("Quitter la session ?")) endSession() }} className="px-3 py-2 md:px-5 md:py-3 text-slate-500 hover:text-white hover:bg-red-500 font-bold text-[10px] md:text-xs uppercase tracking-widest rounded-xl transition-colors bg-white border border-slate-200 hover:border-red-500">
                         Terminer
                     </button>
@@ -140,6 +168,7 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
             </header>
 
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden relative min-h-0 bg-white">
+
 
                 {isPaused && (
                     <div className="absolute inset-0 z-[100] bg-slate-900/40 backdrop-blur-xl flex flex-col items-center justify-center text-white animate-in fade-in p-4">
