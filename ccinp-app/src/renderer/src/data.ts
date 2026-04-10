@@ -14,7 +14,7 @@ export const BACKGROUND_LOGOS = Array.from({ length: 15 }).map((_, i) => ({
     endX: Math.random() * 100,
     endY: Math.random() * 100,
     rot: (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 180),
-    duration: 60 + Math.random() * 100, // Extrêmement lent
+    duration: 60 + Math.random() * 100,
     delay: -(Math.random() * 100),
     size: 40 + Math.random() * 80
 }));

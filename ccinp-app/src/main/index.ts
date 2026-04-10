@@ -4,6 +4,9 @@ import { join } from 'path'
 import { electronApp, is } from '@electron-toolkit/utils'
 import fs from 'fs'
 import { autoUpdater } from 'electron-updater';
+import {exec} from "node:child_process";
+import * as path from "node:path";
+import AdmZip from 'adm-zip';
 
 const userDataPath = app.getPath('userData')
 const exercicesPath = join(userDataPath, 'exercices')
@@ -11,6 +14,43 @@ const profilesPath = join(userDataPath, 'ccinp_profiles.json')
 
 const getProgressPath = (profileId: string) => join(userDataPath, `ccinp_progress_${profileId}.csv`)
 const getNotesPath = (profileId: string) => join(userDataPath, `ccinp_notes_${profileId}.json`)
+
+ipcMain.handle('check-latex', async () => {
+  return new Promise((resolve) => {
+    if (process.platform === 'darwin') {
+      const macPaths = [
+        '/Library/TeX/texbin/pdflatex',
+        '/opt/homebrew/bin/pdflatex',
+        '/usr/local/bin/pdflatex',
+        'pdflatex'
+      ];
+
+      let i = 0;
+      const testNextPath = () => {
+        if (i >= macPaths.length) {
+          resolve(false);
+          return;
+        }
+
+        exec(`${macPaths[i]} --version`, (error) => {
+          if (!error) {
+            resolve(true);
+          } else {
+            i++;
+            testNextPath();
+          }
+        });
+      };
+
+      testNextPath();
+
+    } else {
+      exec('pdflatex --version', (error) => {
+        resolve(!error);
+      });
+    }
+  });
+});
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'local', privileges: { secure: true, standard: true, supportFetchAPI: true, bypassCSP: true } }
@@ -199,6 +239,59 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('get-base-path', () => exercicesPath)
+
+  ipcMain.handle('export-bank', async (_, bank) => {
+    try {
+      const { canceled, filePath } = await dialog.showSaveDialog({
+        title: "Exporter la banque CCINP",
+        defaultPath: `CCINP_${bank.name.replace(/\s+/g, '_')}.zip`,
+        filters: [{ name: 'Archive ZIP', extensions: ['zip'] }]
+      });
+
+      if (canceled || !filePath) return { success: false, error: "Exportation annulée" };
+
+      const zip = new AdmZip();
+
+      zip.addFile("catalog.json", Buffer.from(JSON.stringify(bank.catalog)));
+
+      const pdfFolder = path.join(app.getPath('userData'), 'exercices');
+      if (fs.existsSync(pdfFolder)) {
+        zip.addLocalFolder(pdfFolder, "exercices");
+      }
+
+      zip.writeZip(filePath);
+      return { success: true };
+    } catch (err : any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('import-bank-zip', async () => {
+    try {
+      const { canceled, filePaths } = await dialog.showOpenDialog({
+        title: "Sélectionner la banque ZIP",
+        filters: [{ name: 'Archive ZIP', extensions: ['zip'] }],
+        properties: ['openFile']
+      });
+
+      if (canceled || filePaths.length === 0) return { success: false, error: "Importation annulée" };
+
+      const zip = new AdmZip(filePaths[0]);
+      const zipEntries = zip.getEntries();
+
+      const catalogEntry = zipEntries.find(entry => entry.entryName === "catalog.json");
+      if (!catalogEntry) return { success: false, error: "Le fichier n'est pas une banque CCINP valide (catalog.json manquant)." };
+
+      const catalogData = JSON.parse(catalogEntry.getData().toString('utf8'));
+
+      const destFolder = path.join(app.getPath('userData'), 'exercices');
+      zip.extractEntryTo("exercices/", destFolder, false, true);
+
+      return { success: true, catalog: catalogData };
+    } catch (err : any) {
+      return { success: false, error: err.message };
+    }
+  });
 
   createWindow()
   app.on('activate', function () { if (BrowserWindow.getAllWindows().length === 0) createWindow() })

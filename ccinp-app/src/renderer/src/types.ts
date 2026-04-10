@@ -16,7 +16,10 @@ export interface CustomAPI {
     getNotes: (profileId: string) => Promise<Record<number, UserNote>>;
     saveNote: (profileId: string, note: UserNote) => Promise<Record<number, UserNote>>;
     checkExercises: () => Promise<boolean>;
+    checkLatex: () => Promise<boolean>;
     importExercises: () => Promise<{success: boolean, error?: string}>;
+    exportBank: (bank) => Promise<{success: boolean, error?: string}>;
+    importBankZip: () => Promise<{success: boolean, error?: string, catalog?: Exercise[]}>;
     updateDiscord?: (data: { details: string; state: string; startTimestamp?: number; endTimestamp?: number; clear?: false } | { clear: true }) => void;
     getVersion?: () => Promise<string>;
     updater?: {
@@ -27,3 +30,9 @@ export interface CustomAPI {
     };
 }
 declare global { interface Window { api: CustomAPI; } }
+
+export interface Bank {
+    id: string;
+    name: string;
+    catalog: Exercise[];
+}

@@ -1,6 +1,6 @@
 {
   "name": "ccinp-app",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Apprendre les exercices de la banque CCINP",
   "main": "./out/main/index.js",
   "author": "example.com",
@@ -77,9 +77,12 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
+    "adm-zip": "^0.5.17",
     "discord-rpc-revamp": "^2.0.4",
     "electron-updater": "^6.8.3",
+    "install": "^0.13.0",
     "lucide-react": "^1.6.0",
+    "npm": "^11.12.1",
     "react-pdf": "^10.4.1"
   },
   "devDependencies": {

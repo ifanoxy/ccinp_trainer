@@ -1,89 +1,30 @@
-import React, { useMemo, useState } from "react";
-import { ArrowDownAZ, ArrowUpZA, BookOpen, BrainCircuit, Trophy, Clock, Target, X, List, Plus, Trash2 } from "lucide-react";
+import React, { useMemo, useState, useEffect } from "react";
+import { ArrowDownAZ, ArrowUpZA, BookOpen, BrainCircuit, Trophy, Clock, Target, X, List, Plus, Trash2, LibraryBig } from "lucide-react";
 import { AnimatedBackground, Modal } from "./SharedUI";
-import { ProgressRecord } from "../types";
-
-const ActivityHeatmap: React.FC<{ progressData: ProgressRecord[] }> = ({ progressData }) => {
-    const days = useMemo(() => {
-        const today = new Date();
-        return Array.from({ length: 90 }).map((_, i) => {
-            const d = new Date(today); d.setDate(d.getDate() - (89 - i));
-            return d.toISOString().split('T')[0];
-        });
-    }, []);
-
-    const counts = useMemo(() => progressData.reduce((acc, curr) => {
-        const d = new Date(curr.date).toISOString().split('T')[0];
-        acc[d] = (acc[d] || 0) + 1; return acc;
-    }, {} as Record<string, number>), [progressData]);
-
-    const maxCount = useMemo(() => {
-        const values = Object.values(counts);
-        return values.length > 0 ? Math.max(...values) : 0;
-    }, [counts]);
-
-    return (
-        <div className="bg-white p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] border border-slate-100 shadow-xl flex flex-col relative z-10 w-full h-full justify-between">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-4 md:mb-6 gap-3">
-                <p className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">Régularité (90 j.)</p>
-                <div className="flex items-center gap-2 text-[9px] md:text-[10px] font-bold text-slate-400">
-                    <span>Moins</span>
-                    <div className="flex gap-1">
-                        <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-[3px] bg-slate-100"></div>
-                        <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-[3px] bg-emerald-200"></div>
-                        <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-[3px] bg-emerald-400"></div>
-                        <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-[3px] bg-emerald-600"></div>
-                        <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-[3px] bg-emerald-800"></div>
-                    </div>
-                    <span>Plus</span>
-                    {maxCount > 0 && <span className="ml-1 md:ml-2 text-emerald-700 bg-emerald-50 px-1.5 md:px-2 py-0.5 rounded-md">Max: {maxCount}</span>}
-                </div>
-            </div>
-            <div className="flex flex-wrap gap-1 md:gap-1.5 justify-center sm:justify-start">
-                {days.map(d => {
-                    const count = counts[d] || 0;
-                    let bg = "bg-slate-100";
-
-                    if (count > 0 && maxCount > 0) {
-                        const ratio = count / maxCount;
-                        if (ratio <= 0.25) bg = "bg-emerald-200";
-                        else if (ratio <= 0.5) bg = "bg-emerald-400";
-                        else if (ratio <= 0.75) bg = "bg-emerald-600";
-                        else bg = "bg-emerald-800";
-                    }
-
-                    const dateStr = new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
-
-                    return (
-                        <div key={d} className="relative group">
-                            <div className={`w-3 h-3 md:w-4 md:h-4 rounded-[3px] md:rounded-[4px] transition-all duration-200 hover:ring-2 hover:ring-offset-1 ring-indigo-400 cursor-pointer ${bg}`} />
-
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-slate-800 text-white text-[10px] md:text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 shadow-xl whitespace-nowrap z-50 translate-y-1 group-hover:translate-y-0">
-                                {dateStr} : {count} exo{count > 1 ? 's' : ''}
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
-    );
-};
-
-type SortField = 'date' | 'score' | 'id' | 'timeSpent';
+import {ProgressRecord, Exercise, Bank} from "../types";
+import { PdfViewer } from "./PdfViewer";
 
 interface DashboardProps {
     progressData: ProgressRecord[];
+    banks: Bank[];
+    activeExos: number[];
     goHome: () => void;
     onRate?: (id: number, type: string, score: number, timeSpent: number) => Promise<void>;
     onDeleteRecord?: (record: ProgressRecord) => void;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRate, onDeleteRecord }) => {
+type SortField = 'date' | 'score' | 'id' | 'timeSpent';
+
+const ITEMS_PER_PAGE = 50;
+
+export const Dashboard: React.FC<DashboardProps> = ({ progressData, banks, goHome, onRate, onDeleteRecord }) => {
     const [viewMode, setViewMode] = useState<'latest'|'history'>('latest');
     const [filterType, setFilterType] = useState('Tous');
+    const [dashboardBankFilter, setDashboardBankFilter] = useState<string>('all');
+
     const [sortBy, setSortBy] = useState<SortField>('date');
     const [sortDesc, setSortDesc] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const [selectedPdf, setSelectedPdf] = useState<{id: number, type: string} | null>(null);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -93,29 +34,44 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
     const [manualScore, setManualScore] = useState<number | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const currentDashboardCatalog = useMemo(() => {
+        if (dashboardBankFilter === 'all') {
+            const allExos = new Map<number, Exercise>();
+            banks.forEach(b => b.catalog.forEach(ex => allExos.set(ex.id, ex)));
+            return Array.from(allExos.values());
+        }
+        return banks.find(b => b.id === dashboardBankFilter)?.catalog || [];
+    }, [banks, dashboardBankFilter]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [dashboardBankFilter, filterType, viewMode, sortBy, sortDesc]);
+
+    const availableTypes = useMemo(() => ['Tous', ...Array.from(new Set(currentDashboardCatalog.map(e => e.type)))], [currentDashboardCatalog]);
+
     const toggleSort = (field: SortField) => {
         if (sortBy === field) setSortDesc(!sortDesc);
         else { setSortBy(field); setSortDesc(true); }
     };
 
-    const getExType = (id: number) => {
-        if (id <= 58) return 'Analyse';
-        if (id <= 94) return 'Algebre';
-        return 'Probabilites';
-    };
+    const getExType = (id: number) => currentDashboardCatalog.find(e => e.id === id)?.type || 'Inconnu';
 
     const handleManualSubmit = async () => {
-        if (!manualId || manualId < 1 || manualId > 112 || !manualScore || !onRate) return;
+        const exObj = currentDashboardCatalog.find(e => e.id === manualId);
+        if (!exObj || !manualScore || !onRate) return;
         setIsSubmitting(true);
-        await onRate(manualId as number, getExType(manualId as number), manualScore, 0);
+        await onRate(exObj.id, exObj.type, manualScore, 0);
         setIsSubmitting(false);
         setIsManualAddOpen(false);
         setManualId('');
         setManualScore(null);
     };
 
-    const { kpis, ratingBreakdown, unseenList, processedTableData } = useMemo(() => {
-        let tableData = [...progressData];
+    const { kpis, ratingBreakdown, unseenList, totalPages, paginatedData } = useMemo(() => {
+        const catalogIds = new Set(currentDashboardCatalog.map(e => e.id));
+
+        let tableData = progressData.filter(r => catalogIds.has(r.id));
+
         if (viewMode === 'latest') {
             const map = new Map<number, ProgressRecord>();
             tableData.forEach(r => map.set(r.id, r));
@@ -132,28 +88,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
         });
 
         const latestMap = new Map<number, ProgressRecord>();
-        progressData.forEach(r => latestMap.set(r.id, r));
+        progressData.filter(r => catalogIds.has(r.id)).forEach(r => latestMap.set(r.id, r));
         const latest = Array.from(latestMap.values());
 
         const avg = latest.length > 0 ? (latest.reduce((a,c) => a+c.score,0)/latest.length) : 0;
-        const totalSeconds = progressData.reduce((acc, curr) => acc + curr.timeSpent, 0);
+        const totalSeconds = progressData.reduce((acc, curr) => catalogIds.has(curr.id) ? acc + curr.timeSpent : acc, 0);
         const mastered = latest.filter(r => r.score >= 6).length;
 
         const breakdown: Record<number, ProgressRecord[]> = { 7:[], 6:[], 5:[], 4:[], 3:[], 2:[], 1:[] };
-        latest.forEach(r => {
-            if (breakdown[r.score]) breakdown[r.score].push(r);
-        });
+        latest.forEach(r => { if (breakdown[r.score]) breakdown[r.score].push(r); });
 
-        const allExIds = Array.from({ length: 112 }, (_, i) => i + 1);
-        const unseenList = allExIds.filter(id => !latestMap.has(id));
+        const unseenList = currentDashboardCatalog.map(e => e.id).filter(id => !latestMap.has(id));
+
+        const tPages = Math.ceil(tableData.length / ITEMS_PER_PAGE);
+        const pData = tableData.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
         return {
-            kpis: { count: latest.length, avg: avg.toFixed(1), hours: Math.floor(totalSeconds / 3600), minutes: Math.floor((totalSeconds % 3600) / 60), mastered },
+            kpis: { count: latest.length, total: currentDashboardCatalog.length, avg: avg.toFixed(1), hours: Math.floor(totalSeconds / 3600), minutes: Math.floor((totalSeconds % 3600) / 60), mastered },
             ratingBreakdown: breakdown,
             unseenList,
-            processedTableData: tableData
+            processedTableData: tableData,
+            totalPages: tPages,
+            paginatedData: pData
         };
-    }, [progressData, viewMode, filterType, sortBy, sortDesc]);
+    }, [progressData, viewMode, filterType, sortBy, sortDesc, currentDashboardCatalog, currentPage]);
 
     const formatTime = (s: number) => `${Math.floor(s / 60)}m ${s % 60}s`;
 
@@ -182,7 +140,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                         <div className="p-3 md:p-4 bg-indigo-600 text-white rounded-xl md:rounded-2xl shadow-lg shadow-indigo-200"><Trophy className="w-6 h-6 md:w-7 md:h-7"/></div>
                         <div>
                             <h1 className="text-xl md:text-3xl font-black tracking-tight text-slate-900">Analyse de Performance</h1>
-                            <p className="text-[9px] md:text-xs font-bold text-slate-500 uppercase tracking-widest mt-0.5 md:mt-1">Statistiques CCINP</p>
+                            <div className="flex items-center gap-2 mt-0.5 md:mt-1">
+                                <LibraryBig size={14} className="text-indigo-500" />
+                                <select
+                                    value={dashboardBankFilter}
+                                    onChange={e => setDashboardBankFilter(e.target.value)}
+                                    className="bg-transparent text-[10px] md:text-xs font-bold text-indigo-600 uppercase tracking-widest outline-none cursor-pointer border-none p-0"
+                                >
+                                    <option value="all">TOUTES LES BANQUES</option>
+                                    {banks.map(b => <option key={b.id} value={b.id}>{b.name.toUpperCase()}</option>)}
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <button onClick={goHome} className="w-full sm:w-auto px-6 py-3 md:px-8 md:py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl md:rounded-2xl font-black shadow-lg transition-all text-xs md:text-sm hover:-translate-y-1">Retour Accueil</button>
@@ -195,7 +163,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                             <div className="bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-3xl md:rounded-[2.5rem] border border-white shadow-xl flex flex-col justify-center relative overflow-hidden">
                                 <BookOpen className="absolute top-4 right-4 md:top-6 md:right-6 text-blue-100 w-10 h-10 md:w-16 md:h-16"/>
                                 <p className="text-[9px] md:text-xs font-black text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Vus</p>
-                                <p className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 relative z-10">{kpis.count} <span className="text-sm md:text-xl text-slate-300 font-medium">/ 112</span></p>
+                                <p className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 relative z-10">{kpis.count} <span className="text-sm md:text-xl text-slate-300 font-medium">/ {kpis.total}</span></p>
                             </div>
                             <div className="bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-3xl md:rounded-[2.5rem] border border-white shadow-xl flex flex-col justify-center relative overflow-hidden">
                                 <BrainCircuit className="absolute top-4 right-4 md:top-6 md:right-6 text-emerald-100 w-10 h-10 md:w-16 md:h-16"/>
@@ -213,10 +181,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                                 <p className="text-3xl sm:text-4xl md:text-5xl font-black relative z-10 whitespace-nowrap">{kpis.hours}<span className="text-sm sm:text-lg md:text-2xl text-indigo-300 font-medium mr-1 md:mr-2">h</span>{kpis.minutes}<span className="text-sm sm:text-lg md:text-2xl text-indigo-300 font-medium">m</span></p>
                             </div>
                         </div>
-
-                        <div className="flex-1">
-                            <ActivityHeatmap progressData={progressData} />
-                        </div>
                     </div>
 
                     <div className="lg:col-span-1 bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] border border-white shadow-xl flex flex-col h-full">
@@ -231,9 +195,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                                 return (
                                     <div key={score} className="flex justify-between items-center group">
                                         <div className="flex items-center gap-2 md:gap-3">
-                                            <span className={`w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-[10px] md:text-xs font-black ${ui.color} ${ui.text} shadow-sm group-hover:scale-110 transition-transform`}>
-                                                {score}
-                                            </span>
+                                            <span className={`w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-[10px] md:text-xs font-black ${ui.color} ${ui.text} shadow-sm group-hover:scale-110 transition-transform`}>{score}</span>
                                             <span className="font-bold text-slate-600 text-xs md:text-sm">{ui.label}</span>
                                         </div>
                                         <span className="font-black text-slate-900 text-sm md:text-lg">{count} <span className="text-[9px] md:text-xs text-slate-400 font-bold ml-1 uppercase">exo{count > 1 ? 's' : ''}</span></span>
@@ -271,7 +233,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
 
                         <span className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest pl-2 sm:pl-0">Matière :</span>
                         <select value={filterType} onChange={e => setFilterType(e.target.value)} className="bg-slate-50 border border-slate-200 rounded-lg md:rounded-xl text-xs md:text-sm py-2 px-3 md:py-3 md:px-5 font-bold text-slate-700 outline-none cursor-pointer hover:bg-slate-100 transition shadow-inner">
-                            <option value="Tous">Toutes</option><option value="Analyse">Analyse</option><option value="Algebre">Algèbre</option><option value="Probabilites">Proba</option>
+                            {availableTypes.map(t => <option key={t} value={t}>{t === 'Tous' ? 'Toutes' : t}</option>)}
                         </select>
                     </div>
                 </div>
@@ -290,42 +252,37 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                            {processedTableData.map((r, i) => (
+                            {paginatedData.map((r, i) => (
                                 <tr key={i} className="hover:bg-indigo-50/50 transition-colors cursor-default group/row">
                                     <td className="px-4 py-3 md:px-8 md:py-5">
-                                        <button
-                                            onClick={() => setSelectedPdf({ id: r.id, type: r.type })}
-                                            className="font-black text-slate-900 text-sm md:text-lg hover:text-indigo-600 transition-all flex items-center gap-1.5 md:gap-2 group/pdf hover:scale-105"
-                                            title="Consulter le PDF de l'exercice"
-                                        >
-                                            #{r.id}
-                                            <BookOpen size={14} className="md:w-4 md:h-4 opacity-50 md:opacity-0 md:group-hover/pdf:opacity-100 text-indigo-500 transition-opacity" />
+                                        <button onClick={() => setSelectedPdf({ id: r.id, type: r.type })} className="font-black text-slate-900 text-sm md:text-lg hover:text-indigo-600 transition-all flex items-center gap-1.5 md:gap-2 group/pdf hover:scale-105">
+                                            #{r.id} <BookOpen size={14} className="md:w-4 md:h-4 opacity-50 md:opacity-0 md:group-hover/pdf:opacity-100 text-indigo-500 transition-opacity" />
                                         </button>
                                     </td>
                                     <td className="px-4 py-3 md:px-8 md:py-5"><span className="text-[9px] md:text-[10px] font-black text-slate-600 uppercase tracking-widest px-2 py-1 md:px-3 md:py-1.5 bg-slate-100 rounded-md md:rounded-lg">{r.type}</span></td>
                                     <td className="px-4 py-3 md:px-8 md:py-5 text-center"><div className="flex justify-center"><span className={`inline-flex items-center justify-center w-7 h-7 md:w-10 md:h-10 rounded-full font-black text-xs md:text-base shadow-sm border ${r.score >= 6 ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : r.score >= 4 ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-red-100 text-red-700 border-red-200'}`}>{r.score}</span></div></td>
                                     <td className="px-4 py-3 md:px-8 md:py-5 font-mono text-xs md:text-sm font-bold text-slate-500">{formatTime(r.timeSpent)}</td>
                                     <td className="px-4 py-3 md:px-8 md:py-5 text-right text-slate-500 text-[10px] md:text-xs font-bold tracking-wide">{new Date(r.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-
                                     <td className="px-2 py-3 md:px-4 md:py-5 text-center">
-                                        <button
-                                            onClick={() => { if(window.confirm('Es-tu sûr de vouloir supprimer cet enregistrement ?')) onDeleteRecord?.(r); }}
-                                            className="text-slate-300 hover:text-red-500 transition-all p-1.5 md:p-2 rounded-lg hover:bg-red-50 opacity-0 group-hover/row:opacity-100"
-                                            title="Supprimer cette note"
-                                        >
+                                        <button onClick={() => { if(window.confirm('Es-tu sûr de vouloir supprimer cet enregistrement ?')) onDeleteRecord?.(r); }} className="text-slate-300 hover:text-red-500 transition-all p-1.5 md:p-2 rounded-lg hover:bg-red-50 opacity-0 group-hover/row:opacity-100">
                                             <Trash2 size={16} />
                                         </button>
                                     </td>
                                 </tr>
                             ))}
-                            {processedTableData.length === 0 && (
-                                <tr>
-                                    <td colSpan={6} className="py-12 md:py-24 text-center text-slate-400 font-bold text-sm">Aucun exercice trouvé avec ces filtres.</td>
-                                </tr>
+                            {paginatedData.length === 0 && (
+                                <tr><td colSpan={6} className="py-12 md:py-24 text-center text-slate-400 font-bold text-sm">Aucun exercice trouvé avec ces filtres.</td></tr>
                             )}
                             </tbody>
                         </table>
                     </div>
+                    {totalPages > 1 && (
+                        <div className="flex justify-between items-center p-4 md:p-6 bg-slate-50 border-t border-slate-200">
+                            <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-colors shadow-sm">Précédent</button>
+                            <span className="text-xs md:text-sm font-bold text-slate-500">Page {currentPage} sur {totalPages}</span>
+                            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)} className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs md:text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-colors shadow-sm">Suivant</button>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -333,15 +290,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                 <div className="space-y-6">
                     <div>
                         <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Numéro de l'exercice</label>
-                        <input
-                            type="number" min="1" max="112"
-                            value={manualId}
-                            onChange={e => setManualId(e.target.value ? parseInt(e.target.value) : '')}
-                            placeholder="Ex: 67"
-                            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none font-black text-slate-700 text-lg focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all"
-                        />
+                        <input type="number" min="1" value={manualId} onChange={e => setManualId(e.target.value ? parseInt(e.target.value) : '')} placeholder="Ex: 67" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none font-black text-slate-700 text-lg focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all" />
                         <p className="text-[10px] text-indigo-500 font-bold mt-2 uppercase">
-                            {manualId && typeof manualId === 'number' && manualId >= 1 && manualId <= 112 ? `Matière : ${getExType(manualId)}` : 'Veuillez entrer un numéro entre 1 et 112.'}
+                            {manualId && typeof manualId === 'number' && currentDashboardCatalog.find(e => e.id === manualId) ? `Matière : ${getExType(manualId)}` : 'Veuillez entrer un numéro valide de la banque sélectionnée.'}
                         </p>
                     </div>
 
@@ -352,11 +303,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                                 const isActive = manualScore === score;
                                 const c = SCORE_UI[score];
                                 return (
-                                    <button
-                                        key={score}
-                                        onClick={() => setManualScore(score)}
-                                        className={`w-10 h-10 rounded-full font-black text-sm flex items-center justify-center transition-all border ${isActive ? `${c.color} ${c.text} shadow-md scale-110 border-transparent` : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-100'}`}
-                                    >
+                                    <button key={score} onClick={() => setManualScore(score)} className={`w-10 h-10 rounded-full font-black text-sm flex items-center justify-center transition-all border ${isActive ? `${c.color} ${c.text} shadow-md scale-110 border-transparent` : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-100'}`}>
                                         {score}
                                     </button>
                                 );
@@ -364,11 +311,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                         </div>
                     </div>
 
-                    <button
-                        onClick={handleManualSubmit}
-                        disabled={!manualId || typeof manualId !== 'number' || manualId < 1 || manualId > 112 || !manualScore || isSubmitting}
-                        className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-black transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-                    >
+                    <button onClick={handleManualSubmit} disabled={!manualId || typeof manualId !== 'number' || !currentDashboardCatalog.find(e => e.id === manualId) || !manualScore || isSubmitting} className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-black transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
                         {isSubmitting ? "Enregistrement..." : "Valider la note"}
                     </button>
                 </div>
@@ -379,14 +322,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                     <div className="max-w-5xl mx-auto w-full flex justify-between items-start md:items-center mb-4 md:mb-6 mt-6 md:mt-0">
                         <div>
                             <h2 className="text-xl md:text-3xl font-black text-white tracking-tight">Détail par Niveau</h2>
-                            <p className="text-[10px] md:text-xs text-indigo-400 font-bold uppercase tracking-widest mt-1">Liste complète des exercices</p>
+                            <p className="text-[10px] md:text-xs text-indigo-400 font-bold uppercase tracking-widest mt-1">Liste des exercices pour la banque sélectionnée</p>
                         </div>
-                        <button onClick={() => setIsDetailsModalOpen(false)} className="p-3 md:p-4 bg-white/10 hover:bg-red-500 text-white rounded-xl md:rounded-2xl transition-all shadow-lg hover:scale-105 shrink-0 ml-4">
-                            <X className="w-5 h-5 md:w-7 md:h-7" />
-                        </button>
+                        <button onClick={() => setIsDetailsModalOpen(false)} className="p-3 md:p-4 bg-white/10 hover:bg-red-500 text-white rounded-xl md:rounded-2xl transition-all shadow-lg hover:scale-105 shrink-0 ml-4"><X className="w-5 h-5 md:w-7 md:h-7" /></button>
                     </div>
 
-                    <div className="flex-1 w-full max-w-5xl mx-auto bg-white/95 backdrop-blur-3xl rounded-[2rem] md:rounded-[3rem] overflow-y-auto shadow-2xl border border-white p-5 md:p-12 mb-4">
+                    <div className="flex-1 w-full max-w-5xl mx-auto bg-white/95 backdrop-blur-3xl rounded-[2rem] md:rounded-[3rem] overflow-y-auto shadow-2xl border border-white p-5 md:p-12 mb-4 custom-scrollbar">
                         {[7, 6, 5, 4, 3, 2, 1].map(score => {
                             const exos = ratingBreakdown[score];
                             const ui = SCORE_UI[score];
@@ -398,11 +339,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                                     </h3>
                                     <div className="flex flex-wrap gap-1.5 md:gap-2">
                                         {exos.map(ex => (
-                                            <button
-                                                key={ex.id}
-                                                onClick={() => { setSelectedPdf({ id: ex.id, type: ex.type }); setIsDetailsModalOpen(false); }}
-                                                className="px-3 py-1.5 md:px-4 md:py-2 bg-slate-100 hover:bg-indigo-100 hover:text-indigo-700 hover:ring-2 ring-indigo-400 rounded-lg md:rounded-xl text-xs md:text-sm font-bold text-slate-600 transition-all cursor-pointer shadow-sm group"
-                                            >
+                                            <button key={ex.id} onClick={() => { setSelectedPdf({ id: ex.id, type: ex.type }); setIsDetailsModalOpen(false); }} className="px-3 py-1.5 md:px-4 md:py-2 bg-slate-100 hover:bg-indigo-100 hover:text-indigo-700 hover:ring-2 ring-indigo-400 rounded-lg md:rounded-xl text-xs md:text-sm font-bold text-slate-600 transition-all cursor-pointer shadow-sm group">
                                                 #{ex.id} <span className="text-[8px] md:text-[10px] uppercase opacity-60 ml-1 group-hover:opacity-100">{ex.type.substring(0,3)}</span>
                                             </button>
                                         ))}
@@ -421,15 +358,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                             </h3>
                             <div className="flex flex-wrap gap-1.5 md:gap-2">
                                 {unseenList.map(id => (
-                                    <button
-                                        key={id}
-                                        onClick={() => { setSelectedPdf({ id, type: getExType(id) }); setIsDetailsModalOpen(false); }}
-                                        className="px-3 py-1.5 md:px-4 md:py-2 bg-white border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg md:rounded-xl text-xs md:text-sm font-bold text-slate-400 transition-all cursor-pointer shadow-sm"
-                                    >
+                                    <button key={id} onClick={() => { setSelectedPdf({ id, type: getExType(id) }); setIsDetailsModalOpen(false); }} className="px-3 py-1.5 md:px-4 md:py-2 bg-white border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg md:rounded-xl text-xs md:text-sm font-bold text-slate-400 transition-all cursor-pointer shadow-sm">
                                         #{id}
                                     </button>
                                 ))}
-                                {unseenList.length === 0 && <span className="text-xs md:text-sm text-emerald-500 font-bold px-2 py-1">Bravo ! Tu as vu toute la banque.</span>}
+                                {unseenList.length === 0 && <span className="text-xs md:text-sm text-emerald-500 font-bold px-2 py-1">Bravo ! Tu as vu toute ta sélection.</span>}
                             </div>
                         </div>
                     </div>
@@ -443,29 +376,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ progressData, goHome, onRa
                             <h2 className="text-xl md:text-3xl font-black text-white italic tracking-tight">Exercice {selectedPdf.id}</h2>
                             <p className="text-[10px] md:text-xs text-indigo-400 font-bold uppercase tracking-widest mt-1">{selectedPdf.type}</p>
                         </div>
-                        <button
-                            onClick={() => setSelectedPdf(null)}
-                            className="p-3 md:p-4 bg-white/10 hover:bg-red-500 text-white rounded-xl md:rounded-2xl transition-all shadow-lg hover:shadow-red-500/30 hover:scale-105 shrink-0 ml-4"
-                            title="Fermer l'aperçu"
-                        >
-                            <X className="w-5 h-5 md:w-7 md:h-7" />
-                        </button>
+                        <button onClick={() => setSelectedPdf(null)} className="p-3 md:p-4 bg-white/10 hover:bg-red-500 text-white rounded-xl md:rounded-2xl transition-all shadow-lg hover:shadow-red-500/30 hover:scale-105 shrink-0 ml-4"><X className="w-5 h-5 md:w-7 md:h-7" /></button>
                     </div>
-
                     <div className="flex-1 w-full max-w-6xl mx-auto bg-white rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-700 relative mb-4">
-                        <embed
-                            src={`local://${selectedPdf.type}/exercice_${selectedPdf.id}.pdf#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
-                            type="application/pdf"
-                            className="w-full h-full relative z-10"
-                            style={{filter: 'contrast(1.05)'}}
-                        />
-                        {!window.api && (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50 text-slate-400 z-0 p-6 text-center">
-                                <BookOpen className="w-12 h-12 md:w-16 md:h-16 mb-4 opacity-20"/>
-                                <p className="font-bold text-base md:text-lg">Aperçu indisponible dans le navigateur</p>
-                                <p className="text-xs md:text-sm font-medium mt-2">Le PDF s'affichera dans l'application native.</p>
-                            </div>
-                        )}
+                        <PdfViewer url={`local://${selectedPdf.type}/exercice_${selectedPdf.id}.pdf`} />
                     </div>
                 </div>
             )}

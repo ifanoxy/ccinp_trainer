@@ -1,50 +1,56 @@
 import React, {useMemo, useState, useEffect} from "react";
 import {
-    BarChart3, BrainCircuit, ChevronRight, FolderDown, Ghost, GraduationCap, Loader2, Play, Settings,
-    Shuffle, Target, Trash2, Users, CalendarDays, Flag, Gamepad2, Layers, Timer, SlidersHorizontal, Brain, ExternalLink, Info, RefreshCw
+    BarChart3, BrainCircuit, ChevronRight, Ghost, GraduationCap, Play, Settings,
+    Shuffle, Target, Trash2, Users, CalendarDays, Flag, Gamepad2, Layers, Timer, SlidersHorizontal, Brain, ListChecks, RefreshCw
 } from "lucide-react";
-import {ProgressRecord, SessionMode, UserProfile} from "../types";
-import {EXERCISES} from "../data";
+import {Exercise, ProgressRecord, SessionMode, UserProfile} from "../types";
 import {AnimatedBackground, Modal} from "./SharedUI";
 
 interface HomeProps {
     activeProfile: UserProfile;
     progressData: ProgressRecord[];
+    catalog: Exercise[];
+    activeExos: number[];
     startSession: (mode: SessionMode, duration?: number, filters?: any) => void;
     goToDashboard: () => void;
     onChangeProfile: () => void;
     onDeleteData: () => void;
+    onManageBank: () => void;
 }
 
-export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSession, goToDashboard, onChangeProfile, onDeleteData }) => {
+export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, catalog, activeExos, startSession, goToDashboard, onChangeProfile, onDeleteData, onManageBank }) => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isOtherModesOpen, setIsOtherModesOpen] = useState(false);
     const [showBlitzOptions, setShowBlitzOptions] = useState(false);
 
     const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
-    const [customTypes, setCustomTypes] = useState<string[]>(['Analyse', 'Algebre', 'Probabilites']);
+    const [customTypes, setCustomTypes] = useState<string[]>([]);
     const [customStatus, setCustomStatus] = useState<'all' | 'seen' | 'unseen'>('all');
     const [customScores, setCustomScores] = useState<number[]>([1, 2, 3, 4, 5, 6, 7]);
 
-    const [isImporting, setIsImporting] = useState(false);
-    const [deadline, setDeadline] = useState<string>('');
+    const [deadline, setDeadline] = useState<string>(() => localStorage.getItem(`ccinp_deadline_${activeProfile.id}`) || '');
     const [discordEnabled, setDiscordEnabled] = useState<boolean>(true);
-
     const [appVersion, setAppVersion] = useState<string>('1.0.0');
 
-    useEffect(() => {
-        setDeadline(localStorage.getItem(`ccinp_deadline_${activeProfile.id}`) || '');
-        setDiscordEnabled(localStorage.getItem('ccinp_discord_rpc') !== 'false');
+    const availableTypes = useMemo(() => Array.from(new Set(catalog.map(e => e.type))), [catalog]);
 
-        if (window.api && window.api.getVersion) {
-            window.api.getVersion().then(setAppVersion);
-        }
+    useEffect(() => {
+        setCustomTypes(availableTypes);
+    }, [availableTypes]);
+
+    useEffect(() => {
+        const savedDeadline = localStorage.getItem(`ccinp_deadline_${activeProfile.id}`);
+        if (savedDeadline && savedDeadline !== deadline) setDeadline(savedDeadline);
+
+        setDiscordEnabled(localStorage.getItem('ccinp_discord_rpc') !== 'false');
+        if (window.api && window.api.getVersion) window.api.getVersion().then(setAppVersion);
     }, [activeProfile.id]);
 
-    useEffect(() => {
-        if (deadline) localStorage.setItem(`ccinp_deadline_${activeProfile.id}`, deadline);
+    const handleDeadlineChange = (val: string) => {
+        setDeadline(val);
+        if (val) localStorage.setItem(`ccinp_deadline_${activeProfile.id}`, val);
         else localStorage.removeItem(`ccinp_deadline_${activeProfile.id}`);
-    }, [deadline, activeProfile.id]);
+    };
 
     const toggleDiscord = () => {
         const newValue = !discordEnabled;
@@ -55,6 +61,15 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
             window.api.updateDiscord({ clear: true } as any);
         } else if (newValue && window.api && window.api.updateDiscord) {
             window.api.updateDiscord({ details: "Dans les paramètres", state: "Configuration de l'app" });
+        }
+    };
+
+    const handleCheckForUpdates = () => {
+        if (window.api && window.api.updater) {
+            window.api.updater.check();
+            setIsSettingsOpen(false);
+        } else {
+            alert("La recherche de mise à jour n'est disponible que dans l'application native.");
         }
     };
 
@@ -83,22 +98,22 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
         setIsCustomModalOpen(false);
     };
 
-    const uniqueSeenIds = new Set(progressData.map(p => p.id)).size;
-    const progressPercent = Math.round((uniqueSeenIds / EXERCISES.length) * 100);
+    const uniqueSeenIds = new Set(progressData.filter(p => activeExos.includes(p.id)).map(p => p.id)).size;
+    const progressPercent = activeExos.length > 0 ? Math.round((uniqueSeenIds / activeExos.length) * 100) : 0;
 
     const weakExercisesCount = useMemo(() => {
         const map = new Map<number, ProgressRecord>();
-        progressData.forEach(r => map.set(r.id, r));
+        progressData.filter(p => activeExos.includes(p.id)).forEach(r => map.set(r.id, r));
         return Array.from(map.values()).filter(r => r.score <= 3).length;
-    }, [progressData]);
+    }, [progressData, activeExos]);
 
     const { masteredTodayCount, dailyGoal, daysRemaining } = useMemo(() => {
         const latestMap = new Map<number, ProgressRecord>();
-        progressData.forEach(r => latestMap.set(r.id, r));
+        progressData.filter(p => activeExos.includes(p.id)).forEach(r => latestMap.set(r.id, r));
         const latest = Array.from(latestMap.values());
 
         const mastered = latest.filter(r => r.score >= 6);
-        const remainingExos = EXERCISES.length - mastered.length;
+        const remainingExos = activeExos.length - mastered.length;
 
         const todayStr = new Date().toDateString();
         const masteredTodayCount = mastered.filter(r => new Date(r.date).toDateString() === todayStr).length;
@@ -115,39 +130,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
         }
 
         return { masteredTodayCount, dailyGoal, daysRemaining };
-    }, [progressData, deadline]);
-
-    const handleUpdateBankLocal = async () => {
-        if (!window.api) return alert("Fonctionnalité disponible dans l'app locale.");
-        setIsImporting(true);
-        try {
-            const res = await window.api.importExercises();
-            if (res.success) alert("Banque d'exercices mise à jour avec succès !");
-            else if (res.error) alert(`Erreur : ${res.error}`);
-        } catch(e) { alert("Erreur."); }
-        setIsImporting(false); setIsSettingsOpen(false);
-    };
-
-    const handleOpenBankPage = async () => {
-        try {
-            const res = await fetch('./config.json');
-            const config = await res.json();
-            if (config && config.bankUrl) window.open(config.bankUrl, '_blank');
-            else throw new Error("L'URL n'est pas définie dans config.json");
-        } catch (error) {
-            window.open('https://github.com/ton-pseudo/ccinp-trainer-pro/releases', '_blank');
-        }
-        setIsSettingsOpen(false);
-    };
-
-    const handleCheckForUpdates = () => {
-        if (window.api && window.api.updater) {
-            window.api.updater.check();
-        } else {
-            alert("Les mises à jour automatiques ne sont pas disponibles dans cette version.");
-        }
-        setIsSettingsOpen(false);
-    };
+    }, [progressData, deadline, activeExos]);
 
     const SCORE_COLORS: Record<number, { bg: string, text: string, border: string, active: string }> = {
         1: { bg: "bg-red-50", text: "text-red-600", border: "border-red-200", active: "bg-red-500 text-white border-red-600" },
@@ -203,7 +186,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                         <div className="flex justify-between items-end mb-4">
                             <div>
                                 <p className="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter">{uniqueSeenIds}</p>
-                                <p className="text-[10px] md:text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">sur 112 exercices</p>
+                                <p className="text-[10px] md:text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">sur {activeExos.length} exercices actifs</p>
                             </div>
                             <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center">
                                 <span className="text-lg md:text-xl font-black text-indigo-600">{progressPercent}%</span>
@@ -214,12 +197,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                         </div>
                         {weakExercisesCount > 0 && (
                             <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-bold text-amber-700 bg-amber-50 border border-amber-100 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl animate-pulse">
-                                <Target className="w-4 h-4 md:w-4 md:h-4 shrink-0" /> {weakExercisesCount} exercice(s) raté(s) détecté(s)
-                            </div>
-                        )}
-                        {activeProfile.isIncognito && (
-                            <div className="mt-3 md:mt-4 bg-slate-800 text-slate-300 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-xs font-bold flex items-center gap-2 md:gap-3 border border-slate-700">
-                                <Ghost className="w-4 h-4 md:w-4 md:h-4 text-indigo-400 shrink-0" /> Mode Invité : Progression non sauvegardée.
+                                <Target className="w-4 h-4 md:w-4 md:h-4 shrink-0" /> {weakExercisesCount} exercice(s) raté(s) dans ta sélection
                             </div>
                         )}
                     </div>
@@ -296,9 +274,9 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                     <div>
                         <h3 className="text-[10px] md:text-xs font-black text-slate-500 uppercase tracking-widest mb-2 md:mb-3">1. Matières ciblées</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-3">
-                            {['Analyse', 'Algebre', 'Probabilites'].map(t => (
+                            {availableTypes.map(t => (
                                 <button key={t} onClick={() => toggleCustomType(t)} className={`py-3 md:py-4 px-2 rounded-xl md:rounded-2xl text-xs font-bold transition-all border shadow-sm ${customTypes.includes(t) ? 'bg-indigo-500 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 opacity-60'}`}>
-                                    {t === 'Probabilites' ? 'Probas' : t}
+                                    {t}
                                 </button>
                             ))}
                         </div>
@@ -307,7 +285,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                     <div>
                         <h3 className="text-[10px] md:text-xs font-black text-slate-500 uppercase tracking-widest mb-2 md:mb-3">2. Statut des exercices</h3>
                         <div className="flex flex-col sm:flex-row bg-slate-100 p-1 md:p-1.5 rounded-xl md:rounded-2xl shadow-inner border border-slate-200 gap-1">
-                            <button onClick={() => setCustomStatus('all')} className={`flex-1 py-2 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black transition-all ${customStatus === 'all' ? 'bg-white text-indigo-700 shadow border border-slate-200' : 'text-slate-500 hover:text-slate-700'}`}>Toute la banque</button>
+                            <button onClick={() => setCustomStatus('all')} className={`flex-1 py-2 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black transition-all ${customStatus === 'all' ? 'bg-white text-indigo-700 shadow border border-slate-200' : 'text-slate-500 hover:text-slate-700'}`}>Toute la sélection</button>
                             <button onClick={() => setCustomStatus('unseen')} className={`flex-1 py-2 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black transition-all ${customStatus === 'unseen' ? 'bg-white text-indigo-700 shadow border border-slate-200' : 'text-slate-500 hover:text-slate-700'}`}>Non vus</button>
                             <button onClick={() => setCustomStatus('seen')} className={`flex-1 py-2 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black transition-all ${customStatus === 'seen' ? 'bg-white text-indigo-700 shadow border border-slate-200' : 'text-slate-500 hover:text-slate-700'}`}>Déjà vus</button>
                         </div>
@@ -324,11 +302,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                                     const isActive = customScores.includes(score);
                                     const c = SCORE_COLORS[score];
                                     return (
-                                        <button
-                                            key={score}
-                                            onClick={() => toggleCustomScore(score)}
-                                            className={`shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full font-black text-xs md:text-sm flex items-center justify-center transition-all border ${isActive ? `${c.active} shadow-md scale-110` : `${c.bg} ${c.text} ${c.border} opacity-40 hover:opacity-100`}`}
-                                        >
+                                        <button key={score} onClick={() => toggleCustomScore(score)} className={`shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full font-black text-xs md:text-sm flex items-center justify-center transition-all border ${isActive ? `${c.active} shadow-md scale-110` : `${c.bg} ${c.text} ${c.border} opacity-40 hover:opacity-100`}`}>
                                             {score}
                                         </button>
                                     )
@@ -352,10 +326,6 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                                 <p className="font-black text-sm md:text-base text-slate-800">Mode Anki (Révisions)</p>
                                 <p className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase mt-0.5">Algorithme d'oubli espacé</p>
                             </div>
-                        </div>
-                        <div className="bg-white p-2 md:p-3 rounded-lg md:rounded-xl border border-indigo-100 text-[10px] md:text-xs text-slate-600 font-medium flex gap-2 items-start shadow-sm w-full mt-1">
-                            <Info className="w-3 h-3 md:w-4 md:h-4 text-indigo-500 shrink-0 mt-0.5" />
-                            <p>Priorise automatiquement les exercices ayant reçu <strong className="text-indigo-700">une mauvaise note</strong> ou qui n'ont <strong className="text-indigo-700">pas été revus depuis longtemps</strong>.</p>
                         </div>
                     </button>
 
@@ -390,7 +360,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                         <div className="w-8 h-8 md:w-10 md:h-10 bg-slate-200 text-slate-600 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform"><Shuffle className="w-4 h-4 md:w-5 md:h-5" /></div>
                         <div>
                             <p className="font-black text-sm md:text-base text-slate-800">Aléatoire Total</p>
-                            <p className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase mt-0.5">Toute la banque (∞)</p>
+                            <p className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase mt-0.5">Tout tes exos actifs (∞)</p>
                         </div>
                     </button>
 
@@ -403,22 +373,17 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                             <p className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase mt-0.5">Filtres : Matières, Notes, Statut</p>
                         </div>
                     </button>
-
                 </div>
             </Modal>
 
             <Modal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} title="Paramètres">
                 <div className="space-y-3 md:space-y-4">
                     <div className="bg-blue-50 border border-blue-200 rounded-xl md:rounded-2xl p-3 md:p-4 mb-2">
-                        <h3 className="text-[10px] md:text-xs font-black text-blue-800 uppercase tracking-widest mb-2 md:mb-3">Gestion de la Banque PDF</h3>
+                        <h3 className="text-[10px] md:text-xs font-black text-blue-800 uppercase tracking-widest mb-2 md:mb-3">Gestion de la Banque</h3>
                         <div className="space-y-2">
-                            <button onClick={handleOpenBankPage} className="w-full flex items-center justify-between p-2 md:p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg md:rounded-xl transition-colors font-bold text-xs md:text-sm shadow-md">
-                                <span className="flex items-center gap-2 md:gap-3"><ExternalLink size={16} className="md:w-[18px] md:h-[18px]" /> Télécharger la banque</span>
-                                <span className="text-[8px] md:text-[10px] bg-blue-800/50 px-2 py-1 rounded">Ouvrir le lien</span>
-                            </button>
-                            <button onClick={handleUpdateBankLocal} disabled={isImporting} className="w-full flex items-center gap-2 md:gap-3 p-2 md:p-3 text-left bg-white hover:bg-slate-50 rounded-lg md:rounded-xl transition-colors font-bold text-slate-700 border border-slate-200 text-xs md:text-sm shadow-sm">
-                                {isImporting ? <Loader2 size={16} className="animate-spin md:w-[18px] md:h-[18px]"/> : <FolderDown size={16} className="md:w-[18px] md:h-[18px]"/>}
-                                Importer un dossier PDF local
+                            <button onClick={() => { setIsSettingsOpen(false); onManageBank(); }} className="w-full flex items-center justify-between p-2 md:p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg md:rounded-xl transition-colors font-bold text-xs md:text-sm shadow-md">
+                                <span className="flex items-center gap-2 md:gap-3"><ListChecks size={16} className="md:w-[18px] md:h-[18px]" /> Gérer les exercices (.tex)</span>
+                                <span className="text-[8px] md:text-[10px] bg-blue-800/50 px-2 py-1 rounded">Configurer</span>
                             </button>
                         </div>
                     </div>
@@ -441,13 +406,7 @@ export const Home: React.FC<HomeProps> = ({ activeProfile, progressData, startSe
                             <label className="flex items-center gap-2 md:gap-3 text-xs md:text-sm font-bold text-slate-800 mb-2 md:mb-3">
                                 <CalendarDays className="w-4 h-4 md:w-5 md:h-5 text-indigo-500"/> Objectif : Date de l'oral
                             </label>
-                            <input
-                                type="date"
-                                value={deadline}
-                                min={new Date().toISOString().split('T')[0]}
-                                onChange={(e) => setDeadline(e.target.value)}
-                                className="w-full p-2.5 md:p-3 rounded-lg md:rounded-xl border border-slate-300 text-xs md:text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer"
-                            />
+                            <input type="date" value={deadline} min={new Date().toISOString().split('T')[0]} onChange={(e) => handleDeadlineChange(e.target.value)} className="w-full p-2.5 md:p-3 rounded-lg md:rounded-xl border border-slate-300 text-xs md:text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer" />
                         </div>
                     )}
 

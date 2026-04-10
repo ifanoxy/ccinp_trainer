@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {Loader2} from 'lucide-react';
-import {Exercise, ProgressRecord, SessionMode, UserNote, UserProfile} from "./types";
+import {Bank, Exercise, ProgressRecord, SessionMode, UserNote, UserProfile} from "./types";
 import {EXERCISES} from "./data";
 import {CustomTitleBar} from "./components/SharedUI";
 import {Dashboard} from "./components/Dashboard";
@@ -9,10 +9,11 @@ import {ProfileSelect} from "./components/ProfileSelect";
 import {Setup} from "./components/Setup";
 import {Home} from "./components/Home"
 import { UpdaterAlert } from "./components/UpdaterAlert";
+import { BankManager } from "./components/BankManager";
 
 const APP_START_TIME = Date.now();
 
-function shuffle(array) {
+function shuffle(array: any[]) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
@@ -21,7 +22,7 @@ function shuffle(array) {
 }
 
 export default function App() {
-    const [view, setView] = useState<'profiles' | 'setup' | 'home' | 'session' | 'dashboard'>('profiles');
+    const [view, setView] = useState<'profiles' | 'setup' | 'home' | 'session' | 'dashboard' | 'bank'>('profiles');
     const [profiles, setProfiles] = useState<UserProfile[]>([]);
     const [activeProfile, setActiveProfile] = useState<UserProfile | null>(null);
 
@@ -33,6 +34,12 @@ export default function App() {
     const [sessionMode, setSessionMode] = useState<SessionMode>('smart');
     const [sessionDuration, setSessionDuration] = useState<number>(0);
 
+    const [banks, setBanks] = useState<Bank[]>([{ id: 'default', name: 'Banque Officielle', catalog: EXERCISES }]);
+    const [activeBankId, setActiveBankId] = useState<string>('default');
+    const [activeExos, setActiveExos] = useState<number[]>([]);
+
+    const catalog = useMemo(() => banks.find(b => b.id === activeBankId)?.catalog || EXERCISES, [banks, activeBankId]);
+
     useEffect(() => {
         const initApp = async () => {
             if (window.api && window.api.checkExercises) {
@@ -43,6 +50,10 @@ export default function App() {
             } else {
                 setProfiles([{ id: 'guest', name: 'Démo Invité', isIncognito: true }]);
             }
+
+            const localBanks = localStorage.getItem('ccinp_banks');
+            if (localBanks) setBanks(JSON.parse(localBanks));
+
             setIsLoading(false);
         };
         initApp();
@@ -60,11 +71,30 @@ export default function App() {
             window.api.updateDiscord({ details: "Dans les menus", state: "Se prépare à réviser...", startTimestamp: APP_START_TIME });
         } else if (view === 'dashboard') {
             window.api.updateDiscord({ details: "Analyse ses statistiques 📊", state: "Tableau de Bord", startTimestamp: APP_START_TIME });
+        } else if (view === 'bank') {
+            window.api.updateDiscord({ details: "Configure sa banque ⚙️", state: "Gestion des exercices", startTimestamp: APP_START_TIME });
         }
     }, [view, activeProfile]);
 
+    const loadActiveExos = (profileId: string, bankId: string, currentBanks: Bank[]) => {
+        const localActive = localStorage.getItem(`ccinp_active_${profileId}_${bankId}`);
+        if (localActive) {
+            setActiveExos(JSON.parse(localActive));
+        } else if (bankId === 'default' && localStorage.getItem(`ccinp_active_${profileId}`)) {
+            setActiveExos(JSON.parse(localStorage.getItem(`ccinp_active_${profileId}`)!));
+        } else {
+            const cat = currentBanks.find(b => b.id === bankId)?.catalog || EXERCISES;
+            setActiveExos(cat.map(e => e.id));
+        }
+    };
+
     const handleSelectProfile = async (profile: UserProfile) => {
         setActiveProfile(profile);
+
+        const savedBankId = localStorage.getItem(`ccinp_active_bank_id_${profile.id}`) || 'default';
+        setActiveBankId(savedBankId);
+        loadActiveExos(profile.id, savedBankId, banks);
+
         if (!profile.isIncognito && window.api && window.api.getProgress) {
             setProgressData(await window.api.getProgress(profile.id) || []);
             setNotesData(await window.api.getNotes(profile.id) || {});
@@ -72,6 +102,17 @@ export default function App() {
             setProgressData([]); setNotesData({});
         }
         setView('home');
+    };
+
+    const handleChangeActiveBank = (bankId: string) => {
+        setActiveBankId(bankId);
+        if (activeProfile && !activeProfile.isIncognito) {
+            localStorage.setItem(`ccinp_active_bank_id_${activeProfile.id}`, bankId);
+            loadActiveExos(activeProfile.id, bankId, banks);
+        } else {
+            const cat = banks.find(b => b.id === bankId)?.catalog || EXERCISES;
+            setActiveExos(cat.map(e => e.id));
+        }
     };
 
     const handleCreateProfile = async (name: string) => {
@@ -99,14 +140,19 @@ export default function App() {
     };
 
     const handleStartSession = (mode: SessionMode, duration: number = 0, filters?: any) => {
-        let pool = [...EXERCISES];
+        let pool = catalog.filter(ex => activeExos.includes(ex.id));
         let available: Exercise[] = [];
+
+        if (pool.length === 0) {
+            alert("Aucun exercice actif ! Va dans les paramètres pour activer des chapitres.");
+            return;
+        }
 
         if (mode === 'simulation') {
             const analysePool = pool.filter(e => e.type === 'Analyse');
             const autrePool = pool.filter(e => e.type !== 'Analyse');
-            available.push(analysePool[Math.floor(Math.random() * analysePool.length)]);
-            available.push(autrePool[Math.floor(Math.random() * autrePool.length)]);
+            if (analysePool.length > 0) available.push(analysePool[Math.floor(Math.random() * analysePool.length)]);
+            if (autrePool.length > 0) available.push(autrePool[Math.floor(Math.random() * autrePool.length)]);
             setSessionDuration(25 * 60);
         }
         else if (mode === 'weakness') {
@@ -114,7 +160,7 @@ export default function App() {
             progressData.forEach(r => map.set(r.id, r));
             const weakIds = Array.from(map.values()).filter(r => r.score <= 3).map(r => r.id);
             available = pool.filter(ex => weakIds.includes(ex.id));
-            if (available.length === 0) { alert("Aucune faiblesse détectée !"); return; }
+            if (available.length === 0) { alert("Aucune faiblesse détectée dans tes exercices actifs !"); return; }
             available = shuffle(available);
             setSessionDuration(0);
         }
@@ -205,12 +251,6 @@ export default function App() {
     const handleDeleteRecord = async (recordToDelete: ProgressRecord) => {
         const updated = progressData.filter(r => r !== recordToDelete);
         setProgressData(updated);
-
-        // Note: L'API saveProgress actuelle ne fait "qu'ajouter".
-        // Si tu as/fais une méthode overwriteProgress, décommente ceci :
-        // if (!activeProfile?.isIncognito && window.api && window.api.overwriteProgress) {
-        //     await window.api.overwriteProgress(activeProfile.id, updated);
-        // }
     };
 
     if (isLoading) return <div className="h-screen bg-slate-900 flex items-center justify-center"><Loader2 className="text-indigo-500 animate-spin" size={64}/></div>;
@@ -222,9 +262,49 @@ export default function App() {
             <div className="flex-1 overflow-hidden relative pt-10">
                 {view === 'setup' && <Setup onSuccess={() => setView('profiles')} />}
                 {view === 'profiles' && <ProfileSelect profiles={[...profiles, { id: 'incognito', name: 'Mode Invité', isIncognito: true }]} onSelect={handleSelectProfile} onCreate={handleCreateProfile} onDelete={handleDeleteProfile} />}
-                {view === 'home' && activeProfile && <Home activeProfile={activeProfile} progressData={progressData} startSession={handleStartSession} goToDashboard={() => setView('dashboard')} onChangeProfile={() => setView('profiles')} onDeleteData={handleDeleteData} />}
+
+                {view === 'home' && activeProfile && <Home activeProfile={activeProfile} progressData={progressData} catalog={catalog} activeExos={activeExos} startSession={handleStartSession} goToDashboard={() => setView('dashboard')} onChangeProfile={() => setView('profiles')} onDeleteData={handleDeleteData} onManageBank={() => setView('bank')} />}
+
+                {view === 'dashboard' && <Dashboard progressData={progressData} banks={banks} activeExos={activeExos} goHome={() => setView('home')} onRate={onRate} onDeleteRecord={handleDeleteRecord} />}
+
                 {view === 'session' && <Session queue={sessionQueue} notesData={notesData} sessionMode={sessionMode} sessionDuration={sessionDuration} endSession={() => setView('home')} onSaveNote={onSaveNote} onRate={onRate} />}
-                {view === 'dashboard' && <Dashboard progressData={progressData} goHome={() => setView('home')} onRate={onRate} onDeleteRecord={handleDeleteRecord} />}
+
+                {view === 'bank' && <BankManager
+                    banks={banks}
+                    activeBankId={activeBankId}
+                    activeExos={activeExos}
+                    onChangeBank={handleChangeActiveBank}
+                    onCreateBank={(name, newCatalog) => {
+                        const newBank = { id: Date.now().toString(), name, catalog: newCatalog };
+                        const updatedBanks = [...banks, newBank];
+                        setBanks(updatedBanks);
+                        localStorage.setItem('ccinp_banks', JSON.stringify(updatedBanks));
+
+                        setActiveBankId(newBank.id);
+                        const newActiveIds = newCatalog.map(e => e.id);
+                        setActiveExos(newActiveIds);
+
+                        if (activeProfile && !activeProfile.isIncognito) {
+                            localStorage.setItem(`ccinp_active_bank_id_${activeProfile.id}`, newBank.id);
+                            localStorage.setItem(`ccinp_active_${activeProfile.id}_${newBank.id}`, JSON.stringify(newActiveIds));
+                        }
+                    }}
+                    onDeleteBank={(bankIdToDelete) => {
+                        const updatedBanks = banks.filter(b => b.id !== bankIdToDelete);
+                        setBanks(updatedBanks);
+                        localStorage.setItem('ccinp_banks', JSON.stringify(updatedBanks));
+
+                        handleChangeActiveBank('default');
+                    }}
+                    onSave={(newActiveExos) => {
+                        setActiveExos(newActiveExos);
+                        if (activeProfile && !activeProfile.isIncognito) {
+                            localStorage.setItem(`ccinp_active_${activeProfile.id}_${activeBankId}`, JSON.stringify(newActiveExos));
+                        }
+                        setView('home');
+                    }}
+                    onCancel={() => setView('home')}
+                />}
             </div>
         </div>
     );

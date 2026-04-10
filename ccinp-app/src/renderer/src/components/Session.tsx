@@ -58,7 +58,14 @@ export const Session: React.FC<SessionProps> = ({ queue, notesData, sessionMode,
         setIsPaused(false);
         setNoteText(notesData[currentEx.id]?.hint || '');
         setShowMobilePanel(false);
-    }, [currentIndex, currentEx, isCountdown, sessionDuration, sessionMode, notesData]);
+    }, [currentIndex, currentEx, isCountdown, sessionDuration, sessionMode]);
+
+    useEffect(() => {
+        if (!currentEx) return;
+        setIsPaused(false);
+        setNoteText(notesData[currentEx.id]?.hint || '');
+        setShowMobilePanel(false);
+    }, [currentIndex, currentEx, notesData]);
 
     const handleSaveNote = async () => {
         if (!currentEx) return;

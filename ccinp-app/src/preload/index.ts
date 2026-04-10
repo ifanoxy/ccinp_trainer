@@ -1,4 +1,3 @@
-// Path: src/preload/index.ts
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
@@ -21,6 +20,9 @@ const api = {
   getBasePath: () => ipcRenderer.invoke('get-base-path'),
   updateDiscord: (data) => ipcRenderer.send('update-discord', data),
   getVersion: () => ipcRenderer.invoke('get-version'),
+  checkLatex: () => ipcRenderer.invoke('check-latex'),
+  exportBank: (bank) => ipcRenderer.invoke('export-bank', bank),
+  importBankZip: () => ipcRenderer.invoke('import-bank-zip'),
   updater: {
     check: () => ipcRenderer.send('check-for-updates'),
     download: () => ipcRenderer.send('download-update'),

@@ -44,13 +44,11 @@ export const Modal: React.FC<{ isOpen: boolean, onClose: () => void, title: stri
     if (!isOpen) return null;
     return (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-            {/* Ajout de max-h-[90vh] et flex-col pour que la modale ne dépasse jamais de l'écran */}
             <div className="bg-white/95 backdrop-blur-2xl border border-white rounded-3xl md:rounded-[2rem] w-full max-w-md max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
                 <div className="px-5 py-4 md:px-8 md:py-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
                     <h2 className="text-lg md:text-xl font-black text-slate-800 tracking-tight">{title}</h2>
                     <button onClick={onClose} className="p-2 hover:bg-slate-200/50 rounded-full text-slate-400 hover:text-slate-600 transition-colors"><XCircle size={24}/></button>
                 </div>
-                {/* L'intérieur devient scrollable si le contenu est trop grand pour l'écran */}
                 <div className="p-5 md:p-8 overflow-y-auto">{children}</div>
             </div>
         </div>

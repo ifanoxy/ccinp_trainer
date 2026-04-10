@@ -25,7 +25,6 @@ export const ProfileSelect: React.FC<ProfileSelectProps> = ({ profiles, onSelect
 
     return (
         <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
-            {/* Arrière-plans responsifs (plus petits sur mobile) */}
             <div className="absolute top-[-10%] left-[-20%] w-[150vw] h-[150vw] md:w-[800px] md:h-[800px] bg-indigo-600 rounded-full mix-blend-multiply filter blur-[80px] md:blur-[128px] opacity-30 animate-pulse"></div>
             <div className="absolute bottom-[-10%] right-[-20%] w-[150vw] h-[150vw] md:w-[800px] md:h-[800px] bg-purple-600 rounded-full mix-blend-multiply filter blur-[80px] md:blur-[128px] opacity-30"></div>
 
